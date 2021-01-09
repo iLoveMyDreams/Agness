@@ -1,4 +1,4 @@
 module.exports = {
     prefix: require('./Models/prefix.js'),
-    reaction: require('./Models/roles.js'),
+    reaction: require('./Models/reaction.js'),
 }

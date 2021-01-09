@@ -2,7 +2,8 @@ const {Schema, model} = require('mongoose');
 const roles = Schema({
     guildID: String,
     messageID: String,
-    RoleID: String,
-    Reaction: String,
+    roleID: String,
+    reaction: String,
+    type: String
 });
 module.exports = model('roles', roles)

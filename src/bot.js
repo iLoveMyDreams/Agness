@@ -6,7 +6,7 @@ const path = require('path')
 new (
     class Yuuki extends Discord.Client {
         constructor() {
-            super()
+            super({ partials: ["MESSAGE", "REACTION"] })
             mongoose.connect(process.env.MONGO_URL, {
                 useNewUrlParser: true, useUnifiedTopology: true
             }, (err) => {
