@@ -6,14 +6,14 @@ const path = require('path')
 new (
     class Yuuki extends Discord.Client {
         constructor() {
-            super({ partials: ["MESSAGE", "REACTION"] })
+            super({ partials: ['MESSAGE', 'REACTION'] })
             mongoose.connect(process.env.MONGO_URL, {
                 useNewUrlParser: true, useUnifiedTopology: true
             }, (err) => {
                 if (err) return console.log(`MONGO >> A ocurrido un error: ${err.message || err}`)
                 console.log('MONGO >> Conectado a la Base de Datos')
             })
-            this.db = require("./database/index.js")
+            this.db = require('./database/index.js')
             this.commands = new Discord.Collection()
             this.loadCommands()
             this.loadEvents()

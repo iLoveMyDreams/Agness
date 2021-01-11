@@ -4,7 +4,6 @@ module.exports = class MessageEvent {
         this.name = 'messageReactionAdd';
     }
     async run(msgReaction, user) {
-
         let guild = msgReaction.message.guild;//la guild o servidor
         let mensaje = msgReaction.message; //el mensaje
         let miembro = guild.member(user); // Transformamos el usuario a miembro
@@ -18,7 +17,22 @@ module.exports = class MessageEvent {
         let rol = guild.roles.cache.get(emojiCheck.roleID)
         if (!rol || !rol.editable) return;
 
-        miembro.roles.add(rol.id)
-
+        switch (emojiCheck.type) {
+            case 'only':
+                let emojis = await this.client.db.reaction.find({ messageID: mensaje.id, type: "only" }).exec()
+                emojis.forEach((reactionRol) => {
+                    if (reactionRol._id === emojiCheck._id) {
+                        miembro.roles.add(rol.id)
+                        return
+                    }
+                    let reaction = msgReaction.message.reactions.resolve(reactionRol.reaction)
+                    reaction.users.remove(user.id)
+                    miembro.roles.remove(reactionRol.roleID)
+                })
+                break;
+            default:
+                miembro.roles.add(rol.id)
+                break;
+        }
     }
 }

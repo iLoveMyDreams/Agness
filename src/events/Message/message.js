@@ -1,5 +1,3 @@
-const { model } = require("mongoose");
-
 module.exports = class MessageEvent {
     constructor(client) {
         this.client = client;
@@ -8,7 +6,7 @@ module.exports = class MessageEvent {
     async run(msg) {
         let prefix = '.'
         if (msg.guild) {
-            const modelo = await this.client.db.prefix.findOne({ _id: msg.guild.id}).exec()
+            const modelo = await this.client.db.prefix.findOne({ _id: msg.guild.id }).exec()
             prefix = modelo ? modelo.prefix : '.'
         }
         if (!msg.content.startsWith(prefix) || msg.author.bot) return;

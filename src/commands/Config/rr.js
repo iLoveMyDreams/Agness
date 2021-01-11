@@ -1,4 +1,5 @@
 const BaseCommand = require('../../Utils/BaseCommand.js')
+
 module.exports = class PingCommand extends BaseCommand {
     constructor(client) {
         super(client, {
@@ -7,7 +8,7 @@ module.exports = class PingCommand extends BaseCommand {
             botGuildPermissions: ['ADMINISTRATOR'],
             memberGuildPermissions: ['ADMINISTRATOR']
         })
-        this.types = ['normal', 'unique']
+        this.types = ['normal', 'unique', 'only']
     }
     async run(msg, args) {
         let prefix = '.'
@@ -27,7 +28,7 @@ module.exports = class PingCommand extends BaseCommand {
         let rol = matchRole[1] ? msg.guild.roles.resolve(matchRole[1]) : msg.guild.roles.resolve(args[0])
 
         if (!rol) {
-            embed.setDescription('> No pude encontrar ese rol o no es valido.')
+            embed.setDescription('> No pude encontrar ese rol o no es válido.')
             return msg.channel.send(embed)
         }
         if (!rol.editable) {
@@ -42,7 +43,8 @@ module.exports = class PingCommand extends BaseCommand {
         ) {
             embed.setDescription('> No es un tipo valido de reaction rol.')
                 .addField('Tipos:', `Normal => Se puede obtener y quitar el rol con la misma reacción.
-Unique => Solo se puede obtener mas no quitar.`)
+Unique => Solo se puede obtener, mas no quitar.
+Only => Solo se podrá obtener un reaction rol del mismo tipo en el mensaje.`)
             return msg.channel.send(embed)
         }
 
@@ -54,13 +56,13 @@ Unique => Solo se puede obtener mas no quitar.`)
         let canal = args[3] ? matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[3]) : msg.channel
 
         if (!canal) {
-            embed.setDescription('> No pude encontrar el canal o no es valido.')
+            embed.setDescription('> No pude encontrar el canal o no es válido.')
             return msg.channel.send(embed)
         }
         try {
             var mensaje = await canal.messages.fetch(msgID)
             if (!mensaje) {
-                embed.setDescription('> El mensaje no fue encontrado')
+                embed.setDescription('> El mensaje no fue encontrado.')
                 return msg.channel.send(embed)
             }
         } catch (e) {
@@ -70,7 +72,7 @@ Unique => Solo se puede obtener mas no quitar.`)
 
         //------//
         embed.setDescription(`Estoy alistando el reaction rol para ${rol}.
-Solo falta que reacciones con el emoji con el que quieras que se de el rol.`)
+Solo falta que reacciones con el emoji con el que quieras que se dé el rol.`)
         let enviado = await msg.channel.send(embed)
         try {
             const filter = (r, u) => u.id === msg.author.id
@@ -80,7 +82,7 @@ Solo falta que reacciones con el emoji con el que quieras que se de el rol.`)
             enviado.delete()
 
             if (emoji.id && !this.client.emojis.resolve(emoji.id)) {
-                embed.setDescription('> No puede encontrar ese emoji en mi cache, intenta poniendo el emoji en el servidor.')
+                embed.setDescription('> No puede encontrar ese emoji en mi caché, intenta poniendo el emoji en el servidor.')
                 return msg.channel.send(embed)
             }
             let emojiID = emoji.id || emoji.name
@@ -96,11 +98,11 @@ Solo falta que reacciones con el emoji con el que quieras que se de el rol.`)
 
             mensaje.react(emoji)
 
-            embed.setDescription(`Ahora se dara el rol ${rol} cuando reaccionen al emoji: ${emoji}`)
+            embed.setDescription(`Ahora se dará el rol ${rol} cuando reaccionen al emoji: ${emoji}`)
             msg.channel.send(embed)
         } catch (e) {
             enviado.delete()
-            msg.channel.send('> Se acabo el tiempo ;(')
+            msg.channel.send('> Se acabó el tiempo ;(')
         }
     }
 }
