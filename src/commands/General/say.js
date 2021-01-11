@@ -7,12 +7,10 @@ module.exports = class SayCommand extends BaseCommand {
         })
     }
     async run(msg, args) {
-        console.log((msg.mentions.everyone || 
-            msg.mentions.roles.size > 0) && 
-            !msg.member.hasPermission('MENTION_EVERYONE'))
-        if(
-            (msg.mentions.everyone || 
-            msg.mentions.roles.size > 0) && 
+        if (!args[0]) return msg.channel.send('> A sos re trol ?')
+        if (
+            (msg.content.match(/@(everyone|here)/gi) ||
+                msg.content.match(/<@&(\d{17,19})>/gi)) &&
             !msg.member.hasPermission('MENTION_EVERYONE')
         ) return msg.channel.send('> Necesitas del permiso Mencionar everyone.')
         msg.channel.send(args.join(' '))
