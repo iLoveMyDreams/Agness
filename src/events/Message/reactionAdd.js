@@ -10,11 +10,15 @@ module.exports = class MessageEvent {
         let miembro = guild.member(user); // Transformamos el usuario a miembro
         let emoji = msgReaction.emoji.id || msgReaction.emoji.name; // el emoji
 
-        let emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emoji }).exec()
-        let rol = guild.roles.cache.get(emojiCheck.roleID)
-        if(!emojiCheck || rol.editable) return;
-        miembro.roles.add(rol.id)
+        if (!guild || user.bot) return
 
+        let emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emoji }).exec()
+        if (!emojiCheck) return;
+
+        let rol = guild.roles.cache.get(emojiCheck.roleID)
+        if (!rol || !rol.editable) return;
+
+        miembro.roles.add(rol.id)
 
     }
 }
