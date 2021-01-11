@@ -3,6 +3,7 @@ global.Discord = require('discord.js')
 const mongoose = require('mongoose')
 const fs = require('fs')
 const path = require('path')
+const nekosClient = require('nekos.life')
 new (
     class Yuuki extends Discord.Client {
         constructor() {
@@ -18,6 +19,7 @@ new (
             this.loadCommands()
             this.loadEvents()
             this.login(process.env.TOKEN)
+            this.nekos = new nekosClient()
         }
         loadEvents() {
             const carpeta = path.join(__dirname, 'events')

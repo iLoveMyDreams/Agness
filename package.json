@@ -10,9 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "canvas": "^2.6.1",
+    "@gumlet/gif-resize": "^1.1.1",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
-    "mongoose": "^5.11.9"
+    "mongoose": "^5.11.9",
+    "nekos.life": "^2.0.7"
   }
 }
