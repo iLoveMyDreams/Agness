@@ -26,6 +26,7 @@ module.exports = class MessageEvent {
                         return
                     }
                     let reaction = msgReaction.message.reactions.resolve(reactionRol.reaction)
+                    if(!reaction) return;
                     if (reaction.partial)
                         await reaction.fetch()
                     reaction.users.remove(user.id)
