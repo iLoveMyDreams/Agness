@@ -21,7 +21,7 @@ module.exports = class MessageEvent {
             case 'only':
                 let emojis = await this.client.db.reaction.find({ messageID: mensaje.id, type: "only" }).exec()
                 emojis.forEach((reactionRol) => {
-                    if (reactionRol._id === emojiCheck._id) {
+                    if (reactionRol._id === emojiCheck.reaction) {
                         miembro.roles.add(rol.id)
                         return
                     }
