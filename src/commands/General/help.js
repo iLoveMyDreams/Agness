@@ -13,15 +13,18 @@ module.exports = class HelpCommand extends BaseCommand {
             prefix = modelo ? modelo.prefix : '.'
         }
         const embed = new Discord.MessageEmbed()
+        .setColor('#FDB2A2')
         if (!args[0]) {
             embed.setTitle(`Panel de ayuda de ${this.client.user.username}`)
-                .setDescription(`Hola! en estos momentos cuento con 3 categorias y ${this.client.commands.size} comandos
+                .setDescription(`Hola! en estos momentos cuento con 5 categorias y ${this.client.commands.size - 1} comandos
 Si necesitas una informacion mas detallada de cada comando puedes utilizar:
 > ${prefix}help <comando>`)
                 .addField(`Categorias`, `> ${prefix}help Config • Comandos de Configuración
-> ${prefix}help General • Comandos en general`)
-                .addField(`Enlaces`, `**[Link de Invitación](https://discord.com/api/oauth2/authorize?client_id=791024013224837161&permissions=8&scope=bot) | [Servidor de Soporte](https://discord.gg/TxsqJVsFgk)**`)
-                .setColor('#9d5fb1')
+> ${prefix}help General • Comandos en general
+> ${prefix}help Images • Imagenes de todo tipo
+> ${prefix}help Interact • Comandos Interactivo
+> ${prefix}help NSFW • Comandos para adultos`)
+                .addField(`Enlaces`, `**[Link de Invitación](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Servidor de Soporte](https://discord.gg/K63NqEDm86)**`)
             return msg.channel.send(embed)
         }
         const categorias = this.client.commands.filter((x) => x.category.toLowerCase() == args[0].toLowerCase()).array()
@@ -62,7 +65,7 @@ Si necesitas una informacion mas detallada de cada comando puedes utilizar:
   Si necesitas información mas detallada de cada uno de los comandos puedes usar:
   > ${prefix}help <comando>`)
                 .addField(`Lista de comandos:`, `\`\`\`\n${cmdList}\n\`\`\``)
-                .setColor('#9d5fb1')
+                .setColor('#FDB2A2')
 
             msg.channel.send(embed_list);
         } else if (cmd) {
@@ -86,7 +89,7 @@ Si necesitas una informacion mas detallada de cada comando puedes utilizar:
   ${cmd.memberChannelPermissions.length ? cmd.memberChannelPermissions.join(', ') : 'No necesita.'}
   > En el servidor:
   ${cmd.memberGuildPermissions.length ? cmd.memberGuildPermissions.join(', ') : 'No necesita.'}`, true)
-                .setColor('#9d5fb1')
+                .setColor('#FDB2A2')
             msg.channel.send(comand_embed);
         } else {
             msg.channel.send(`> Comando o categoria no encontrados.`);

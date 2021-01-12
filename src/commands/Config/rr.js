@@ -1,12 +1,12 @@
 const BaseCommand = require('../../Utils/BaseCommand.js')
-
 module.exports = class PingCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'rr',
             alias: ['rroles'],
             botGuildPermissions: ['ADMINISTRATOR'],
-            memberGuildPermissions: ['ADMINISTRATOR']
+            memberGuildPermissions: ['ADMINISTRATOR'],
+            category: 'Config'
         })
         this.types = ['normal', 'unique', 'only']
     }
@@ -17,6 +17,7 @@ module.exports = class PingCommand extends BaseCommand {
             prefix = modelo ? modelo.prefix : '.'
         }
         const embed = new Discord.MessageEmbed()
+        .setColor('#FDB2A2')
         if (!args[0] || !args[1] || !args[2]) {
             embed.setDescription(`> Uso correcto: ${prefix}rr [@role] [type] [messageID] <#channel>`)
             return msg.channel.send(embed)

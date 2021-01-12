@@ -3,7 +3,8 @@ module.exports = class HugCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'hug',
-            alias: ['abrazo']
+            alias: ['abrazo'],
+            category: 'Interac'
         })
     }
     async run(msg, args) {
@@ -12,6 +13,7 @@ module.exports = class HugCommand extends BaseCommand {
         if(!mention) return msg.channel.send('Menciona a alguien para darle un abrazo')
         if(mention.id === msg.author.id) return msg.channel.send('No podes abrazarte a ti mismo')
         let embed = new Discord.MessageEmbed()
+        .setColor('#FDB2A2')
         .setDescription(`**${msg.author.username}** le dio un calido abrazo a **${mention.user.username}**`)
         .setImage((await this.client.nekos.sfw.hug()).url)
         msg.channel.send(embed)
