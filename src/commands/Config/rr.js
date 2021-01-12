@@ -60,6 +60,10 @@ Only => Solo se podrá obtener un reaction rol del mismo tipo en el mensaje.`)
             embed.setDescription('> No pude encontrar el canal o no es válido.')
             return msg.channel.send(embed)
         }
+        if(!canal.viewable){
+            embed.setDescription('> No tengo permisos para ver ese canal.')
+            return msg.channel.send(embed)
+        }
         try {
             var mensaje = await canal.messages.fetch(msgID)
             if (!mensaje) {
