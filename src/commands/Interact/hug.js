@@ -4,7 +4,7 @@ module.exports = class HugCommand extends BaseCommand {
         super(client, {
             name: 'hug',
             alias: ['abrazo'],
-            category: 'Interac'
+            category: 'Interact'
         })
     }
     async run(msg, args) {

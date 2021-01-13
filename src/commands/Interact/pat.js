@@ -4,7 +4,7 @@ module.exports = class PatCommand extends BaseCommand {
         super(client, {
             name: 'pat',
             alias: ['palmaditas'],
-            category: 'Interac'
+            category: 'Interact'
         })
     }
     async run(msg, args) {

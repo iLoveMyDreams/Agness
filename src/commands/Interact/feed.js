@@ -4,7 +4,7 @@ module.exports = class FeedCommand extends BaseCommand {
         super(client, {
             name: 'feed',
             alias: ['comida'],
-            category: 'Interac'
+            category: 'Interact'
         })
     }
     async run(msg, args) {

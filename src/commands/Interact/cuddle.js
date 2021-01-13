@@ -4,7 +4,7 @@ module.exports = class CuddleCommand extends BaseCommand {
         super(client, {
             name: 'cuddle',
             alias: ['cariño'],
-            category: 'Interac'
+            category: 'Interact'
         })
     }
     async run(msg, args) {

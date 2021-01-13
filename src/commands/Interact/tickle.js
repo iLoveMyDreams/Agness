@@ -4,7 +4,7 @@ module.exports = class TickleCommand extends BaseCommand {
         super(client, {
             name: 'tickle',
             alias: ['cosquillas'],
-            category: 'Interac'
+            category: 'Interact'
         })
     }
     async run(msg, args) {

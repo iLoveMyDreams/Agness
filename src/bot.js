@@ -5,7 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const nekosClient = require('nekos.life')
 new (
-    class Yuuki extends Discord.Client {
+    class Asuna extends Discord.Client {
         constructor() {
             super({ partials: ['MESSAGE', 'REACTION'] })
             mongoose.connect(process.env.MONGO_URL, {

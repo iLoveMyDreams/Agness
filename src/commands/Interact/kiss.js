@@ -4,7 +4,7 @@ module.exports = class KissCommand extends BaseCommand {
         super(client, {
             name: 'kiss',
             alias: ['beso'],
-            category: 'Interac'
+            category: 'Interact'
         })
     }
     async run(msg, args) {
