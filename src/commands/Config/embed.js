@@ -17,7 +17,7 @@ module.exports = class EmbedCommand extends BaseCommand {
         }
         let exceptions = ['{user_avatar}', '{server_icon}', '{server_owner_avatar}']
         if (!args[0]) return msg.channel.send('> Pon una propiedad valida')
-        switch (args[0]) {
+        switch (args[0].toLowerCase()) {
             case 'create': {
                 if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
                 let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })

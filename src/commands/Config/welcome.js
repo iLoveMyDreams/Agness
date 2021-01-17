@@ -10,7 +10,7 @@ module.exports = class WelcomeCommand extends BaseCommand {
     }
     async run(msg, args) {
         if (!args[0]) return msg.channel.send('> Pon una propiedad valida.')
-        switch (args[0]) {
+        switch (args[0].toLowerCase()) {
             case 'channel': {
                 let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                 if (!args[1]) return msg.channel.send('> Dame la id o mencion del rol')
@@ -23,7 +23,6 @@ module.exports = class WelcomeCommand extends BaseCommand {
                 msg.channel.send(`> El nuevo log de bienvenidas ahora es ${canal}`)
                 break;
             }
-
             case 'message': {
                 if (!args[1]) return msg.channel.send('> Pon el mensaje de bienvenida.')
 
