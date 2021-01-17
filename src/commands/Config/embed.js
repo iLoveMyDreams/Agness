@@ -7,6 +7,11 @@ module.exports = class EmbedCommand extends BaseCommand {
         })
     }
     async run(msg, args) {
+        let prefix = '.'
+        if (msg.guild) {
+            const modelo = await this.client.db.prefix.findOne({ _id: msg.guild.id }).exec()
+            prefix = modelo ? modelo.prefix : '.'
+        }
         let exceptions = ['{user_avatar}', '{server_icon}', '{server_owner_avatar}']
         if(!args[0]) return msg.channel.send('> Pon una propiedad valida')
         switch (args[0]) {
