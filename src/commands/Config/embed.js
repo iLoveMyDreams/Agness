@@ -1,4 +1,5 @@
 const BaseCommand = require('../../Utils/BaseCommand.js')
+const isImageURL = require('image-url-validator');
 module.exports = class EmbedCommand extends BaseCommand {
     constructor(client) {
         super(client, {
