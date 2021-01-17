@@ -1,5 +1,5 @@
 const BaseCommand = require('../../Utils/BaseCommand.js')
-module.exports = class PingCommand extends BaseCommand {
+module.exports = class ReactionRoleCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'reactionrole',

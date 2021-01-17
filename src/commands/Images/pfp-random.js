@@ -7,11 +7,10 @@ module.exports = class CatCommand extends BaseCommand {
             category: 'Images'
         })
     }
-    async run(msg, args) {
-
+    async run(msg) {
         let embed = new Discord.MessageEmbed()
             .setColor('#FDB2A2')
-            .setDescription(`**${msg.author.username}** aqui tienes un avatar random.`)
+            .setDescription(`**${msg.author.username}** aquí tienes un avatar random.`)
             .setImage((await this.client.nekos.sfw.avatar()).url)
         msg.channel.send(embed)
     }

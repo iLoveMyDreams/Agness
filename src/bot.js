@@ -14,7 +14,7 @@ new (
                 if (err) return console.log(`MONGO >> A ocurrido un error: ${err.message || err}`)
                 console.log('MONGO >> Conectado a la Base de Datos')
             })
-            this.db = require(path.join(__dirname, 'Database') + '/index.js')
+            this.db = require(path.join(__dirname, 'Database', 'index.js'))
             this.commands = new Discord.Collection()
             this.loadCommands()
             this.loadEvents()

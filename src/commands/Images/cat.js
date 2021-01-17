@@ -7,8 +7,7 @@ module.exports = class CatCommand extends BaseCommand {
             category: 'Images'
         })
     }
-    async run(msg, args) {
-
+    async run(msg) {
         let embed = new Discord.MessageEmbed()
             .setColor('#FDB2A2')
             .setDescription(`**${msg.author.username}** mira un gatito`)

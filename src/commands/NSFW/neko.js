@@ -11,7 +11,7 @@ module.exports = class NekoCommand extends BaseCommand {
 
         let embed = new Discord.MessageEmbed()
             .setColor('#FDB2A2')
-            .setDescription(`**${msg.author.username}** Disfruta de las Imagenes. ^^`)
+            .setDescription(`**${msg.author.username}** Disfruta de las Imágenes. ^^`)
             .setImage((await this.client.nekos.nsfw.nekoGif()).url)
         msg.channel.send(embed)
     }
