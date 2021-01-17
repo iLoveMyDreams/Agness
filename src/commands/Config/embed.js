@@ -8,7 +8,8 @@ module.exports = class EmbedCommand extends BaseCommand {
     }
     async run(msg, args) {
         let exceptions = ['{user_avatar}', '{server_icon}', '{server_owner_avatar}']
-        switch (args[1]) {
+        if(!args[0]) return msg.channel.send('> Pon una propiedad valida')
+        switch (args[0]) {
             case 'create':{
 
                 if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
