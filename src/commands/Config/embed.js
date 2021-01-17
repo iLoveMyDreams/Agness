@@ -4,7 +4,9 @@ module.exports = class EmbedCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'embed',
-            alias: ['eb', 'emb']
+            alias: ['eb', 'emb'],
+            category: 'Config',
+            memberGuildPermissions: ['ADMINISTRATOR'],
         })
     }
     async run(msg, args) {
