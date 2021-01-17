@@ -146,7 +146,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 embed_DB.save()
                 embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
 
-                const embed = new Discord.Discord.MessageEmbed()
+                const embed = new Discord.MessageEmbed()
 
                 if (embed_DB.author_text) {
                     embed_DB.author_image ?
@@ -174,7 +174,7 @@ module.exports = class EmbedCommand extends BaseCommand {
 
                 let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
 
-                const embed = new Discord.Discord.MessageEmbed()
+                const embed = new Discord.MessageEmbed()
 
                 if (embed_DB.author_text) {
                     embed_DB.author_image ?
