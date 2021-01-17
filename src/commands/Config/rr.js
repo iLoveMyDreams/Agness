@@ -17,7 +17,7 @@ module.exports = class PingCommand extends BaseCommand {
             prefix = modelo ? modelo.prefix : '.'
         }
         const embed = new Discord.MessageEmbed()
-        .setColor('#FDB2A2')
+            .setColor('#FDB2A2')
         if (!args[0] || !args[1] || !args[2]) {
             embed.setDescription(`> Uso correcto: ${prefix}rr [@role] [type] [messageID] <#channel>`)
             return msg.channel.send(embed)
@@ -60,7 +60,7 @@ Only => Solo se podrá obtener un reaction rol del mismo tipo en el mensaje.`)
             embed.setDescription('> No pude encontrar el canal o no es válido.')
             return msg.channel.send(embed)
         }
-        if(!canal.viewable){
+        if (!canal.viewable) {
             embed.setDescription('> No tengo permisos para ver ese canal.')
             return msg.channel.send(embed)
         }

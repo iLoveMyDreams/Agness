@@ -13,7 +13,7 @@ module.exports = class HelpCommand extends BaseCommand {
             prefix = modelo ? modelo.prefix : '.'
         }
         const embed = new Discord.MessageEmbed()
-        .setColor('#FDB2A2')
+            .setColor('#FDB2A2')
         if (!args[0]) {
             embed.setTitle(`Panel de ayuda de ${this.client.user.username}`)
                 .setDescription(`Hola! en estos momentos cuento con 5 categorias y ${this.client.commands.size - 1} comandos

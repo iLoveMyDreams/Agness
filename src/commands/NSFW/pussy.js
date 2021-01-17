@@ -10,9 +10,9 @@ module.exports = class PussyCommand extends BaseCommand {
     async run(msg, args) {
 
         let embed = new Discord.MessageEmbed()
-        .setColor('#FDB2A2')
-        .setDescription(`**${msg.author.username}** Disfruta de las Imagenes. ^^`)
-        .setImage((await this.client.nekos.nsfw.pussy()).url)
+            .setColor('#FDB2A2')
+            .setDescription(`**${msg.author.username}** Disfruta de las Imagenes. ^^`)
+            .setImage((await this.client.nekos.nsfw.pussy()).url)
         msg.channel.send(embed)
     }
 }

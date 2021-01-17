@@ -10,9 +10,9 @@ module.exports = class LizardCommand extends BaseCommand {
     async run(msg, args) {
 
         let embed = new Discord.MessageEmbed()
-        .setColor('#FDB2A2')
-        .setDescription(`**${msg.author.username}** mira un lagarto`)
-        .setImage((await this.client.nekos.sfw.lizard()).url)
+            .setColor('#FDB2A2')
+            .setDescription(`**${msg.author.username}** mira un lagarto`)
+            .setImage((await this.client.nekos.sfw.lizard()).url)
         msg.channel.send(embed)
     }
 }
