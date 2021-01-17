@@ -9,7 +9,7 @@ module.exports = class EmbedCommand extends BaseCommand {
     async run(msg, args) {
         let exceptions = ['{user_avatar}', '{server_icon}', '{server_owner_avatar}']
         switch (args[1]) {
-            case 'create':
+            case 'create':{
 
                 if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
                 let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
@@ -17,19 +17,19 @@ module.exports = class EmbedCommand extends BaseCommand {
                 let nuevo = new this.client.db.embed({ guildID: msg.guild.id, embed_name: args[1] })
                 await nuevo.save()
                 msg.channel.send('> Embed creado correctamente.')
-
+            }
                 break;
 
-            case 'delete':
+            case 'delete': {
 
                 if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
                 let checkear = await this.client.db.embed.findOneAndDelete({ guildID: msg.guild.id, embed_name: args[1] })
                 if (!checkear) return msg.channel.send('> No hay ningun embed con ese nombre.')
                 msg.channel.send('> Embed eliminado correctamente.')
-
+            }
                 break;
 
-            case 'list':
+            case 'list':{
 
                 const lista = await this.client.db.embed.find({ guildID: msg.guild.id })
                 const embed = new MessageEmbed()
@@ -45,10 +45,10 @@ module.exports = class EmbedCommand extends BaseCommand {
                 )
                     .setDescription(lista.map(x => x.embed_name).join('\n'))
                 msg.channel.send(embed)
-
+            }
                 break;
 
-            case 'edit':
+            case 'edit': {
 
                 if (!args[1]) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estas ejecutando mal el comando, forma correcta:
 > ${prefix}embed edit <nombre> <propiedad> [texto]`)
@@ -166,10 +166,10 @@ module.exports = class EmbedCommand extends BaseCommand {
                 if (embed_DB)  embed.setColor('#' + embed_DB.color)
 
                 msg.channel.send(embed)
-
+            }
                 break;
 
-            case 'preview':
+            case 'preview': {
 
                 let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
 
@@ -195,13 +195,13 @@ module.exports = class EmbedCommand extends BaseCommand {
 
                 msg.channel.send(embed)
 
-
+            }
                 break;
 
-            default:
+            default: {
 
                 msg.channel.send('> Introduce una propiedad valida.')
-
+            }
                 break;
         }
 
