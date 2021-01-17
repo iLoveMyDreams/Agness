@@ -149,7 +149,6 @@ module.exports = class EmbedCommand extends BaseCommand {
                     return msg.channel.send('> La propiedad que colocaste no es valida.')
                 }
                 embed_DB.save()
-                embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
 
                 const embed = new Discord.MessageEmbed()
 
