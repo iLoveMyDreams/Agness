@@ -2,8 +2,8 @@ const BaseCommand = require('../../Utils/BaseCommand.js')
 module.exports = class PingCommand extends BaseCommand {
     constructor(client) {
         super(client, {
-            name: 'rr',
-            alias: ['rroles'],
+            name: 'reactionrole',
+            alias: ['rroles', 'rr'],
             botGuildPermissions: ['ADMINISTRATOR'],
             memberGuildPermissions: ['ADMINISTRATOR'],
             category: 'Config'
