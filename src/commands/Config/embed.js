@@ -17,31 +17,31 @@ module.exports = class EmbedCommand extends BaseCommand {
         switch (args[0].toLowerCase()) {
             case 'create': {
                 if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
-                let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
+                let checkear = await this.client.db.embed.findOne({ guildID: guild.id, embed_name: args[1] })
                 if (checkear) return msg.channel.send('> Ya hay un embed con ese nombre')
-                let nuevo = new this.client.db.embed({ guildID: msg.guild.id, embed_name: args[1] })
+                let nuevo = new this.client.db.embed({ guildID: guild.id, embed_name: args[1] })
                 await nuevo.save()
                 msg.channel.send('> Embed creado correctamente.')
                 break;
             }
             case 'delete': {
                 if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
-                let checkear = await this.client.db.embed.findOneAndDelete({ guildID: msg.guild.id, embed_name: args[1] })
+                let checkear = await this.client.db.embed.findOneAndDelete({ guildID: guild.id, embed_name: args[1] })
                 if (!checkear) return msg.channel.send('> No hay ningún embed con ese nombre.')
                 msg.channel.send('> Embed eliminado correctamente.')
                 break;
             }
             case 'list': {
-                const lista = await this.client.db.embed.find({ guildID: msg.guild.id })
+                const lista = await this.client.db.embed.find({ guildID: guild.id })
                 const embed = new Discord.MessageEmbed()
                 if (!lista.length) {
                     embed.setDescription('> El servidor no cuenta con ningún embed')
                     return msg.channel.send(embed)
                 }
                 embed.setAuthor(
-                    `Lista de embeds de ${msg.guild.name}`,
-                    msg.guild.iconURL() ?
-                        msg.guild.iconURL({ dynamic: true }) :
+                    `Lista de embeds de ${guild.name}`,
+                    guild.iconURL() ?
+                        guild.iconURL({ dynamic: true }) :
                         null
                 )
                     .setDescription(lista.map(x => x.embed_name).join('\n'))
@@ -52,7 +52,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 if (!args[1]) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
 > ${this.prefix}embed edit <nombre> <propiedad> [texto]`)
 
-                let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
+                let embed_DB = await this.client.db.embed.findOne({ guildID: guild.id, embed_name: args[1] })
                 if (!embed_DB) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
 > ${this.prefix}embed edit <nombre> <propiedad> [texto]`)
 
@@ -144,21 +144,22 @@ module.exports = class EmbedCommand extends BaseCommand {
                 embed_DB.save()
 
                 const embed = new Discord.MessageEmbed()
+                const replaceText = (text) => EmbedCommand.replaceText(text, { channel: msg.channel, member: msg.member, prefix: this.prefix })
 
                 if (embed_DB.author_text) {
                     embed_DB.author_image ?
-                        embed.setAuthor(EmbedCommand.replaceText(embed_DB.author_text, msg), EmbedCommand.replaceText(embed_DB.author_image, msg)) :
-                        embed.setAuthor(EmbedCommand.replaceText(embed_DB.author_text, msg))
+                        embed.setAuthor(replaceText(embed_DB.author_text), replaceText(embed_DB.author_image)) :
+                        embed.setAuthor(replaceText(embed_DB.author_text))
                 }
-                if (embed_DB.title) embed.setTitle(EmbedCommand.replaceText(embed_DB.title, msg))
-                if (embed_DB.description) embed.setDescription(EmbedCommand.replaceText(embed_DB.description, msg))
-                if (embed_DB.thumbnail) embed.setThumbnail(EmbedCommand.replaceText(embed_DB.thumbnail, msg))
-                if (embed_DB.image) embed.setImage(EmbedCommand.replaceText(embed_DB.image, msg))
+                if (embed_DB.title) embed.setTitle(replaceText(embed_DB.title))
+                if (embed_DB.description) embed.setDescription(replaceText(embed_DB.description))
+                if (embed_DB.thumbnail) embed.setThumbnail(replaceText(embed_DB.thumbnail))
+                if (embed_DB.image) embed.setImage(replaceText(embed_DB.image))
 
                 if (embed_DB.footer_text) {
                     embed_DB.footer_image ?
-                        embed.setFooter(EmbedCommand.replaceText(embed_DB.footer_text, msg), EmbedCommand.replaceText(embed_DB.footer_image, msg)) :
-                        embed.setFooter(EmbedCommand.replaceText(embed_DB.footer_text, msg))
+                        embed.setFooter(replaceText(embed_DB.footer_text), replaceText(embed_DB.footer_image)) :
+                        embed.setFooter(replaceText(embed_DB.footer_text))
                 }
                 if (embed_DB.timestamp) embed.setTimestamp()
                 if (embed_DB) embed.setColor('#' + embed_DB.color)
@@ -167,23 +168,23 @@ module.exports = class EmbedCommand extends BaseCommand {
                 break;
             }
             case 'preview': {
-                let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
+                let embed_DB = await this.client.db.embed.findOne({ guildID: guild.id, embed_name: args[1] })
 
                 const embed = new Discord.MessageEmbed()
                 if (embed_DB.author_text) {
                     embed_DB.author_image ?
-                        embed.setAuthor(EmbedCommand.replaceText(embed_DB.author_text, msg), EmbedCommand.replaceText(embed_DB.author_image, msg)) :
-                        embed.setAuthor(EmbedCommand.replaceText(embed_DB.author_text, msg))
+                        embed.setAuthor(replaceText(embed_DB.author_text), replaceText(embed_DB.author_image)) :
+                        embed.setAuthor(replaceText(embed_DB.author_text))
                 }
-                if (embed_DB.title) embed.setTitle(EmbedCommand.replaceText(embed_DB.title, msg))
-                if (embed_DB.description) embed.setDescription(EmbedCommand.replaceText(embed_DB.description, msg))
-                if (embed_DB.thumbnail) embed.setThumbnail(EmbedCommand.replaceText(embed_DB.thumbnail, msg))
-                if (embed_DB.image) embed.setImage(EmbedCommand.replaceText(embed_DB.image, msg))
+                if (embed_DB.title) embed.setTitle(replaceText(embed_DB.title))
+                if (embed_DB.description) embed.setDescription(replaceText(embed_DB.description))
+                if (embed_DB.thumbnail) embed.setThumbnail(replaceText(embed_DB.thumbnail))
+                if (embed_DB.image) embed.setImage(replaceText(embed_DB.image))
 
                 if (embed_DB.footer_text) {
                     embed_DB.footer_image ?
-                        embed.setFooter(EmbedCommand.replaceText(embed_DB.footer_text, msg), EmbedCommand.replaceText(embed_DB.footer_image, msg)) :
-                        embed.setFooter(EmbedCommand.replaceText(embed_DB.footer_text, msg))
+                        embed.setFooter(replaceText(embed_DB.footer_text), replaceText(embed_DB.footer_image)) :
+                        embed.setFooter(replaceText(embed_DB.footer_text))
                 }
                 if (embed_DB.timestamp) embed.setTimestamp()
                 if (embed_DB) embed.setColor('#' + embed_DB.color)
@@ -196,45 +197,45 @@ module.exports = class EmbedCommand extends BaseCommand {
                 break;
         }
 
-        
+
     }
 
-    static replaceText(text, msg) {
-        return text.replace(/{user}/gi, msg.author.toString())
-            .replace(/{user\.tag}/gi, msg.author.tag)
-            .replace(/{user\.discrim}/gi, msg.author.discriminator)
-            .replace(/{user\.avatar}/gi, msg.author.displayAvatarURL({ dynamic: true, size: 4096 }))
-            .replace(/{user\.name}/gi, msg.author.username)
-            .replace(/{user\.id}/gi, msg.author.id)
-            .replace(/{user\.joindate}/gi, msg.member.joinedAt)
-            .replace(/{user\.nick}/gi, msg.member.nickname ? msg.member.nickname : 'No tiene Apodo.')
-            .replace(/{user\.createdate}/gi, msg.author.createdAt)
-            .replace(/{server\.prefix}/gi, this.prefix)
-            .replace(/{server}/gi, msg.guild.name)
-            .replace(/{server\.id}/gi, msg.guild.id)
-            .replace(/{server\.membercount}/gi, msg.guild.members.cache.size)
-            .replace(/{server\.membercount\.nobots}/gi, msg.guild.members.cache.filter(miembro => !miembro.user.bot).size)
-            .replace(/{server\.membercount\.bots}/gi, msg.guild.members.cache.filter(miembro => miembro.user.bot).size)
-            .replace(/{server\.rolecount}/gi, msg.guild.roles.cache.size)
-            .replace(/{server\.channelcount}/gi, msg.guild.channels.cache.size)
-            .replace(/{server\.channelcount\.text}/gi, msg.guild.channels.cache.filter((a) => a.type === 'text').size)
-            .replace(/{server\.channelcount\.voice}/gi, msg.guild.channels.cache.filter((a) => a.type === 'voice').size)
-            .replace(/{server\.emojiscount}/gi, msg.guild.emojis.cache.size)
-            .replace(/{server\.emojiscount\.animate}/gi, msg.guild.emojis.cache.filter((a) => a.animated).size)
-            .replace(/{server\.emojiscount\.noanimate}/gi, msg.guild.emojis.cache.filter((a) => !a.animated).size)
-            .replace(/{server\.createdate}/gi, msg.guild.createdAt)
-            .replace(/{server\.boostlevel}/gi, msg.guild.premiumTier)
-            .replace(/{server\.boostcount}/gi, msg.guild.premiumSubscriptionCount)
-            .replace(/{server\.icon}/gi, msg.guild.iconURL() ? msg.guild.iconURL({ dynamic: true, size: 4096 }) : msg.author.displayAvatarURL({ dynamic: true, size: 4096 }))
-            .replace(/{server\.owner}/gi, msg.guild.owner.user.toString())
-            .replace(/{server\.owner\.name}/gi, msg.guild.owner.user.username)
-            .replace(/{server\.owner\.id}/gi, msg.guild.owner.user.id)
-            .replace(/{server\.owner\.nick}/gi, msg.guild.owner.nickname ? msg.guild.owner.nickname : 'No tiene Apodo.')
-            .replace(/{server\.owner\.avatar}/gi, msg.guild.owner.user.displayAvatarURL({ size: 4096, dynamic: true }))
-            .replace(/{server\.owner\.createdate}/gi, msg.guild.owner.user.createdAt)
-            .replace(/{channel}/gi, msg.channel)
-            .replace(/{channel\.id}/gi, msg.channel.id)
-            .replace(/{channel\.name}/gi, msg.channel.name)
-            .replace(/{channel\.createdate}/gi, msg.channel.createdAt)
+    static replaceText(text, { chanenl, member, prefix }) {
+        return text.replace(/{user}/gi, member.user.toString())
+            .replace(/{user\.tag}/gi, member.user.tag)
+            .replace(/{user\.discrim}/gi, member.user.discriminator)
+            .replace(/{user\.avatar}/gi, member.user.displayAvatarURL({ dynamic: true, size: 4096 }))
+            .replace(/{user\.name}/gi, member.user.username)
+            .replace(/{user\.id}/gi, member.user.id)
+            .replace(/{user\.joindate}/gi, member.joinedAt)
+            .replace(/{user\.nick}/gi, member.nickname ? member.nickname : 'No tiene Apodo.')
+            .replace(/{user\.createdate}/gi, member.user.createdAt)
+            .replace(/{server\.prefix}/gi, prefix)
+            .replace(/{server}/gi, member.guild.name)
+            .replace(/{server\.id}/gi, member.guild.id)
+            .replace(/{server\.membercount}/gi, member.guild.members.cache.size)
+            .replace(/{server\.membercount\.nobots}/gi, member.guild.members.cache.filter(miembro => !miembro.user.bot).size)
+            .replace(/{server\.membercount\.bots}/gi, member.guild.members.cache.filter(miembro => miembro.user.bot).size)
+            .replace(/{server\.rolecount}/gi, member.guild.roles.cache.size)
+            .replace(/{server\.channelcount}/gi, member.guild.channels.cache.size)
+            .replace(/{server\.channelcount\.text}/gi, member.guild.channels.cache.filter((a) => a.type === 'text').size)
+            .replace(/{server\.channelcount\.voice}/gi, member.guild.channels.cache.filter((a) => a.type === 'voice').size)
+            .replace(/{server\.emojiscount}/gi, member.guild.emojis.cache.size)
+            .replace(/{server\.emojiscount\.animate}/gi, member.guild.emojis.cache.filter((a) => a.animated).size)
+            .replace(/{server\.emojiscount\.noanimate}/gi, member.guild.emojis.cache.filter((a) => !a.animated).size)
+            .replace(/{server\.createdate}/gi, member.guild.createdAt)
+            .replace(/{server\.boostlevel}/gi, member.guild.premiumTier)
+            .replace(/{server\.boostcount}/gi, member.guild.premiumSubscriptionCount)
+            .replace(/{server\.icon}/gi, member.guild.icon ? member.guild.iconURL({ dynamic: true, size: 4096 }) : 'https://cdn.discordapp.com/embed/avatars/0.png?size=2048')
+            .replace(/{server\.owner}/gi, member.guild.owner.user.toString())
+            .replace(/{server\.owner\.name}/gi, member.guild.owner.user.username)
+            .replace(/{server\.owner\.id}/gi, member.guild.owner.user.id)
+            .replace(/{server\.owner\.nick}/gi, member.guild.owner.nickname ? member.guild.owner.nickname : 'No tiene Apodo.')
+            .replace(/{server\.owner\.avatar}/gi, member.guild.owner.user.displayAvatarURL({ size: 4096, dynamic: true }))
+            .replace(/{server\.owner\.createdate}/gi, member.guild.owner.user.createdAt)
+            .replace(/{channel}/gi, channel)
+            .replace(/{channel\.id}/gi, channel.id)
+            .replace(/{channel\.name}/gi, channel.name)
+            .replace(/{channel\.createdate}/gi, channel.createdAt)
     }
 }
