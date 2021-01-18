@@ -29,7 +29,7 @@ module.exports = class WelcomeCommand extends BaseCommand {
                     let embed = args[1].split(':')[1].slice(0, -1)
 
                     let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed })
-                    if (!checkear) return msg.channel.send('> Ya hay un embed con ese nombre')
+                    if (!checkear) return msg.channel.send('> No hay un embed con ese nombre')
 
                     let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                     if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, embed_name: embed })
@@ -39,7 +39,7 @@ module.exports = class WelcomeCommand extends BaseCommand {
                 } else {
                     let [message, embed] = args.slice(1).join(' ').split(' | ').map((m) => m.trim())
                     let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed })
-                    if (!checkear) return msg.channel.send('> Ya hay un embed con ese nombre')
+                    if (!checkear) return msg.channel.send('> No hay un embed con ese nombre')
                     let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                     if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, embed_name: embed ? embed : '', message })
                     server.embed_name = embed ? embed : ''
