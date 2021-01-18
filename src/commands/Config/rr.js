@@ -10,16 +10,12 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
         })
         this.types = ['normal', 'unique', 'only']
     }
+
     async run(msg, args) {
-        let prefix = '.'
-        if (msg.guild) {
-            const modelo = await this.client.db.prefix.findOne({ _id: msg.guild.id }).exec()
-            prefix = modelo ? modelo.prefix : '.'
-        }
         const embed = new Discord.MessageEmbed()
             .setColor('#FDB2A2')
         if (!args[0] || !args[1] || !args[2]) {
-            embed.setDescription(`> Uso correcto: ${prefix}rr [@role] [type] [messageID] <#channel>`)
+            embed.setDescription(`> Uso correcto: ${this.prefix}rr [@role] [type] [messageID] <#channel>`)
             return msg.channel.send(embed)
         }
 

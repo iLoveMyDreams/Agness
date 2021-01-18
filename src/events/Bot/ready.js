@@ -3,6 +3,7 @@ module.exports = class ReadyEvent {
         this.client = client;
         this.name = 'ready';
     }
+
     async run() {
         console.log(`DJS >> Inicié sesión como: ${this.client.user.tag}`)
     }

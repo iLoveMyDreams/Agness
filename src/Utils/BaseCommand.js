@@ -20,6 +20,11 @@ module.exports = class BaseCommand {
         this.devsOnly = options.devsOnly || false
         this.cooldowns = new Discord.Collection()
     }
+
+    prepare({ serverPrefix }) {
+        this.prefix = serverPrefix;
+    }
+
     canRun(msg) {
         if (this.checkCooldowns(msg)) return msg.channel.send(`Tienes que esperar ${Number((this.cooldowns.get(msg.author.id) - Date.now()) / 1000).toFixed(2)}s para ejecutar el comando.`)
         if (!this.enabled && !devs.includes(msg.author.id)) return msg.reply('Este comando se encuentra en mantenimiento ;(');
@@ -40,6 +45,7 @@ module.exports = class BaseCommand {
         }
         return false
     }
+
     checkCooldowns(msg) {
         if (this.cooldowns.has(msg.author.id)) return true;
         this.cooldowns.set(msg.author.id, Date.now() + (this.cooldown * 1000))

@@ -7,8 +7,8 @@ module.exports = class AnalCommand extends BaseCommand {
             nsfwOnly: true
         })
     }
-    async run(msg, args) {
 
+    async run(msg) {
         let embed = new Discord.MessageEmbed()
             .setColor('#FDB2A2')
             .setDescription(`**${msg.author.username}** Disfruta de las Imágenes. ^^`)

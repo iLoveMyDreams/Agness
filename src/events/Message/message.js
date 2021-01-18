@@ -3,6 +3,7 @@ module.exports = class MessageEvent {
         this.client = client;
         this.name = 'message';
     }
+
     async run(msg) {
         let prefix = '.'
         if (msg.guild) {
@@ -14,6 +15,7 @@ module.exports = class MessageEvent {
         const command = args.shift().toLowerCase()
         const cmd = this.client.commands.find(c => c.name === command || c.alias.includes(command))
         if (!cmd) return;
+        cmd.prepare({ serverPrefix: prefix });
         if (cmd.canRun(msg)) return;
         try {
             cmd.run(msg, args)

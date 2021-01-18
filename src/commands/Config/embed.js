@@ -9,13 +9,9 @@ module.exports = class EmbedCommand extends BaseCommand {
             memberGuildPermissions: ['ADMINISTRATOR'],
         })
     }
+
     async run(msg, args) {
-        let prefix = '.'
-        if (msg.guild) {
-            const modelo = await this.client.db.prefix.findOne({ _id: msg.guild.id }).exec()
-            prefix = modelo ? modelo.prefix : '.'
-        }
-        let exceptions = ['{user_avatar}', '{server_icon}', '{server_owner_avatar}']
+        let exceptions = ['{user.avatar}', '{server.icon}', '{server.owner.avatar}']
         if (!args[0]) return msg.channel.send('> Pon una propiedad valida')
         switch (args[0].toLowerCase()) {
             case 'create': {
@@ -54,11 +50,11 @@ module.exports = class EmbedCommand extends BaseCommand {
             }
             case 'edit': {
                 if (!args[1]) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
-> ${prefix}embed edit <nombre> <propiedad> [texto]`)
+> ${this.prefix}embed edit <nombre> <propiedad> [texto]`)
 
                 let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
                 if (!embed_DB) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
-> ${prefix}embed edit <nombre> <propiedad> [texto]`)
+> ${this.prefix}embed edit <nombre> <propiedad> [texto]`)
 
                 const edit = args[2]
 
@@ -210,7 +206,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 .replace(/{user\.joindate}/gi, msg.member.joinedAt)
                 .replace(/{user\.nick}/gi, msg.member.nickname ? msg.member.nickname : 'No tiene Apodo.')
                 .replace(/{user\.createdate}/gi, msg.author.createdAt)
-                .replace(/{server\.prefix}/gi, prefix)
+                .replace(/{server\.prefix}/gi, this.prefix)
                 .replace(/{server}/gi, msg.guild.name)
                 .replace(/{server\.id}/gi, msg.guild.id)
                 .replace(/{server\.membercount}/gi, msg.guild.members.cache.size)

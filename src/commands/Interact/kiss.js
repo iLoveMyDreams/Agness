@@ -7,6 +7,7 @@ module.exports = class KissCommand extends BaseCommand {
             category: 'Interact'
         })
     }
+
     async run(msg, args) {
         if (!args[0]) return msg.channel.send('Menciona a alguien para darle un beso')
         let mention = msg.guild.members.resolve(args[0]) || msg.mentions.members.first()

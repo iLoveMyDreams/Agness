@@ -3,8 +3,8 @@ module.exports = class MessageEvent {
         this.client = client;
         this.name = 'messageReactionRemove';
     }
-    async run(msgReaction, user) {
 
+    async run(msgReaction, user) {
         let guild = msgReaction.message.guild;//la guild o servidor
         let mensaje = msgReaction.message; //el mensaje
         let miembro = guild.member(user); // Transformamos el usuario a miembro
@@ -25,6 +25,5 @@ module.exports = class MessageEvent {
             default:
                 break;
         }
-
     }
 }

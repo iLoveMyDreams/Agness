@@ -1,6 +1,7 @@
-const {Schema, model} = require('mongoose');
+const { Schema, model } = require('mongoose');
+
 const embed = Schema({
-	guildID: String,
+    guildID: String,
     embed_name: String,
     author_text: String,
     author_image: String,
@@ -13,4 +14,5 @@ const embed = Schema({
     timestamp: Boolean,
     color: String,
 });
-module.exports = model('embed', embed)
+
+module.exports = model('embed', embed);

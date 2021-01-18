@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+
 const roles = Schema({
     guildID: String,
     messageID: String,
@@ -6,4 +7,5 @@ const roles = Schema({
     reaction: String,
     type: String
 });
-module.exports = model('roles', roles)
+
+module.exports = model('roles', roles);

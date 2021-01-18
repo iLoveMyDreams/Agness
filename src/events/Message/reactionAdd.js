@@ -3,6 +3,7 @@ module.exports = class MessageEvent {
         this.client = client;
         this.name = 'messageReactionAdd';
     }
+
     async run(msgReaction, user) {
         let guild = msgReaction.message.guild;//la guild o servidor
         let mensaje = msgReaction.message; //el mensaje

@@ -6,24 +6,20 @@ module.exports = class HelpCommand extends BaseCommand {
             alias: ['ayuda']
         })
     }
+
     async run(msg, args) {
-        let prefix = '.'
-        if (msg.guild) {
-            const modelo = await this.client.db.prefix.findOne({ _id: msg.guild.id }).exec()
-            prefix = modelo ? modelo.prefix : '.'
-        }
         const embed = new Discord.MessageEmbed()
             .setColor('#FDB2A2')
         if (!args[0]) {
             embed.setTitle(`Panel de ayuda de ${this.client.user.username}`)
                 .setDescription(`Hola! en estos momentos cuento con 5 categorias y ${this.client.commands.size - 1} comandos
 Si necesitas una informacion mas detallada de cada comando puedes utilizar:
-> ${prefix}help <comando>`)
-                .addField(`Categorias`, `> ${prefix}help Config • Comandos de Configuración
-> ${prefix}help General • Comandos en general
-> ${prefix}help Images • Imagenes de todo tipo
-> ${prefix}help Interact • Comandos Interactivo
-> ${prefix}help NSFW • Comandos para adultos`)
+> ${this.prefix}help <comando>`)
+                .addField(`Categorias`, `> ${this.prefix}help Config • Comandos de Configuración
+> ${this.prefix}help General • Comandos en general
+> ${this.prefix}help Images • Imagenes de todo tipo
+> ${this.prefix}help Interact • Comandos Interactivo
+> ${this.prefix}help NSFW • Comandos para adultos`)
                 .addField(`Enlaces`, `**[Link de Invitación](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Servidor de Soporte](https://discord.gg/K63NqEDm86)**`)
             return msg.channel.send(embed)
         }
@@ -63,7 +59,7 @@ Si necesitas una informacion mas detallada de cada comando puedes utilizar:
                 .setTitle(`Comandos de la categoría ${categorias[0].category}`)
                 .setDescription(`Esta categoria cuenta con \`${categorias.length}\` comandos.
   Si necesitas información mas detallada de cada uno de los comandos puedes usar:
-  > ${prefix}help <comando>`)
+  > ${this.prefix}help <comando>`)
                 .addField(`Lista de comandos:`, `\`\`\`\n${cmdList}\n\`\`\``)
                 .setColor('#FDB2A2')
 
@@ -75,8 +71,8 @@ Si necesitas una informacion mas detallada de cada comando puedes utilizar:
                 .addField('Categoria', cmd.category, true)
                 .addField('Alias', cmd.alias.length ? cmd.alias.join(' | ') : 'No tiene alias', true)
                 .addField('Cooldown', cmd.cooldown, true)
-                .addField(`Uso:`, cmd.usage(prefix), true)
-                .addField('Ejemplo', cmd.example(prefix), true)
+                .addField(`Uso:`, cmd.usage(this.prefix), true)
+                .addField('Ejemplo', cmd.example(this.prefix), true)
                 .addField('¿En mantenimiento?', cmd.enabled ? 'No' : 'Si', true)
                 .addField('¿Solo NSFW?', cmd.nsfwOnly ? 'Si' : 'No', true)
                 .addField('¿Solo Servidores?', cmd.guildOnly ? 'Si' : 'No', true)

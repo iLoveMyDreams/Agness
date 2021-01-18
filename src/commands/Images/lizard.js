@@ -7,6 +7,7 @@ module.exports = class LizardCommand extends BaseCommand {
             category: 'Images'
         })
     }
+
     async run(msg) {
         let embed = new Discord.MessageEmbed()
             .setColor('#FDB2A2')
