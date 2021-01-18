@@ -7,10 +7,11 @@ module.exports = class MessageEvent {
     async run(msgReaction, user) {
         let guild = msgReaction.message.guild;//la guild o servidor
         let mensaje = msgReaction.message; //el mensaje
-        let miembro = guild.member(user); // Transformamos el usuario a miembro
         let emoji = msgReaction.emoji.id || msgReaction.emoji.name; // el emoji
 
         if (!guild || user.bot) return
+
+        let miembro = guild.member(user); 
 
         let emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emoji }).exec()
         if (!emojiCheck) return;
