@@ -32,11 +32,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 break;
             }
             case 'list': {
-<<<<<<< HEAD
                 const lista = await this.client.db.embed.find({ guildID: msg.guild.id })
-=======
-                const lista = await this.client.db.embed.find({ guildID: msg.guild.id }).exec()
->>>>>>> b2abdd6fbceb7cc73d02651b7b87841a37b95851
                 const embed = new Discord.MessageEmbed()
                 if (!lista.length) {
                     embed.setDescription('> El servidor no cuenta con ningún embed')
