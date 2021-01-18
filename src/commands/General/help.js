@@ -1,4 +1,5 @@
 const BaseCommand = require('../../Utils/BaseCommand.js')
+
 module.exports = class HelpCommand extends BaseCommand {
     constructor(client) {
         super(client, {

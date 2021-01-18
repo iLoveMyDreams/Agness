@@ -1,4 +1,5 @@
 const BaseCommand = require('../../Utils/BaseCommand.js')
+
 module.exports = class LizardCommand extends BaseCommand {
     constructor(client) {
         super(client, {

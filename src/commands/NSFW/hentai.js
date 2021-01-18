@@ -1,4 +1,5 @@
 const BaseCommand = require('../../Utils/BaseCommand.js')
+
 module.exports = class HentaiCommand extends BaseCommand {
     constructor(client) {
         super(client, {

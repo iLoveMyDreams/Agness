@@ -1,4 +1,5 @@
 const BaseCommand = require('../../Utils/BaseCommand.js')
+
 module.exports = class KissCommand extends BaseCommand {
     constructor(client) {
         super(client, {

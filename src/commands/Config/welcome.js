@@ -8,6 +8,7 @@ module.exports = class WelcomeCommand extends BaseCommand {
             memberGuildPermissions: ['ADMINISTRATOR']
         })
     }
+
     async run(msg, args) {
         if (!args[0]) return msg.channel.send('> Pon una propiedad válida.')
         switch (args[0].toLowerCase()) {

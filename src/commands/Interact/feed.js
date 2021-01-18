@@ -1,4 +1,5 @@
 const BaseCommand = require('../../Utils/BaseCommand.js')
+
 module.exports = class FeedCommand extends BaseCommand {
     constructor(client) {
         super(client, {
