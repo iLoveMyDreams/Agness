@@ -27,6 +27,10 @@ module.exports = class WelcomeCommand extends BaseCommand {
                 if (!args[1]) return msg.channel.send('> Pon el mensaje de bienvenida.')
                 if (/{embed:[a-z\d]+}/gi.test(args[1])) {
                     let embed = args[1].split(':')[1].slice(0, -1)
+
+                    let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed })
+                    if (checkear) return msg.channel.send('> Ya hay un embed con ese nombre')
+
                     let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                     if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, embed_name: embed })
                     server.embed_name = embed
@@ -34,9 +38,11 @@ module.exports = class WelcomeCommand extends BaseCommand {
                     msg.channel.send(`> El nuevo embed a usar en las bienvenidas ahora es ${embed}`)
                 } else {
                     let [message, embed] = args.slice(1).join(' ').split(' | ').map((m) => m.trim())
+                    let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed })
+                    if (checkear) return msg.channel.send('> Ya hay un embed con ese nombre')
                     let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
-                    if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, embed_name: embed ? '' : embed, message })
-                    server.embed_name = embed ? '' : embed
+                    if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, embed_name: embed ? embed : '', message })
+                    server.embed_name = embed ? embed : ''
                     server.message = message
                     server.save()
                     msg.channel.send(`> Se ha actualizado el mensaje ${embed ? 'y embed ' : ''}de bienvenida correctamente`)
