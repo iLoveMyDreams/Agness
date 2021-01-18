@@ -30,7 +30,6 @@ module.exports = class EmbedCommand extends BaseCommand {
                 msg.channel.send('> Embed eliminado correctamente.')
                 break;
             }
-
             case 'list': {
                 const lista = await this.client.db.embed.find({ guildID: msg.guild.id })
                 const embed = new Discord.MessageEmbed()
