@@ -148,18 +148,18 @@ module.exports = class EmbedCommand extends BaseCommand {
 
                 if (embed_DB.author_text) {
                     embed_DB.author_image ?
-                        embed.setAuthor(replaceText(embed_DB.author_text), replaceText(embed_DB.author_image)) :
-                        embed.setAuthor(replaceText(embed_DB.author_text))
+                        embed.setAuthor(await replaceText(embed_DB.author_text), await replaceText(embed_DB.author_image)) :
+                        embed.setAuthor(await replaceText(embed_DB.author_text))
                 }
-                if (embed_DB.title) embed.setTitle(replaceText(embed_DB.title))
-                if (embed_DB.description) embed.setDescription(replaceText(embed_DB.description))
-                if (embed_DB.thumbnail) embed.setThumbnail(replaceText(embed_DB.thumbnail))
-                if (embed_DB.image) embed.setImage(replaceText(embed_DB.image))
+                if (embed_DB.title) embed.setTitle(await replaceText(embed_DB.title))
+                if (embed_DB.description) embed.setDescription(await replaceText(embed_DB.description))
+                if (embed_DB.thumbnail) embed.setThumbnail(await replaceText(embed_DB.thumbnail))
+                if (embed_DB.image) embed.setImage(await replaceText(embed_DB.image))
 
                 if (embed_DB.footer_text) {
                     embed_DB.footer_image ?
-                        embed.setFooter(replaceText(embed_DB.footer_text), replaceText(embed_DB.footer_image)) :
-                        embed.setFooter(replaceText(embed_DB.footer_text))
+                        embed.setFooter(await replaceText(embed_DB.footer_text), await replaceText(embed_DB.footer_image)) :
+                        embed.setFooter(await replaceText(embed_DB.footer_text))
                 }
                 if (embed_DB.timestamp) embed.setTimestamp()
                 if (embed_DB) embed.setColor('#' + embed_DB.color)
@@ -173,18 +173,18 @@ module.exports = class EmbedCommand extends BaseCommand {
                 const embed = new Discord.MessageEmbed()
                 if (embed_DB.author_text) {
                     embed_DB.author_image ?
-                        embed.setAuthor(replaceText(embed_DB.author_text), replaceText(embed_DB.author_image)) :
-                        embed.setAuthor(replaceText(embed_DB.author_text))
+                        embed.setAuthor(await replaceText(embed_DB.author_text), await replaceText(embed_DB.author_image)) :
+                        embed.setAuthor(await replaceText(embed_DB.author_text))
                 }
-                if (embed_DB.title) embed.setTitle(replaceText(embed_DB.title))
-                if (embed_DB.description) embed.setDescription(replaceText(embed_DB.description))
-                if (embed_DB.thumbnail) embed.setThumbnail(replaceText(embed_DB.thumbnail))
-                if (embed_DB.image) embed.setImage(replaceText(embed_DB.image))
+                if (embed_DB.title) embed.setTitle(await replaceText(embed_DB.title))
+                if (embed_DB.description) embed.setDescription(await replaceText(embed_DB.description))
+                if (embed_DB.thumbnail) embed.setThumbnail(await replaceText(embed_DB.thumbnail))
+                if (embed_DB.image) embed.setImage(await replaceText(embed_DB.image))
 
                 if (embed_DB.footer_text) {
                     embed_DB.footer_image ?
-                        embed.setFooter(replaceText(embed_DB.footer_text), replaceText(embed_DB.footer_image)) :
-                        embed.setFooter(replaceText(embed_DB.footer_text))
+                        embed.setFooter(await replaceText(embed_DB.footer_text), await replaceText(embed_DB.footer_image)) :
+                        embed.setFooter(await replaceText(embed_DB.footer_text))
                 }
                 if (embed_DB.timestamp) embed.setTimestamp()
                 if (embed_DB) embed.setColor('#' + embed_DB.color)
@@ -196,11 +196,10 @@ module.exports = class EmbedCommand extends BaseCommand {
                 msg.channel.send('> Introduce una propiedad válida.')
                 break;
         }
-
-
     }
 
-    static replaceText(text, { channel, member, prefix }) {
+    static async replaceText(text, { channel, member, prefix }) {
+        const owner = await member.guild.members.fetch(member.guild.ownerID);
         return text.replace(/{user}/gi, member.user.toString())
             .replace(/{user\.tag}/gi, member.user.tag)
             .replace(/{user\.discrim}/gi, member.user.discriminator)
@@ -227,12 +226,12 @@ module.exports = class EmbedCommand extends BaseCommand {
             .replace(/{server\.boostlevel}/gi, member.guild.premiumTier)
             .replace(/{server\.boostcount}/gi, member.guild.premiumSubscriptionCount)
             .replace(/{server\.icon}/gi, member.guild.icon ? member.guild.iconURL({ dynamic: true, size: 4096 }) : 'https://cdn.discordapp.com/embed/avatars/0.png?size=2048')
-            .replace(/{server\.owner}/gi, member.guild.owner.user.toString())
-            .replace(/{server\.owner\.name}/gi, member.guild.owner.user.username)
-            .replace(/{server\.owner\.id}/gi, member.guild.owner.user.id)
-            .replace(/{server\.owner\.nick}/gi, member.guild.owner.nickname ? member.guild.owner.nickname : 'No tiene Apodo.')
-            .replace(/{server\.owner\.avatar}/gi, member.guild.owner.user.displayAvatarURL({ size: 4096, dynamic: true }))
-            .replace(/{server\.owner\.createdate}/gi, member.guild.owner.user.createdAt)
+            .replace(/{server\.owner}/gi, owner.user.toString())
+            .replace(/{server\.owner\.name}/gi, owner.user.username)
+            .replace(/{server\.owner\.id}/gi, owner.user.id)
+            .replace(/{server\.owner\.nick}/gi, owner.nickname ? member.guild.owner.nickname : 'No tiene Apodo.')
+            .replace(/{server\.owner\.avatar}/gi, owner.user.displayAvatarURL({ size: 4096, dynamic: true }))
+            .replace(/{server\.owner\.createdate}/gi, owner.user.createdAt)
             .replace(/{channel}/gi, channel)
             .replace(/{channel\.id}/gi, channel.id)
             .replace(/{channel\.name}/gi, channel.name)

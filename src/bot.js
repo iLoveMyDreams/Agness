@@ -21,6 +21,7 @@ new (
             this.login(process.env.TOKEN)
             this.nekos = new nekosClient()
         }
+
         loadEvents() {
             const carpeta = path.join(__dirname, 'events')
             const categorias = fs.readdirSync(carpeta).filter(f => fs.statSync(path.join(carpeta, f)).isDirectory())
@@ -33,8 +34,8 @@ new (
                 }
             }
         }
-        loadCommands() {
 
+        loadCommands() {
             const carpeta = path.join(__dirname, 'commands')
             const categorias = fs.readdirSync(carpeta).filter(f => fs.statSync(path.join(carpeta, f)).isDirectory())
             for (const categoria of categorias) {
