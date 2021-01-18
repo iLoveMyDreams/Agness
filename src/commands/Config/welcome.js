@@ -40,6 +40,7 @@ module.exports = class WelcomeCommand extends BaseCommand {
                 } else {
                     let [message, embed] = args.slice(1).join(' ').split(' | ').map((m) => m.trim())
                     if (embed) {
+                        embed = embed.split(':')[1].slice(0, -1)
                         let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed })
                         if (!checkear) return msg.channel.send('> No hay un embed con ese nombre')
                     }
