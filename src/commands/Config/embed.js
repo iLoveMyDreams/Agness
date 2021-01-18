@@ -17,31 +17,35 @@ module.exports = class EmbedCommand extends BaseCommand {
         switch (args[0].toLowerCase()) {
             case 'create': {
                 if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
-                let checkear = await this.client.db.embed.findOne({ guildID: guild.id, embed_name: args[1] })
+                let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
                 if (checkear) return msg.channel.send('> Ya hay un embed con ese nombre')
-                let nuevo = new this.client.db.embed({ guildID: guild.id, embed_name: args[1] })
+                let nuevo = new this.client.db.embed({ guildID: msg.guild.id, embed_name: args[1] })
                 await nuevo.save()
                 msg.channel.send('> Embed creado correctamente.')
                 break;
             }
             case 'delete': {
                 if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
-                let checkear = await this.client.db.embed.findOneAndDelete({ guildID: guild.id, embed_name: args[1] })
+                let checkear = await this.client.db.embed.findOneAndDelete({ guildID: msg.guild.id, embed_name: args[1] })
                 if (!checkear) return msg.channel.send('> No hay ningún embed con ese nombre.')
                 msg.channel.send('> Embed eliminado correctamente.')
                 break;
             }
             case 'list': {
+<<<<<<< HEAD
                 const lista = await this.client.db.embed.find({ guildID: msg.guild.id })
+=======
+                const lista = await this.client.db.embed.find({ guildID: msg.guild.id }).exec()
+>>>>>>> b2abdd6fbceb7cc73d02651b7b87841a37b95851
                 const embed = new Discord.MessageEmbed()
                 if (!lista.length) {
                     embed.setDescription('> El servidor no cuenta con ningún embed')
                     return msg.channel.send(embed)
                 }
                 embed.setAuthor(
-                    `Lista de embeds de ${guild.name}`,
-                    guild.iconURL() ?
-                        guild.iconURL({ dynamic: true }) :
+                    `Lista de embeds de ${msg.guild.name}`,
+                    msg.guild.iconURL() ?
+                        msg.guild.iconURL({ dynamic: true }) :
                         null
                 )
                     .setDescription(lista.map(x => x.embed_name).join('\n'))
@@ -52,7 +56,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 if (!args[1]) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
 > ${this.prefix}embed edit <nombre> <propiedad> [texto]`)
 
-                let embed_DB = await this.client.db.embed.findOne({ guildID: guild.id, embed_name: args[1] })
+                let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
                 if (!embed_DB) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
 > ${this.prefix}embed edit <nombre> <propiedad> [texto]`)
 
@@ -168,7 +172,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 break;
             }
             case 'preview': {
-                let embed_DB = await this.client.db.embed.findOne({ guildID: guild.id, embed_name: args[1] })
+                let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
 
                 const embed = new Discord.MessageEmbed()
                 if (embed_DB.author_text) {
@@ -200,7 +204,7 @@ module.exports = class EmbedCommand extends BaseCommand {
 
     }
 
-    static replaceText(text, { chanenl, member, prefix }) {
+    static replaceText(text, { channel, member, prefix }) {
         return text.replace(/{user}/gi, member.user.toString())
             .replace(/{user\.tag}/gi, member.user.tag)
             .replace(/{user\.discrim}/gi, member.user.discriminator)
