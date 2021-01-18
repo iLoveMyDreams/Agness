@@ -146,18 +146,18 @@ module.exports = class EmbedCommand extends BaseCommand {
 
                 if (embed_DB.author_text) {
                     embed_DB.author_image ?
-                        embed.setAuthor(this.replaceText(embed_DB.author_text), this.replaceText(embed_DB.author_image)) :
-                        embed.setAuthor(this.replaceText(embed_DB.author_text))
+                        embed.setAuthor(this.replaceText(embed_DB.author_text, msg), this.replaceText(embed_DB.author_image, msg)) :
+                        embed.setAuthor(this.replaceText(embed_DB.author_text, msg))
                 }
-                if (embed_DB.title) embed.setTitle(this.replaceText(embed_DB.title))
-                if (embed_DB.description) embed.setDescription(this.replaceText(embed_DB.description))
-                if (embed_DB.thumbnail) embed.setThumbnail(this.replaceText(embed_DB.thumbnail))
-                if (embed_DB.image) embed.setImage(this.replaceText(embed_DB.image))
+                if (embed_DB.title) embed.setTitle(this.replaceText(embed_DB.title, msg))
+                if (embed_DB.description) embed.setDescription(this.replaceText(embed_DB.description, msg))
+                if (embed_DB.thumbnail) embed.setThumbnail(this.replaceText(embed_DB.thumbnail, msg))
+                if (embed_DB.image) embed.setImage(this.replaceText(embed_DB.image, msg))
 
                 if (embed_DB.footer_text) {
                     embed_DB.footer_image ?
-                        embed.setFooter(this.replaceText(embed_DB.footer_text), this.replaceText(embed_DB.footer_image)) :
-                        embed.setFooter(this.replaceText(embed_DB.footer_text))
+                        embed.setFooter(this.replaceText(embed_DB.footer_text, msg), this.replaceText(embed_DB.footer_image, msg)) :
+                        embed.setFooter(this.replaceText(embed_DB.footer_text, msg))
                 }
                 if (embed_DB.timestamp) embed.setTimestamp()
                 if (embed_DB) embed.setColor('#' + embed_DB.color)
@@ -171,18 +171,18 @@ module.exports = class EmbedCommand extends BaseCommand {
                 const embed = new Discord.MessageEmbed()
                 if (embed_DB.author_text) {
                     embed_DB.author_image ?
-                        embed.setAuthor(this.replaceText(embed_DB.author_text), this.replaceText(embed_DB.author_image)) :
-                        embed.setAuthor(this.replaceText(embed_DB.author_text))
+                        embed.setAuthor(this.replaceText(embed_DB.author_text, msg), this.replaceText(embed_DB.author_image, msg)) :
+                        embed.setAuthor(this.replaceText(embed_DB.author_text, msg))
                 }
-                if (embed_DB.title) embed.setTitle(this.replaceText(embed_DB.title))
-                if (embed_DB.description) embed.setDescription(this.replaceText(embed_DB.description))
-                if (embed_DB.thumbnail) embed.setThumbnail(this.replaceText(embed_DB.thumbnail))
-                if (embed_DB.image) embed.setImage(this.replaceText(embed_DB.image))
+                if (embed_DB.title) embed.setTitle(this.replaceText(embed_DB.title, msg))
+                if (embed_DB.description) embed.setDescription(this.replaceText(embed_DB.description, msg))
+                if (embed_DB.thumbnail) embed.setThumbnail(this.replaceText(embed_DB.thumbnail, msg))
+                if (embed_DB.image) embed.setImage(this.replaceText(embed_DB.image, msg))
 
                 if (embed_DB.footer_text) {
                     embed_DB.footer_image ?
-                        embed.setFooter(this.replaceText(embed_DB.footer_text), this.replaceText(embed_DB.footer_image)) :
-                        embed.setFooter(this.replaceText(embed_DB.footer_text))
+                        embed.setFooter(this.replaceText(embed_DB.footer_text, msg), this.replaceText(embed_DB.footer_image, msg)) :
+                        embed.setFooter(this.replaceText(embed_DB.footer_text, msg))
                 }
                 if (embed_DB.timestamp) embed.setTimestamp()
                 if (embed_DB) embed.setColor('#' + embed_DB.color)
@@ -198,7 +198,7 @@ module.exports = class EmbedCommand extends BaseCommand {
         
     }
 
-    replaceText(text) {
+    replaceText(text, msg) {
         return text.replace(/{user}/gi, msg.author.toString())
             .replace(/{user\.tag}/gi, msg.author.tag)
             .replace(/{user\.discrim}/gi, msg.author.discriminator)
