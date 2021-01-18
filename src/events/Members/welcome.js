@@ -13,11 +13,11 @@ module.exports = class MessageEvent {
         if (!channel) return;
         let embed = server.embed_name ? new Discord.MessageEmbed() : null
         let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name })
+        const replaceText = (text) => EmbedCommand.replaceText(text, { channel, member, prefix: 'a' })
         if (embed_DB) {
             let prefix = '.'
             const modelo = await this.client.db.prefix.findOne({ _id: member.guild.id }).exec()
             prefix = modelo ? modelo.prefix : '.'
-            const replaceText = (text) => EmbedCommand.replaceText(text, { channel, member, prefix: 'a' })
 
             if (embed_DB.author_text) {
                 embed_DB.author_image ?
@@ -38,6 +38,6 @@ module.exports = class MessageEvent {
             if (embed_DB) embed.setColor('#' + embed_DB.color)
         }
         if (!server.message && !embed) return;
-        channel.send(server.message, { embed })
+        channel.send(replaceText(server.message), { embed })
     }
 }
