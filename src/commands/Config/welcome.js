@@ -11,7 +11,9 @@ module.exports = class WelcomeCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        if (!args[0]) return msg.channel.send('> Pon una propiedad válida.')
+        if (!args[0]) return msg.channel.send(`Pon una propiedad valida
+> welcome channel [#mencion]
+> welcome message [texto] | <{embed:[embed_name]}>`)
         switch (args[0].toLowerCase()) {
             case 'channel': {
                 if (!args[1]) return msg.channel.send('> Dame la id o mención del rol.')
@@ -54,8 +56,12 @@ module.exports = class WelcomeCommand extends BaseCommand {
                 }
                 break;
             }
-            default:
+            default: {
+                msg.channel.send(`Pon una propiedad valida
+> welcome channel [#mencion]
+> welcome message [texto] | <{embed:[embed_name]}>`)
                 break;
+            }
         }
     }
 }
