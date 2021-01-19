@@ -38,6 +38,7 @@ module.exports = class LeaveCommand extends BaseCommand {
                     let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec()
                     if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, embed_name: embed })
                     server.embed_name = embed
+                    server.message = ''
                     server.save()
                     msg.channel.send(`> El nuevo embed a usar en las salidas ahora es ${embed}`)
                 } else {

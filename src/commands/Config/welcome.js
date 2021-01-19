@@ -38,6 +38,7 @@ module.exports = class WelcomeCommand extends BaseCommand {
                     let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                     if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, embed_name: embed })
                     server.embed_name = embed
+                    server.message = ''
                     server.save()
                     msg.channel.send(`> El nuevo embed a usar en las bienvenidas ahora es ${embed}`)
                 } else {
