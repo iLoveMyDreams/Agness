@@ -10,8 +10,12 @@ module.exports = class MessageEvent {
             const modelo = await this.client.db.prefix.findOne({ _id: msg.guild.id }).exec()
             prefix = modelo ? modelo.prefix : '.'
         }
-        if (!msg.content.startsWith(prefix) || msg.author.bot) return;
-        const args = msg.content.slice(prefix.length).trim().split(/ +/g)
+        let prefixes = [prefix, `<@${this.client.user.id}>`, `<@!${this.client.user.id}>`]
+        let usedPrefix = prefixes.find((p) => msg.content.startsWith(p))
+        if (!usedPrefix || msg.author.bot) return;
+        if (usedPrefix !== prefix)
+            msg.mentions.users.delete(msg.mentions.users.first().id)
+        const args = msg.content.slice(usedPrefix.length).trim().split(/ +/g)
         const command = args.shift().toLowerCase()
         const cmd = this.client.commands.find(c => c.name === command || c.alias.includes(command))
         if (!cmd) return;
@@ -21,6 +25,8 @@ module.exports = class MessageEvent {
             cmd.run(msg, args)
         } catch (e) {
             console.log(e.message || e)
+        } finally {
+            console.log(`CMD >> ${msg.author.tag} ejecutó el comando ${cmd.name}`)
         }
     }
 }

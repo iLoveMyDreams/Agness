@@ -11,8 +11,8 @@ module.exports = class WelcomeCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        if (!args[0]) return msg.channel.send(`Pon una propiedad valida
-> welcome channel [#mencion]
+        if (!args[0]) return msg.channel.send(`Pon una propiedad válida
+> welcome channel [#mención]
 > welcome message [texto] | <{embed:[embed_name]}>`)
         switch (args[0].toLowerCase()) {
             case 'channel': {

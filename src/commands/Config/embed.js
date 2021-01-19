@@ -16,11 +16,11 @@ module.exports = class EmbedCommand extends BaseCommand {
         if (!args[0]) {
             const embed = new Discord.MessageEmbed()
                 .setTitle(`¿Para que sirve un embed?`)
-                .setDescription(`Te permitira crear un texto con mayor estetica para insertarlos en tus bienvenidas, despedidas, reglas, etc, para mejorar en cuanto estetica a tu servidor. Lo siguiente son pasos para poder crear y editar tu embed.`)
-                .addField(`**1. Creando y poniendole un nombre**`, `El nombre nos permitira identificar nuestro embed para que no se mezcle con los demas a la hora de ponerlos en bienvenidas, despedidas, etc. ¿Cómo? Pues agregando \`{embed:[name]}\`.Remplazando \`name\` por el nombre de nuestro embed. Para esto puedes crearlo y ponerle el nombre que gustes asi:\n> \`${this.prefix}embed create [name]\``)
-                .addField(`**2. Editando nuestro embed**`, `Bueno llego la hora de editarlo de la manera que tu quieras, ¡Tu creatividad importa!, a continuacion te muestro las propiedades del embed:\n> \`author\` - [ text | link de imagen(opcional) ]\n> \`thumbnail\` - [ link imagen ])\n> \`title\` - [ text ]\n> \`description\` - [ text ]\n> \`footer\` - [ text | link de imagen(opcional) ]\n> \`image\` - [ link de imagen(opcional) ]\n> \`color\` - [ hex code ]\n> \`timestamp\` - [ yes/no ]\nEl modo de uso es intuitivo con lo cual les sera mas facil aprenderse cada propiedad y el modo de edición del embed, y es el siguiente:\n> \`${this.prefix}embed edit [name] [propiedad] [valor]\``)
-                .addField(`**EJEMPLO**`, `Ahora veamos un pequeño ejemplo con algunas propiedades, el cual les permitira familiarizarse con el simple formato\nComenzamos creando un embed el cual llamaremos \`ejemplo\`.\n> \`${this.prefix}embed create ejemplo\`\nAhora a ponerle un titulo atractivo\n> \`${this.prefix}embed edit ejemplo title Estoy aprendiendo a editar un embed\`\nBueno ahora pongamosle una descripción.\n> \`${this.prefix}embed edit ejemplo description Esta descripción se ve muy linda\`\nListo pongamosle una imagen y tendremos un simple embed, ten cuidado y pon links que verdaderamente contengan imagenes/gifs. En este caso pondremos un divertido gif.\n> \`${this.prefix}embed edit ejemplo image https://i.imgur.com/mXOijAT.gif\`\nPor ultimo pongamosle un color el cual tiene que ser en codigo hexadecimal sin el #, si no lo conoces puedes ver los colores [aqui](https://htmlcolorcodes.com/es/).\n> \`${this.prefix}embed edit ejemplo color e658ff\`\nListo esto es un simple embed que si quieres puedes probar tu mismo.`)
-                .addField(`**VARIABLES**`, `Primero que nada ¿qué son las variables? Bueno para eso estoy, las propiedades nos permitiran que podamos hacer cosas "automatizadas" de manera que se puedan remplazar por nombres, canales, links, entre otros, se pueden usar en embeds como también en texto, para las bienvenidas y despedidas. Aqui te doy algunos:\n\`{user}\` - @mencion (e.j. @Aviii#5859)\n\`{server}\` - nombre del servidor (e.j. Sonya´s Support)\n\`{server.prefix}\` - prefijo del servidor (por defecto: s!)\n Puedes encontrar la lista completa con \`${this.prefix}embed variables\``)
+                .setDescription(`Te permitirá crear un texto con mayor estética para insertarlos en tus bienvenidas, despedidas, reglas, etc., para mejorar en cuanto estética a tu servidor. Lo siguiente son pasos para poder crear y editar tu embed.`)
+                .addField(`**1. Creando y poniéndole un nombre**`, `El nombre nos permitirá identificar nuestro embed para que no se mezcle con los demás a la hora de ponerlos en bienvenidas, despedidas, etc. ¿Cómo? Pues agregando \`{embed:[name]}\`.Remplazando \`name\` por el nombre de nuestro embed. Para esto puedes crearlo y ponerle el nombre que gustes así:\n> \`${this.prefix}embed create [name]\``)
+                .addField(`**2. Editando nuestro embed**`, `Bueno llegó la hora de editarlo de la manera que tu quieras, ¡Tu creatividad importa!, a continuación te muestro las propiedades del embed:\n> \`author\` - [ text | link de imagen(opcional) ]\n> \`thumbnail\` - [ link imagen ])\n> \`title\` - [ text ]\n> \`description\` - [ text ]\n> \`footer\` - [ text | link de imagen(opcional) ]\n> \`image\` - [ link de imagen(opcional) ]\n> \`color\` - [ hex code ]\n> \`timestamp\` - [ yes/no ]\nEl modo de uso es intuitivo con lo cual les sera más fácil aprenderse cada propiedad y el modo de edición del embed, y es el siguiente:\n> \`${this.prefix}embed edit [name] [propiedad] [valor]\``)
+                .addField(`**EJEMPLO**`, `Ahora veamos un pequeño ejemplo con algunas propiedades, el cual les permitirá familiarizarse con el simple formato\nComenzamos creando un embed el cual llamaremos \`ejemplo\`.\n> \`${this.prefix}embed create ejemplo\`\nAhora a ponerle un título atractivo\n> \`${this.prefix}embed edit ejemplo title Estoy aprendiendo a editar un embed\`\nBueno ahora pongámosle una descripción.\n> \`${this.prefix}embed edit ejemplo description Esta descripción se ve muy linda\`\nListo pongámosle una imagen y tendremos un simple embed, ten cuidado y pon links que verdaderamente contengan imágenes/gifs. En este caso pondremos un divertido gif.\n> \`${this.prefix}embed edit ejemplo image https://i.imgur.com/mXOijAT.gif\`\nPor último pongámosle un color el cual tiene que ser en código hexadecimal sin el #, si no lo conoces puedes ver los colores [aqui](https://htmlcolorcodes.com/es/).\n> \`${this.prefix}embed edit ejemplo color e658ff\`\nListo esto es un simple embed que si quieres puedes probar tu mismo.`)
+                .addField(`**VARIABLES**`, `Primero que nada ¿qué son las variables? Bueno para eso estoy, las propiedades nos permitiran que podamos hacer cosas "automatizadas" de manera que se puedan remplazar por nombres, canales, links, entre otros, se pueden usar en embeds como también en texto, para las bienvenidas y despedidas. Aquí te doy algunos:\n\`{user}\` - @mención (e.j. @Aviii#5859)\n\`{server}\` - nombre del servidor (e.j. Asuna's Support)\n\`{server.prefix}\` - prefijo del servidor (por defecto: s!)\n Puedes encontrar la lista completa con \`${this.prefix}embed variables\``)
                 .setColor('#fab1d7')
                 .setTimestamp()
                 .setFooter(`Asuna embeds`)
@@ -212,7 +212,7 @@ module.exports = class EmbedCommand extends BaseCommand {
             case 'properties': {
                 msg.channel.send(`**Propiedades de un embed**
 > \`author\` - [ text | link de imagen(opcional) ]
-> \`thumbnail\` - [ link imagen ])
+> \`thumbnail\` - [ link imagen ]
 > \`title\` - [ text ]
 > \`description\` - [ text ]
 > \`footer\` - [ text | link de imagen(opcional) ]
@@ -231,17 +231,17 @@ module.exports = class EmbedCommand extends BaseCommand {
                     .addField(
                         `Información del Usuario`,
                         `\`{user}\` - @mencion (e.j. @Aviii.#0721)
-\`{user.name}\` - username (e.j. Aviii.)
-\`{user.discrim}\` - discriminator (e.j. 0721)
+\`{user.name}\` - nombre de usuario (e.j. Aviii.)
+\`{user.discrim}\` - tag del usuario (e.j. 0721)
 \`{user.nick}\` - apodo del miembro, si no tiene devolvera "No tiene apodo."
-\`{user.createdate}\` - fecha de creacion de la cuenta
-\`{user.joindate}\` - fecha en la que se unio al servidor
+\`{user.createdate}\` - fecha de creación de la cuenta
+\`{user.joindate}\` - fecha en la que se unió al servidor
 \`{user.id}\` - ID del usuario (e.j. 710880777662890095)
 \`{user.avatar}\` - link de la foto de perfil`
                     )
                     .addField(
                         `Información del Servidor`,
-                        `\`{server}\` - nombre del servidor (e.j. Sonya´s Support)
+                        `\`{server}\` - nombre del servidor (e.j. Asuna's Support)
 \`{server.prefix}\` - prefijo del servidor (por defecto: s!)
 \`{server.id}\` - ID del servidor (e.j. 773629394894848030)
 \`{server.membercount}\` - número de miembros en total
@@ -255,19 +255,19 @@ module.exports = class EmbedCommand extends BaseCommand {
 \`{server.emojiscount.noanimate}\` - número de emojis no animados
 \`{server.createdate}\` - fecha de creación del servidor
 \`{server.boostlevel}\` - nivel del servidor
-\`{server.boostcount}\` - cantidad de boost del servidor
+\`{server.boostcount}\` - cantidad de boosts del servidor
 \`{server.icon}\` - link de la foto del servidor`
                     )
                     .addField(
                         `Información del Owner/del servidor`,
-                        `\`{server.owner}\` - mencion al owner (e.j. @Aviii.#0721)
+                        `\`{server.owner}\` - mención al owner (e.j. @Aviii.#0721)
 \`{server.owner.id}\` - ID del owner (e.j. 710880777662890095)
 \`{server.owner.nick}\` - apodo del owner, si no tiene devolvera "No tiene apodo."
 \`{server.owne.avatar}\` - link de la foto de perfil`
                     )
                     .addField(
                         `Información de un Canal`,
-                        `\`{channel}\` - mencion del canal (e.j. #memes)
+                        `\`{channel}\` - mención del canal (e.j. #memes)
 \`{channel.id}\` - ID del canal (e.j. 773629394894848033)
 \`{channel.name}\` - nombre del canal (e.j. memes)
 \`{channel.createdate}\` - fecha de creacion del canal`
