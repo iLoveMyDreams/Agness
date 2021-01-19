@@ -208,7 +208,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 msg.channel.send(embed)
                 break;
             }
-            case 'properties': {
+            case 'properties' || 'propiedades': {
                 msg.channel.send(`**Propiedades de un embed**
 > \`author\` - [ text | link de imagen(opcional) ]
 > \`thumbnail\` - [ link imagen ])
@@ -221,7 +221,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 break;
             }
             case 'variables': {
-                const embed = new MessageEmbed()
+                const embed = new Discord.MessageEmbed()
                     .setTitle(`Variables de Asuna.`)
                     .setDescription(
                         `Estas variables pueden ser usadas editando embeds y en los mensajes de bienvenida/despedida.`
