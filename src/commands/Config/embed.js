@@ -208,7 +208,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 msg.channel.send(embed)
                 break;
             }
-            case 'properties' || 'propiedades': {
+            case ('properties' || 'propiedades'): {
                 msg.channel.send(`**Propiedades de un embed**
 > \`author\` - [ text | link de imagen(opcional) ]
 > \`thumbnail\` - [ link imagen ])
@@ -274,6 +274,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                     .setFooter(`Asuna embeds`)
                     .setTimestamp()
                 msg.channel.send(embed)
+                break;
             }
             default:
                 msg.channel.send(`> Introduce una propiedad válida. Utiliza \`${this.prefix}embed\` para ver un mini tutorial.`)
