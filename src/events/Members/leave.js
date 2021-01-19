@@ -12,7 +12,7 @@ module.exports = class MessageEvent {
         let channel = member.guild.channels.resolve(server.channelID)
         if (!channel) return;
         let embed = server.embed_name ? new Discord.MessageEmbed() : null
-        let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name })
+        let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name }).exec()
         const replaceText = (text) => EmbedCommand.replaceText(text, { channel, member, prefix: 'a' })
         if (embed_DB) {
             let prefix = '.'
