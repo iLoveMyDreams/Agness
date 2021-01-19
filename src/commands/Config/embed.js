@@ -208,7 +208,8 @@ module.exports = class EmbedCommand extends BaseCommand {
                 msg.channel.send(embed)
                 break;
             }
-            case ('properties' || 'propiedades'): {
+            case 'propiedades':
+            case 'properties': {
                 msg.channel.send(`**Propiedades de un embed**
 > \`author\` - [ text | link de imagen(opcional) ]
 > \`thumbnail\` - [ link imagen ])
