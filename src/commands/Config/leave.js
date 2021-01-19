@@ -32,7 +32,7 @@ module.exports = class LeaveCommand extends BaseCommand {
                 if (/{embed:[a-z\d]+}/gi.test(args[1])) {
                     let embed = args[1].split(':')[1].slice(0, -1)
                     if (embed) {
-                        let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed })
+                        let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec()
                         if (!checkear) return msg.channel.send('> No hay un embed con ese nombre')
                     }
                     let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec()
@@ -44,7 +44,7 @@ module.exports = class LeaveCommand extends BaseCommand {
                     let [message, embed] = args.slice(1).join(' ').split(' | ').map((m) => m.trim())
                     if (embed) {
                         embed = embed.split(':')[1].slice(0, -1)
-                        let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed })
+                        let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec()
                         if (!checkear) return msg.channel.send('> No hay un embed con ese nombre')
                     }
                     let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec()

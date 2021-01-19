@@ -25,11 +25,13 @@ module.exports = class EmbedCommand extends BaseCommand {
                 .setTimestamp()
                 .setFooter(`Asuna embeds`)
                 .setImage('https://i.imgur.com/c3Gii3Z.png')
+            return msg.channel.send(embed)
         }
+        const replaceText = (text) => EmbedCommand.replaceText(text, { channel: msg.channel, member: msg.member, prefix: this.prefix })
         switch (args[0].toLowerCase()) {
             case 'create': {
                 if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
-                let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
+                let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec()
                 if (checkear) return msg.channel.send('> Ya hay un embed con ese nombre')
                 let nuevo = new this.client.db.embed({ guildID: msg.guild.id, embed_name: args[1] })
                 await nuevo.save()
@@ -38,7 +40,7 @@ module.exports = class EmbedCommand extends BaseCommand {
             }
             case 'delete': {
                 if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
-                let checkear = await this.client.db.embed.findOneAndDelete({ guildID: msg.guild.id, embed_name: args[1] })
+                let checkear = await this.client.db.embed.findOneAndDelete({ guildID: msg.guild.id, embed_name: args[1] }).exec()
                 if (!checkear) return msg.channel.send('> No hay ningún embed con ese nombre.')
                 msg.channel.send('> Embed eliminado correctamente.')
                 break;
@@ -64,7 +66,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 if (!args[1]) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
 > ${this.prefix}embed edit <nombre> <propiedad> [texto]`)
 
-                let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
+                let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec()
                 if (!embed_DB) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
 > ${this.prefix}embed edit <nombre> <propiedad> [texto]`)
 
@@ -156,7 +158,6 @@ module.exports = class EmbedCommand extends BaseCommand {
                 embed_DB.save()
 
                 const embed = new Discord.MessageEmbed()
-                const replaceText = (text) => EmbedCommand.replaceText(text, { channel: msg.channel, member: msg.member, prefix: this.prefix })
 
                 if (embed_DB.author_text) {
                     embed_DB.author_image ?
@@ -182,7 +183,7 @@ module.exports = class EmbedCommand extends BaseCommand {
             case 'preview': {
                 if (!args[1]) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
 > ${this.prefix}embed preview <nombre> `)
-                let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] })
+                let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec()
                 if (!embed_DB) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
 > ${this.prefix}embed preview <nombre> `)
                 const embed = new Discord.MessageEmbed()
