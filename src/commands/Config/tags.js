@@ -31,8 +31,8 @@ module.exports = class TagsCommand extends BaseCommand {
                     let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name }).exec()
                     if (!checkear) return msg.channel.send('No hay un embed con ese nombre')
                 }
-                if(addRoleID && addRoleID.some(r => !r.editable)) return msg.channel.send('No puedo dar ese rol.')
-                if(deleteRoleID && deleteRoleID.some(r => !r.editable)) return msg.channel.send('No puedo quitar ese rol')
+                if (addRoleID.some(r => !r.editable)) return msg.channel.send('No puedo dar ese rol.')
+                if (deleteRoleID.some(r => !r.editable)) return msg.channel.send('No puedo quitar ese rol')
                 tag = new this.client.db.tags({
                     guildID: msg.guild.id,
                     name: args[1].toLowerCase(),
@@ -58,8 +58,8 @@ module.exports = class TagsCommand extends BaseCommand {
                     let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name }).exec()
                     if (!checkear) return msg.channel.send('No hay un embed con ese nombre')
                 }
-                if(addRoleID && addRoleID.some(r => !r.editable)) return msg.channel.send('No puedo dar ese rol.')
-                if(deleteRoleID && deleteRoleID.some(r => !r.editable)) return msg.channel.send('No puedo quitar ese rol')
+                if (addRoleID.some(r => !r.editable)) return msg.channel.send('No puedo dar ese rol.')
+                if (deleteRoleID.some(r => !r.editable)) return msg.channel.send('No puedo quitar ese rol')
                 tag.deleteRoleID = deleteRoleID
                 tag.embed_name = embed_name
                 tag.addRoleID = addRoleID
