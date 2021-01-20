@@ -3,7 +3,7 @@ const BaseCommand = require('../../Utils/BaseCommand.js')
 module.exports = class ReactionRoleCommand extends BaseCommand {
     constructor(client) {
         super(client, {
-            name: 'reactionrole',
+            name: 'rrole',
             alias: ['rroles', 'rr'],
             botGuildPermissions: ['ADMINISTRATOR'],
             memberGuildPermissions: ['ADMINISTRATOR'],

@@ -27,7 +27,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 .setImage('https://i.imgur.com/c3Gii3Z.png')
             return msg.channel.send(embed)
         }
-        const replaceText = (text) => EmbedCommand.replaceText(text, { channel: msg.channel, member: msg.member, prefix: this.prefix })
+        const replaceText = (text) => this.client.replaceText(text, { channel: msg.channel, member: msg.member, prefix: this.prefix })
         switch (args[0].toLowerCase()) {
             case 'create': {
                 if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
@@ -281,45 +281,5 @@ module.exports = class EmbedCommand extends BaseCommand {
                 msg.channel.send(`> Introduce una propiedad válida. Utiliza \`${this.prefix}embed\` para ver un mini tutorial.`)
                 break;
         }
-    }
-
-    static async replaceText(text, { channel, member, prefix }) {
-        const owner = await member.guild.members.fetch(member.guild.ownerID);
-        return text.replace(/{user}/gi, member.user.toString())
-            .replace(/{user\.tag}/gi, member.user.tag)
-            .replace(/{user\.discrim}/gi, member.user.discriminator)
-            .replace(/{user\.avatar}/gi, member.user.displayAvatarURL({ dynamic: true, size: 4096 }))
-            .replace(/{user\.name}/gi, member.user.username)
-            .replace(/{user\.id}/gi, member.user.id)
-            .replace(/{user\.joindate}/gi, member.joinedAt)
-            .replace(/{user\.nick}/gi, member.nickname ? member.nickname : 'No tiene Apodo.')
-            .replace(/{user\.createdate}/gi, member.user.createdAt)
-            .replace(/{server\.prefix}/gi, prefix)
-            .replace(/{server}/gi, member.guild.name)
-            .replace(/{server\.id}/gi, member.guild.id)
-            .replace(/{server\.membercount}/gi, member.guild.members.cache.size)
-            .replace(/{server\.membercount\.nobots}/gi, member.guild.members.cache.filter(miembro => !miembro.user.bot).size)
-            .replace(/{server\.membercount\.bots}/gi, member.guild.members.cache.filter(miembro => miembro.user.bot).size)
-            .replace(/{server\.rolecount}/gi, member.guild.roles.cache.size)
-            .replace(/{server\.channelcount}/gi, member.guild.channels.cache.size)
-            .replace(/{server\.channelcount\.text}/gi, member.guild.channels.cache.filter((a) => a.type === 'text').size)
-            .replace(/{server\.channelcount\.voice}/gi, member.guild.channels.cache.filter((a) => a.type === 'voice').size)
-            .replace(/{server\.emojiscount}/gi, member.guild.emojis.cache.size)
-            .replace(/{server\.emojiscount\.animate}/gi, member.guild.emojis.cache.filter((a) => a.animated).size)
-            .replace(/{server\.emojiscount\.noanimate}/gi, member.guild.emojis.cache.filter((a) => !a.animated).size)
-            .replace(/{server\.createdate}/gi, member.guild.createdAt)
-            .replace(/{server\.boostlevel}/gi, member.guild.premiumTier)
-            .replace(/{server\.boostcount}/gi, member.guild.premiumSubscriptionCount)
-            .replace(/{server\.icon}/gi, member.guild.icon ? member.guild.iconURL({ dynamic: true, size: 4096 }) : 'https://cdn.discordapp.com/embed/avatars/0.png?size=2048')
-            .replace(/{server\.owner}/gi, owner.user.toString())
-            .replace(/{server\.owner\.name}/gi, owner.user.username)
-            .replace(/{server\.owner\.id}/gi, owner.user.id)
-            .replace(/{server\.owner\.nick}/gi, owner.nickname ? member.guild.owner.nickname : 'No tiene Apodo.')
-            .replace(/{server\.owner\.avatar}/gi, owner.user.displayAvatarURL({ size: 4096, dynamic: true }))
-            .replace(/{server\.owner\.createdate}/gi, owner.user.createdAt)
-            .replace(/{channel}/gi, channel)
-            .replace(/{channel\.id}/gi, channel.id)
-            .replace(/{channel\.name}/gi, channel.name)
-            .replace(/{channel\.createdate}/gi, channel.createdAt)
     }
 }

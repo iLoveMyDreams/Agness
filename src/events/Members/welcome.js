@@ -1,5 +1,3 @@
-const EmbedCommand = require('../../commands/Config/embed.js')
-
 module.exports = class MessageEvent {
     constructor(client) {
         this.client = client;
@@ -13,7 +11,7 @@ module.exports = class MessageEvent {
         if (!channel) return;
         let embed = server.embed_name ? new Discord.MessageEmbed() : null
         let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name }).exec()
-        const replaceText = (text) => EmbedCommand.replaceText(text, { channel, member, prefix: 'a' })
+        const replaceText = (text) => this.client.replaceText(text, { channel, member, prefix: 'a' })
         if (embed_DB) {
             let prefix = '.'
             const modelo = await this.client.db.prefix.findOne({ _id: member.guild.id }).exec()
