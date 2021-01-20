@@ -36,6 +36,7 @@ module.exports = class MessageEvent {
         if (!tag) return false
         let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: tag.embed_name }).exec()
         const replaceText = (text) => this.client.replaceText(text, { channel: msg.channel, member: msg.member, prefix })
+        let embed = embed_DB ? new Discord.MessageEmbed() : null
         if (embed_DB) {
             if (embed_DB.author_text) {
                 embed_DB.author_image ?
@@ -57,11 +58,15 @@ module.exports = class MessageEvent {
         }
         tag.addRoleID.forEach((rId) => {
             let role = msg.guild.roles.resolve(rId)
-            if (role) msg.member.roles.add(role.id)
+            if (!role) return;
+            if(!role.editable) return;
+            msg.member.roles.add(role.id)
         })
         tag.deleteRoleID.forEach((rId) => {
             let role = msg.guild.roles.resolve(rId)
-            if (role) msg.member.roles.remove(role.id)
+            if (!role) return;
+            if(!role.editable) return;
+            msg.member.roles.remove(role.id)
         })
         if (!tag.message && !embed) return;
         msg.channel.send(await replaceText(tag.message), { embed })

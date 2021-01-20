@@ -5,7 +5,7 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
         super(client, {
             name: 'rrole',
             alias: ['rroles', 'rr'],
-            botGuildPermissions: ['ADMINISTRATOR'],
+            botGuildPermissions: ['MANAGE_ROLES'],
             memberGuildPermissions: ['ADMINISTRATOR'],
             category: 'Config'
         })
