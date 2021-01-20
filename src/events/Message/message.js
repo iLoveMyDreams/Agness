@@ -17,6 +17,7 @@ module.exports = class MessageEvent {
             msg.mentions.users.delete(msg.mentions.users.first().id)
         const args = msg.content.slice(usedPrefix.length).trim().split(/ +/g)
         const command = args.shift().toLowerCase()
+        if (await this.handleTag(msg, command)) return;
         const cmd = this.client.commands.find(c => c.name === command || c.alias.includes(command))
         if (!cmd) return;
         cmd.prepare({ serverPrefix: prefix });
@@ -28,5 +29,42 @@ module.exports = class MessageEvent {
         } finally {
             console.log(`CMD >> ${msg.author.tag} ejecutó el comando ${cmd.name}`)
         }
+    }
+
+    async handleTag(msg, prefix, name) {
+        let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name }).exec()
+        if (!tag) return false
+        let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: tag.embed_name }).exec()
+        const replaceText = (text) => this.client.replaceText(text, { channel: msg.channel, member: msg.member, prefix })
+        if (embed_DB) {
+            if (embed_DB.author_text) {
+                embed_DB.author_image ?
+                    embed.setAuthor(await replaceText(embed_DB.author_text), await replaceText(embed_DB.author_image)) :
+                    embed.setAuthor(await replaceText(embed_DB.author_text))
+            }
+            if (embed_DB.title) embed.setTitle(await replaceText(embed_DB.title))
+            if (embed_DB.description) embed.setDescription(await replaceText(embed_DB.description))
+            if (embed_DB.thumbnail) embed.setThumbnail(await replaceText(embed_DB.thumbnail))
+            if (embed_DB.image) embed.setImage(await replaceText(embed_DB.image))
+
+            if (embed_DB.footer_text) {
+                embed_DB.footer_image ?
+                    embed.setFooter(await replaceText(embed_DB.footer_text), await replaceText(embed_DB.footer_image)) :
+                    embed.setFooter(await replaceText(embed_DB.footer_text))
+            }
+            if (embed_DB.timestamp) embed.setTimestamp()
+            if (embed_DB) embed.setColor('#' + embed_DB.color)
+        }
+        tag.addRoleID.forEach((rId) => {
+            let role = msg.guild.roles.resolve(rId)
+            if (role) msg.member.roles.add(role.id)
+        })
+        tag.deleteRoleID.forEach((rId) => {
+            let role = msg.guild.roles.resolve(rId)
+            if (role) msg.member.roles.remove(role.id)
+        })
+        if (!tag.message && !embed) return;
+        msg.channel.send(await replaceText(tag.message), { embed })
+        return true
     }
 }

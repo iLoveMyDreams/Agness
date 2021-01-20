@@ -11,12 +11,11 @@ module.exports = class MessageEvent {
         if (!channel) return;
         let embed = server.embed_name ? new Discord.MessageEmbed() : null
         let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name }).exec()
+        let prefix = '.'
+        let modelo = await this.client.db.prefix.findOne({ _id: member.guild.id }).exec()
+        prefix = modelo ? modelo.prefix : '.'
         const replaceText = (text) => this.client.replaceText(text, { channel, member, prefix: 'a' })
         if (embed_DB) {
-            let prefix = '.'
-            const modelo = await this.client.db.prefix.findOne({ _id: member.guild.id }).exec()
-            prefix = modelo ? modelo.prefix : '.'
-
             if (embed_DB.author_text) {
                 embed_DB.author_image ?
                     embed.setAuthor(await replaceText(embed_DB.author_text), await replaceText(embed_DB.author_image)) :

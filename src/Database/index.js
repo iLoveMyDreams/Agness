@@ -3,5 +3,6 @@ module.exports = {
     reaction: require('./Models/reaction.js'),
     embed: require('./Models/embed.js'),
     welcome: require('./Models/welcome.js'),
-    leave: require('./Models/leave.js')
+    leave: require('./Models/leave.js'),
+    tags: require('./Models/tags.js')
 };

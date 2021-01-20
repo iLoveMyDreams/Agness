@@ -47,6 +47,7 @@ new (
                 }
             }
         }
+
         async replaceText(text, { channel, member, prefix }) {
             const owner = await member.guild.members.fetch(member.guild.ownerID);
             return text.replace(/{user}/gi, member.user.toString())
