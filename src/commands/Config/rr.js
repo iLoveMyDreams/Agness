@@ -15,11 +15,20 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
     async run(msg, args) {
         const embed = new Discord.MessageEmbed()
             .setColor('#FDB2A2')
-        if (!args[0] || !args[1] || !args[2]) {
+        if (!args[0]) {
             embed.setDescription(`> Uso correcto: ${this.prefix}rr [@role] [type] [messageID] <#channel>`)
             return msg.channel.send(embed)
         }
-
+        if(args[0].toLowerCase() === 'types'){
+            embd.addField('Tipos:', `Normal => Se puede obtener y quitar el rol con la misma reacción.
+Unique => Solo se puede obtener, mas no quitar.
+Only => Solo se podrá obtener un reaction rol del mismo tipo en el mensaje.`)
+        return msg.channel.send(embed)
+        }
+        if (!args[1] || !args[2]) {
+            embed.setDescription(`> Uso correcto: ${this.prefix}rr [@role] [type] [messageID] <#channel>`)
+            return msg.channel.send(embed)
+        }
         //rol: 0
 
         const matchRole = args[0].match(/^<@&(\d+)>$/);
