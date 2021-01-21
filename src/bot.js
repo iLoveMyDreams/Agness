@@ -7,7 +7,7 @@ const nekosClient = require('nekos.life')
 new (
     class Asuna extends Discord.Client {
         constructor() {
-            super({ partials: ['MESSAGE', 'REACTION'], ws: { intents: 14023 } })
+            super({ partials: ['MESSAGE', 'REACTION'], ws: { intents: 13827 } })
             mongoose.connect(process.env.MONGO_URL, {
                 useNewUrlParser: true, useUnifiedTopology: true
             }, (err) => {
