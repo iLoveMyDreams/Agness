@@ -13,11 +13,11 @@ module.exports = class TagsCommand extends BaseCommand {
 
     async run(msg, args) {
         let embedCorrect = new Discord.MessageEmbed()
-        .addField(
-            'Uso correcto:',
-            `> ${this.prefix}tag [add/edit/delete] [tag_name] <propiedades>`)
+            .addField(
+                'Uso correcto:',
+                `> ${this.prefix}tag [add/edit/delete] [tag_name] <propiedades>`)
             .setFooter(`Para ver las propiedades usa: ${this.prefix}tag propiedades`)
-        if (!args[0]) return  msg.channel.send(embedCorrect)
+        if (!args[0]) return msg.channel.send(embedCorrect)
         switch (args[0].toLowerCase()) {
             case 'add': {
                 if (!args[1]) return msg.channel.send('Pon un nombre válido')
@@ -31,11 +31,14 @@ module.exports = class TagsCommand extends BaseCommand {
                     addrole: [],
                     removerole: []
                 }
-                for (let variable of variables) {
+                variables.forEach((variable) => {
                     let [name, ...values] = variable.split(':')
+                    if (!Object.keys(options).includes(name)) return;
+                    if (name === 'addRole') name = 'addrole'
+                    if (name === 'removeRole') name = 'removerole'
                     if (['addrole', 'removerole'].includes(name)) options[name] = values.map((r) => msg.guild.roles.resolve(r));
                     else options[name] = !values[1] && values[0] ? values[0] : values
-                }
+                })
                 if (!options.message && !options.embed) return msg.channel.send('Debes poner un mensaje o embed para enviar o los dos')
                 if (options.embed) {
                     let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: options.embed }).exec()
@@ -66,11 +69,14 @@ module.exports = class TagsCommand extends BaseCommand {
                     addrole: [],
                     removerole: []
                 }
-                for (let variable of variables) {
+                variables.forEach((variable) => {
                     let [name, ...values] = variable.split(':')
+                    if (!Object.keys(options).includes(name)) return;
+                    if (name === 'addRole') name = 'addrole'
+                    if (name === 'removeRole') name = 'removerole'
                     if (['addrole', 'removerole'].includes(name)) options[name] = values.map((r) => msg.guild.roles.resolve(r));
                     else options[name] = !values[1] && values[0] ? values[0] : values
-                }
+                })
                 if (!options.message && !options.embed) return msg.channel.send('Debes poner un mensaje o embed para enviar o los dos')
                 if (options.embed) {
                     let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: options.embed }).exec()
@@ -94,7 +100,7 @@ module.exports = class TagsCommand extends BaseCommand {
                 break;
             }
             case 'propiedades':
-            case 'properties':{
+            case 'properties': {
                 msg.channel.send(`**Propiedades de un embed**
 > \`{message:[text]}\` - Mensajes normales.
 > \`{embed:[embed_name]}\` - Insertar un embed ya creado.
