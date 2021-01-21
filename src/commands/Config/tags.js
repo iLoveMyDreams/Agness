@@ -20,6 +20,8 @@ module.exports = class TagsCommand extends BaseCommand {
         if (!args[0]) return msg.channel.send(embedCorrect)
         switch (args[0].toLowerCase()) {
             case 'add': {
+                const lista = await this.client.db.tags.find({ guildID: msg.guild.id }).exec()
+                if(lista.length >= 10) return msg.channel.send('> Por ahora solo se pueden tener 10 tags por servidor')
                 if (!args[1]) return msg.channel.send('Pon un nombre válido')
                 if (this.client.commands.find(c => c.name === args[1].toLowerCase() || c.alias.includes(args[1].toLowerCase()))) return msg.channel.send('No puedes crear un tag con el nombre de un comando')
                 let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec()
@@ -99,10 +101,27 @@ module.exports = class TagsCommand extends BaseCommand {
                 msg.channel.send(`Tag con el nombre **${args[1].toLowerCase()}** eliminado correctamente`)
                 break;
             }
+            case 'list': {
+                const lista = await this.client.db.tags.find({ guildID: msg.guild.id }).exec()
+                const embedList = new Discord.MessageEmbed()
+                if (!lista.length) {
+                    embedList.setDescription('> El servidor no cuenta con ningún tag')
+                    return msg.channel.send(embedList)
+                }
+                embedList.setAuthor(
+                    `Lista de tags de ${msg.guild.name}`,
+                    msg.guild.iconURL() ?
+                        msg.guild.iconURL({ dynamic: true }) :
+                        null
+                )
+                    .setDescription(lista.map(x => x.name).join('\n'))
+                msg.channel.send(embedList)
+                break;
+            }
             case 'propiedades':
             case 'properties': {
-                msg.channel.send(`**Propiedades de un embed**
-> \`{message:[text]}\` - Mensajes normales.
+                msg.channel.send(`**Propiedades de un tag**
+> \`(message:[text])\` - Mensajes normales.
 > \`{embed:[embed_name]}\` - Insertar un embed ya creado.
 > \`{addRole:[rolID]}\` - Añade un rol.
 > \`{removeRole:[roleID]}\` - Remueve un rol.`)

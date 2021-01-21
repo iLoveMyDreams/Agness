@@ -8,7 +8,7 @@ module.exports = class MessageEvent {
         let prefix = '.'
         if (msg.guild) {
             const modelo = await this.client.db.prefix.findOne({ _id: msg.guild.id }).exec()
-            prefix = modelo ? modelo.prefix : '.'
+            prefix = modelo ? modelo.prefix : 'a?'
         }
         let prefixes = [prefix, `<@${this.client.user.id}>`, `<@!${this.client.user.id}>`]
         let usedPrefix = prefixes.find((p) => msg.content.startsWith(p))

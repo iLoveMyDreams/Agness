@@ -20,7 +20,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 .addField(`**1. Creando y poniéndole un nombre**`, `El nombre nos permitirá identificar nuestro embed para que no se mezcle con los demás a la hora de ponerlos en bienvenidas, despedidas, etc. ¿Cómo? Pues agregando \`{embed:[name]}\`.Remplazando \`name\` por el nombre de nuestro embed. Para esto puedes crearlo y ponerle el nombre que gustes así:\n> \`${this.prefix}embed create [name]\``)
                 .addField(`**2. Editando nuestro embed**`, `Bueno llegó la hora de editarlo de la manera que tu quieras, ¡Tu creatividad importa!, a continuación te muestro las propiedades del embed:\n> \`author\` - [ text | link de imagen(opcional) ]\n> \`thumbnail\` - [ link imagen ])\n> \`title\` - [ text ]\n> \`description\` - [ text ]\n> \`footer\` - [ text | link de imagen(opcional) ]\n> \`image\` - [ link de imagen(opcional) ]\n> \`color\` - [ hex code ]\n> \`timestamp\` - [ yes/no ]\nEl modo de uso es intuitivo con lo cual les sera más fácil aprenderse cada propiedad y el modo de edición del embed, y es el siguiente:\n> \`${this.prefix}embed edit [name] [propiedad] [valor]\``)
                 .addField(`**EJEMPLO**`, `Ahora veamos un pequeño ejemplo con algunas propiedades, el cual les permitirá familiarizarse con el simple formato\nComenzamos creando un embed el cual llamaremos \`ejemplo\`.\n> \`${this.prefix}embed create ejemplo\`\nAhora a ponerle un título atractivo\n> \`${this.prefix}embed edit ejemplo title Estoy aprendiendo a editar un embed\`\nBueno ahora pongámosle una descripción.\n> \`${this.prefix}embed edit ejemplo description Esta descripción se ve muy linda\`\nListo pongámosle una imagen y tendremos un simple embed, ten cuidado y pon links que verdaderamente contengan imágenes/gifs. En este caso pondremos un divertido gif.\n> \`${this.prefix}embed edit ejemplo image https://i.imgur.com/mXOijAT.gif\`\nPor último pongámosle un color el cual tiene que ser en código hexadecimal sin el #, si no lo conoces puedes ver los colores [aqui](https://htmlcolorcodes.com/es/).\n> \`${this.prefix}embed edit ejemplo color e658ff\`\nListo esto es un simple embed que si quieres puedes probar tu mismo.`)
-                .addField(`**VARIABLES**`, `Primero que nada ¿qué son las variables? Bueno para eso estoy, las propiedades nos permitiran que podamos hacer cosas "automatizadas" de manera que se puedan remplazar por nombres, canales, links, entre otros, se pueden usar en embeds como también en texto, para las bienvenidas y despedidas. Aquí te doy algunos:\n\`{user}\` - @mención (e.j. @Aviii#5859)\n\`{server}\` - nombre del servidor (e.j. Asuna's Support)\n\`{server.prefix}\` - prefijo del servidor (por defecto: s!)\n Puedes encontrar la lista completa con \`${this.prefix}embed variables\``)
+                .addField(`**VARIABLES**`, `Primero que nada ¿qué son las variables? Bueno para eso estoy, las propiedades nos permitiran que podamos hacer cosas "automatizadas" de manera que se puedan remplazar por nombres, canales, links, entre otros, se pueden usar en embeds como también en texto, para las bienvenidas y despedidas. Aquí te doy algunos:\n\`{user}\` - @mención (e.j. @Aviii#5859)\n\`{server}\` - nombre del servidor (e.j. Asuna's Support)\n\`{server.prefix}\` - prefijo del servidor (por defecto: s!)\n Puedes encontrar la lista completa con \`${this.prefix}variables\``)
                 .setColor('#fab1d7')
                 .setTimestamp()
                 .setFooter(`Asuna embeds`)
@@ -30,6 +30,8 @@ module.exports = class EmbedCommand extends BaseCommand {
         const replaceText = (text) => this.client.replaceText(text, { channel: msg.channel, member: msg.member, prefix: this.prefix })
         switch (args[0].toLowerCase()) {
             case 'create': {
+                const lista = await this.client.db.embed.find({ guildID: msg.guild.id }).exec()
+                if(lista.length >= 10) return msg.channel.send('> Por ahora solo se pueden tener 10 embeds por servidor')
                 if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
                 let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec()
                 if (checkear) return msg.channel.send('> Ya hay un embed con ese nombre')
@@ -70,7 +72,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 if (!embed_DB) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
 > ${this.prefix}embed edit <nombre> <propiedad> [texto]`)
 
-                const edit = args[2]
+                const edit = args[2].toLowerCase()
 
                 if (edit == 'author') {
                     if (!args[3]) return msg.channel.send('Coloca algo')
@@ -219,62 +221,6 @@ module.exports = class EmbedCommand extends BaseCommand {
 > \`image\` - [ link de imagen(opcional) ]
 > \`color\` - [ hex code ]
 > \`timestamp\` - [ yes/no ]`)
-                break;
-            }
-            case 'variables': {
-                const embed = new Discord.MessageEmbed()
-                    .setTitle(`Variables de Asuna.`)
-                    .setDescription(
-                        `Estas variables pueden ser usadas editando embeds y en los mensajes de bienvenida/despedida.`
-                    )
-                    .setColor('#fab1d7')
-                    .addField(
-                        `Información del Usuario`,
-                        `\`{user}\` - @mencion (e.j. @Aviii.#0721)
-\`{user.name}\` - nombre de usuario (e.j. Aviii.)
-\`{user.discrim}\` - tag del usuario (e.j. 0721)
-\`{user.nick}\` - apodo del miembro, si no tiene devolvera "No tiene apodo."
-\`{user.createdate}\` - fecha de creación de la cuenta
-\`{user.joindate}\` - fecha en la que se unió al servidor
-\`{user.id}\` - ID del usuario (e.j. 710880777662890095)
-\`{user.avatar}\` - link de la foto de perfil`
-                    )
-                    .addField(
-                        `Información del Servidor`,
-                        `\`{server}\` - nombre del servidor (e.j. Asuna's Support)
-\`{server.prefix}\` - prefijo del servidor (por defecto: s!)
-\`{server.id}\` - ID del servidor (e.j. 773629394894848030)
-\`{server.membercount}\` - número de miembros en total
-\`{server.membercount.nobots}\` - número de miembros no bots
-\`{server.membercount.nobots}\` - número de miembros bots
-\`{server.rolecount}\` - número roles
-\`{server.channelcount}\` - número canales en total
-\`{server.channelcount.voice}\` - número canales de voz
-\`{server.emojiscount}\` - número de emojis en total
-\`{server.emojiscount.animate}\` - número de emojis animados
-\`{server.emojiscount.noanimate}\` - número de emojis no animados
-\`{server.createdate}\` - fecha de creación del servidor
-\`{server.boostlevel}\` - nivel del servidor
-\`{server.boostcount}\` - cantidad de boosts del servidor
-\`{server.icon}\` - link de la foto del servidor`
-                    )
-                    .addField(
-                        `Información del Owner/del servidor`,
-                        `\`{server.owner}\` - mención al owner (e.j. @Aviii.#0721)
-\`{server.owner.id}\` - ID del owner (e.j. 710880777662890095)
-\`{server.owner.nick}\` - apodo del owner, si no tiene devolvera "No tiene apodo."
-\`{server.owne.avatar}\` - link de la foto de perfil`
-                    )
-                    .addField(
-                        `Información de un Canal`,
-                        `\`{channel}\` - mención del canal (e.j. #memes)
-\`{channel.id}\` - ID del canal (e.j. 773629394894848033)
-\`{channel.name}\` - nombre del canal (e.j. memes)
-\`{channel.createdate}\` - fecha de creacion del canal`
-                    )
-                    .setFooter(`Asuna embeds`)
-                    .setTimestamp()
-                msg.channel.send(embed)
                 break;
             }
             default:
