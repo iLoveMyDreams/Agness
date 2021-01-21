@@ -20,7 +20,7 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
             return msg.channel.send(embed)
         }
         if(args[0].toLowerCase() === 'types'){
-            embd.addField('Tipos:', `Normal => Se puede obtener y quitar el rol con la misma reacción.
+            embed.addField('Tipos:', `Normal => Se puede obtener y quitar el rol con la misma reacción.
 Unique => Solo se puede obtener, mas no quitar.
 Only => Solo se podrá obtener un reaction rol del mismo tipo en el mensaje.`)
         return msg.channel.send(embed)
