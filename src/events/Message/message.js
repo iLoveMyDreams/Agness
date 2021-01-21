@@ -17,7 +17,7 @@ module.exports = class MessageEvent {
             msg.mentions.users.delete(msg.mentions.users.first().id)
         const args = msg.content.slice(usedPrefix.length).trim().split(/ +/g)
         const command = args.shift().toLowerCase()
-        if (await this.handleTag(msg, command)) return;
+        if (await this.handleTag(msg, this.prefix, command)) return;
         const cmd = this.client.commands.find(c => c.name === command || c.alias.includes(command))
         if (!cmd) return;
         cmd.prepare({ serverPrefix: prefix });
@@ -34,7 +34,7 @@ module.exports = class MessageEvent {
     async handleTag(msg, prefix, name) {
         let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name }).exec()
         if (!tag) return false
-        let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: tag.embed_name }).exec()
+        let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: tag.embed_name }).exec()
         const replaceText = (text) => this.client.replaceText(text, { channel: msg.channel, member: msg.member, prefix })
         let embed = embed_DB ? new Discord.MessageEmbed() : null
         if (embed_DB) {
