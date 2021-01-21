@@ -25,8 +25,8 @@ module.exports = class TagsCommand extends BaseCommand {
                 let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec()
                 if (tag) return msg.channel.send('Ya existe un tag con ese nombre')
                 let variables = args.slice(2).join(' ').split('{').map((s) => s.split('}')[0])
+                let variableMessage = args.slice(2).join(' ').split('(').map((s) => s.split(')')[0])
                 let options = {
-                    message: '',
                     embed: '',
                     addrole: [],
                     removerole: []
@@ -38,6 +38,11 @@ module.exports = class TagsCommand extends BaseCommand {
                     if (name === 'removeRole') name = 'removerole'
                     if (['addrole', 'removerole'].includes(name)) options[name] = values.map((r) => msg.guild.roles.resolve(r));
                     else options[name] = !values[1] && values[0] ? values[0] : values
+                })
+                options.message = ''
+                variableMessage.forEach((variable) => {
+                    let [name, value] = variable.split(':')
+                    if (name === 'message') options.message = value
                 })
                 if (!options.message && !options.embed) return msg.channel.send('Debes poner un mensaje o embed para enviar o los dos')
                 if (options.embed) {
@@ -63,8 +68,8 @@ module.exports = class TagsCommand extends BaseCommand {
                 let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec()
                 if (!tag) return msg.channel.send('No existe un tag con ese nombre')
                 let variables = args.slice(2).join(' ').split('{').map((s) => s.split('}')[0])
+                let variableMessage = args.slice(2).join(' ').split('(').map((s) => s.split(')')[0])
                 let options = {
-                    message: '',
                     embed: '',
                     addrole: [],
                     removerole: []
@@ -76,6 +81,11 @@ module.exports = class TagsCommand extends BaseCommand {
                     if (name === 'removeRole') name = 'removerole'
                     if (['addrole', 'removerole'].includes(name)) options[name] = values.map((r) => msg.guild.roles.resolve(r));
                     else options[name] = !values[1] && values[0] ? values[0] : values
+                })
+                options.message = ''
+                variableMessage.forEach((variable) => {
+                    let [name, value] = variable.split(':')
+                    if (name === 'message') options.message = value
                 })
                 if (!options.message && !options.embed) return msg.channel.send('Debes poner un mensaje o embed para enviar o los dos')
                 if (options.embed) {
