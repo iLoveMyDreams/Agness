@@ -3,8 +3,8 @@ const BaseCommand = require('../../Utils/BaseCommand.js')
 module.exports = class TagsCommand extends BaseCommand {
     constructor(client) {
         super(client, {
-            name: 'tags',
-            alias: ['tag'],
+            name: 'tag',
+            alias: ['tags'],
             botGuildPermissions: ['MANAGE_ROLES'],
             memberGuildPermissions: ['ADMINISTRATOR'],
             category: 'Config'
@@ -12,10 +12,12 @@ module.exports = class TagsCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        if (!args[0]) return msg.channel.send(`Pon una propiedad válida
-> tags add [nombre] <{message:[texto]}> <{embed:[embed_name]}> <{addrole:[id1]:<id2>}> <{removerole:[id1]:<id2>}>
-> tags edit [nombre] <{message:[texto]}> <{embed:[embed_name]}> <{addrole:[id1]:<id2>}> <{removerole:[id1]:<id2>}>
-> tags delete [nombre]`)
+        let embedCorrect = new Discord.MessageEmbed()
+        .addField(
+            'Uso correcto:',
+            `> ${this.prefix}tag [add/edit/delete] [tag_name] <propiedades>`)
+            .setFooter(`Para ver las propiedades usa: ${this.prefix}tag propiedades`)
+        if (!args[0]) msg.channel.send(embedCorrect)
         switch (args[0].toLowerCase()) {
             case 'add': {
                 if (!args[1]) return msg.channel.send('Pon un nombre válido')
@@ -89,6 +91,19 @@ module.exports = class TagsCommand extends BaseCommand {
                 let tag = await this.client.db.tags.findOneAndDelete({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec()
                 if (!tag) return msg.channel.send('No existe un tag con ese nombre')
                 msg.channel.send(`Tag con el nombre **${args[1].toLowerCase()}** eliminado correctamente`)
+                break;
+            }
+            case 'propiedades':
+            case 'properties':{
+                msg.channel.send(`**Propiedades de un embed**
+> \`{message:[text]}\` - Mensajes normales.
+> \`{embed:[embed_name]}\` - Insertar un embed ya creado.
+> \`{addRole:[rolID]}\` - Añade un rol.
+> \`{removeRole:[roleID]}\` - Remueve un rol.`)
+                break;
+            }
+            default: {
+                msg.channel.send(embedCorrect)
                 break;
             }
         }
