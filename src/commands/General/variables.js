@@ -32,7 +32,7 @@ module.exports = class VariablesCommand extends BaseCommand {
 \`{server.id}\` - ID del servidor (e.j. 773629394894848030)
 \`{server.membercount}\` - número de miembros en total
 \`{server.membercount.nobots}\` - número de miembros no bots
-\`{server.membercount.nobots}\` - número de miembros bots
+\`{server.membercount.bots}\` - número de miembros bots
 \`{server.rolecount}\` - número roles
 \`{server.channelcount}\` - número canales en total
 \`{server.channelcount.voice}\` - número canales de voz
@@ -49,7 +49,7 @@ module.exports = class VariablesCommand extends BaseCommand {
                         `\`{server.owner}\` - mención al owner (e.j. @Aviii.#0721)
 \`{server.owner.id}\` - ID del owner (e.j. 710880777662890095)
 \`{server.owner.nick}\` - apodo del owner, si no tiene devolvera "No tiene apodo."
-\`{server.owne.avatar}\` - link de la foto de perfil`
+\`{server.owner.avatar}\` - link de la foto de perfil`
                     )
                     .addField(
                         `Información de un Canal`,
