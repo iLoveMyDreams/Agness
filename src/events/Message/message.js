@@ -5,7 +5,7 @@ module.exports = class MessageEvent {
     }
 
     async run(msg) {
-        let prefix = '.'
+        let prefix = 'a?'
         if (msg.guild) {
             const modelo = await this.client.db.prefix.findOne({ _id: msg.guild.id }).exec()
             prefix = modelo ? modelo.prefix : 'a?'
