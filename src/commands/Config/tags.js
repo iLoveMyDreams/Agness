@@ -33,7 +33,7 @@ module.exports = class TagsCommand extends BaseCommand {
                 }
                 variables.forEach((variable) => {
                     let [name, ...values] = variable.split(':')
-                    if (!Object.keys(options).includes(name)) return;
+                    if (!Object.keys(options).concat('addRole', 'removeRole').includes(name)) return;
                     if (name === 'addRole') name = 'addrole'
                     if (name === 'removeRole') name = 'removerole'
                     if (['addrole', 'removerole'].includes(name)) options[name] = values.map((r) => msg.guild.roles.resolve(r));
@@ -71,7 +71,7 @@ module.exports = class TagsCommand extends BaseCommand {
                 }
                 variables.forEach((variable) => {
                     let [name, ...values] = variable.split(':')
-                    if (!Object.keys(options).includes(name)) return;
+                    if (!Object.keys(options).concat('addRole', 'removeRole').includes(name)) return;
                     if (name === 'addRole') name = 'addrole'
                     if (name === 'removeRole') name = 'removerole'
                     if (['addrole', 'removerole'].includes(name)) options[name] = values.map((r) => msg.guild.roles.resolve(r));
