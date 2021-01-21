@@ -17,7 +17,7 @@ module.exports = class TagsCommand extends BaseCommand {
             'Uso correcto:',
             `> ${this.prefix}tag [add/edit/delete] [tag_name] <propiedades>`)
             .setFooter(`Para ver las propiedades usa: ${this.prefix}tag propiedades`)
-        if (!args[0]) msg.channel.send(embedCorrect)
+        if (!args[0]) return  msg.channel.send(embedCorrect)
         switch (args[0].toLowerCase()) {
             case 'add': {
                 if (!args[1]) return msg.channel.send('Pon un nombre válido')
