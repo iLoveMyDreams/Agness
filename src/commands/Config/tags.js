@@ -21,7 +21,7 @@ module.exports = class TagsCommand extends BaseCommand {
         switch (args[0].toLowerCase()) {
             case 'add': {
                 const lista = await this.client.db.tags.find({ guildID: msg.guild.id }).exec()
-                if(lista.length >= 10) return msg.channel.send('> Por ahora solo se pueden tener 10 tags por servidor')
+                if (lista.length >= 10) return msg.channel.send('> Por ahora solo se pueden tener 10 tags por servidor')
                 if (!args[1]) return msg.channel.send('Pon un nombre válido')
                 if (this.client.commands.find(c => c.name === args[1].toLowerCase() || c.alias.includes(args[1].toLowerCase()))) return msg.channel.send('No puedes crear un tag con el nombre de un comando')
                 let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec()

@@ -7,16 +7,16 @@ module.exports = class VariablesCommand extends BaseCommand {
         })
     }
 
-    async run(msg, args) {
+    async run(msg) {
         const embed = new Discord.MessageEmbed()
-                    .setTitle(`Variables de Asuna.`)
-                    .setDescription(
-                        `Estas variables pueden ser usadas editando embeds y en los mensajes de bienvenida/despedida.`
-                    )
-                    .setColor('#fab1d7')
-                    .addField(
-                        `Información del Usuario`,
-                        `\`{user}\` - @mencion (e.j. @Aviii.#0721)
+            .setTitle(`Variables de Asuna.`)
+            .setDescription(
+                `Estas variables pueden ser usadas editando embeds y en los mensajes de bienvenida/despedida.`
+            )
+            .setColor('#fab1d7')
+            .addField(
+                `Información del Usuario`,
+                `\`{user}\` - @mencion (e.j. @Aviii.#0721)
 \`{user.name}\` - nombre de usuario (e.j. Aviii.)
 \`{user.discrim}\` - tag del usuario (e.j. 0721)
 \`{user.nick}\` - apodo del miembro, si no tiene devolvera "No tiene apodo."
@@ -24,10 +24,10 @@ module.exports = class VariablesCommand extends BaseCommand {
 \`{user.joindate}\` - fecha en la que se unió al servidor
 \`{user.id}\` - ID del usuario (e.j. 710880777662890095)
 \`{user.avatar}\` - link de la foto de perfil`
-                    )
-                    .addField(
-                        `Información del Servidor`,
-                        `\`{server}\` - nombre del servidor (e.j. Asuna's Support)
+            )
+            .addField(
+                `Información del Servidor`,
+                `\`{server}\` - nombre del servidor (e.j. Asuna's Support)
 \`{server.prefix}\` - prefijo del servidor (por defecto: a?)
 \`{server.id}\` - ID del servidor (e.j. 773629394894848030)
 \`{server.membercount}\` - número de miembros en total
@@ -43,23 +43,23 @@ module.exports = class VariablesCommand extends BaseCommand {
 \`{server.boostlevel}\` - nivel del servidor
 \`{server.boostcount}\` - cantidad de boosts del servidor
 \`{server.icon}\` - link de la foto del servidor`
-                    )
-                    .addField(
-                        `Información del Owner/del servidor`,
-                        `\`{server.owner}\` - mención al owner (e.j. @Aviii.#0721)
+            )
+            .addField(
+                `Información del Owner/del servidor`,
+                `\`{server.owner}\` - mención al owner (e.j. @Aviii.#0721)
 \`{server.owner.id}\` - ID del owner (e.j. 710880777662890095)
 \`{server.owner.nick}\` - apodo del owner, si no tiene devolvera "No tiene apodo."
 \`{server.owner.avatar}\` - link de la foto de perfil`
-                    )
-                    .addField(
-                        `Información de un Canal`,
-                        `\`{channel}\` - mención del canal (e.j. #memes)
+            )
+            .addField(
+                `Información de un Canal`,
+                `\`{channel}\` - mención del canal (e.j. #memes)
 \`{channel.id}\` - ID del canal (e.j. 773629394894848033)
 \`{channel.name}\` - nombre del canal (e.j. memes)
 \`{channel.createdate}\` - fecha de creacion del canal`
-                    )
-                    .setFooter(`Asuna variables`)
-                    .setTimestamp()
-                msg.channel.send(embed)
+            )
+            .setFooter(`Asuna variables`)
+            .setTimestamp()
+        msg.channel.send(embed)
     }
 }
