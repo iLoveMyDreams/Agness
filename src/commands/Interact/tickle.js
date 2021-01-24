@@ -15,9 +15,10 @@ module.exports = class TickleCommand extends BaseCommand {
         if (!mention) return msg.channel.send('Menciona a alguien para hacerle cosquillas.')
         if (mention.id === msg.author.id) return msg.channel.send('No podés cosquillas a ti mismo')
         let embed = new Discord.MessageEmbed()
-            .setColor('#FDB2A2')
+            .setColor(this.client.color)
             .setDescription(`**${msg.author.username}** le hace cosquillas a **${mention.user.username}**`)
-            .setImage((await this.client.nekos.sfw.tickle()).url)
+            .attachFiles([new Discord.MessageAttachment((await this.client.nekos.sfw.tickle()).url, "AsunaTickle.gif")])
+            .setImage('attachment://AsunaTickle.gif')
         msg.channel.send(embed)
     }
 }

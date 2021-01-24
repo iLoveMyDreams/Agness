@@ -11,9 +11,10 @@ module.exports = class CatCommand extends BaseCommand {
 
     async run(msg) {
         let embed = new Discord.MessageEmbed()
-            .setColor('#FDB2A2')
+            .setColor(this.client.color)
             .setDescription(`**${msg.author.username}** mira un gatito`)
-            .setImage((await this.client.nekos.sfw.meow()).url)
+            .attachFiles([new Discord.MessageAttachment((await this.client.nekos.sfw.meow()).url, "AsunaCat.png")])
+            .setImage('attachment://AsunaCat.png')
         msg.channel.send(embed)
     }
 }

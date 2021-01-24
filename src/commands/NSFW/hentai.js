@@ -11,9 +11,10 @@ module.exports = class HentaiCommand extends BaseCommand {
 
     async run(msg) {
         let embed = new Discord.MessageEmbed()
-            .setColor('#FDB2A2')
+            .setColor(this.client.color)
             .setDescription(`**${msg.author.username}** Disfruta de las Imágenes. ^^`)
-            .setImage((await this.client.nekos.nsfw.randomHentaiGif()).url)
+            .attachFiles([new Discord.MessageAttachment((await this.client.nekos.nsfw.randomHentaiGif()).url, "AsunaHentai.gif")])
+            .setImage('attachment://AsunaHentai.gif')
         msg.channel.send(embed)
     }
 }

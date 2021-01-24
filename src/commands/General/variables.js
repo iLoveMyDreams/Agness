@@ -13,7 +13,7 @@ module.exports = class VariablesCommand extends BaseCommand {
             .setDescription(
                 `Estas variables pueden ser usadas editando embeds y en los mensajes de bienvenida/despedida.`
             )
-            .setColor('#fab1d7')
+            .setColor(this.client.color)
             .addField(
                 `Información del Usuario`,
                 `\`{user}\` - @mencion (e.j. @Aviii.#0721)

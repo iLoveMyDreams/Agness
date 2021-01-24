@@ -15,9 +15,10 @@ module.exports = class FeedCommand extends BaseCommand {
         if (!mention) return msg.channel.send('Menciona a alguien para darle de comer ^^')
         if (mention.id === msg.author.id) return msg.channel.send('No podés darte de comer a ti mismo')
         let embed = new Discord.MessageEmbed()
-            .setColor('#FDB2A2')
+            .setColor(this.client.color)
             .setDescription(`**${msg.author.username}** le dio de comer a **${mention.user.username}**`)
-            .setImage((await this.client.nekos.sfw.feed()).url)
+            .attachFiles([new Discord.MessageAttachment((await this.client.nekos.sfw.feed()).url, "AsunaFeed.gif")])
+            .setImage('attachment://AsunaFeed.gif')
         msg.channel.send(embed)
     }
 }

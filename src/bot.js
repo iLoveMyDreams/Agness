@@ -20,6 +20,7 @@ new (
             this.loadEvents()
             this.login(process.env.TOKEN)
             this.nekos = new nekosClient()
+            this.color = '#FDB2A2'
         }
 
         loadEvents() {

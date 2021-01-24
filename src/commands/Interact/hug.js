@@ -15,9 +15,10 @@ module.exports = class HugCommand extends BaseCommand {
         if (!mention) return msg.channel.send('Menciona a alguien para darle un abrazo')
         if (mention.id === msg.author.id) return msg.channel.send('No podés abrazarte a ti mismo')
         let embed = new Discord.MessageEmbed()
-            .setColor('#FDB2A2')
+            .setColor(this.client.color)
             .setDescription(`**${msg.author.username}** le dio un cálido abrazo a **${mention.user.username}**`)
-            .setImage((await this.client.nekos.sfw.hug()).url)
+            .attachFiles([new Discord.MessageAttachment((await this.client.nekos.sfw.hug()).url, "AsunaHug.gif")])
+            .setImage('attachment://AsunaHug.gif')
         msg.channel.send(embed)
     }
 }

@@ -10,7 +10,7 @@ module.exports = class HelpCommand extends BaseCommand {
 
     async run(msg, args) {
         const embed = new Discord.MessageEmbed()
-            .setColor('#FDB2A2')
+            .setColor(this.client.color)
         if (!args[0]) {
             embed.setTitle(`Panel de ayuda de ${this.client.user.username}`)
                 .setDescription(`Hola! en estos momentos cuento con 5 categorias y ${this.client.commands.size - 1} comandos
@@ -62,7 +62,7 @@ Si necesitas una informacion mas detallada de cada comando puedes utilizar:
   Si necesitas información mas detallada de cada uno de los comandos puedes usar:
   > ${this.prefix}help <comando>`)
                 .addField(`Lista de comandos:`, `\`\`\`\n${cmdList}\n\`\`\``)
-                .setColor('#FDB2A2')
+                .setColor(this.client.color)
 
             msg.channel.send(embed_list);
         } else if (cmd) {
@@ -86,7 +86,7 @@ Si necesitas una informacion mas detallada de cada comando puedes utilizar:
   ${cmd.memberChannelPermissions.length ? cmd.memberChannelPermissions.join(', ') : 'No necesita.'}
   > En el servidor:
   ${cmd.memberGuildPermissions.length ? cmd.memberGuildPermissions.join(', ') : 'No necesita.'}`, true)
-                .setColor('#FDB2A2')
+                .setColor(this.client.color)
             msg.channel.send(comand_embed);
         } else {
             msg.channel.send(`> Comando o categoria no encontrados.`);

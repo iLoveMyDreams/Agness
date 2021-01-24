@@ -24,7 +24,7 @@ module.exports = class EmbedCommand extends BaseCommand {
                 .addField(`**2. Editando nuestro embed**`, `Bueno llegó la hora de editarlo de la manera que tu quieras, ¡Tu creatividad importa!, a continuación te muestro las propiedades del embed:\n> \`author\` - [ text | link de imagen(opcional) ]\n> \`thumbnail\` - [ link imagen ])\n> \`title\` - [ text ]\n> \`description\` - [ text ]\n> \`footer\` - [ text | link de imagen(opcional) ]\n> \`image\` - [ link de imagen(opcional) ]\n> \`color\` - [ hex code ]\n> \`timestamp\` - [ yes/no ]\nEl modo de uso es intuitivo con lo cual les sera más fácil aprenderse cada propiedad y el modo de edición del embed, y es el siguiente:\n> \`${this.prefix}embed edit [name] [propiedad] [valor]\``)
                 .addField(`**EJEMPLO**`, `Ahora veamos un pequeño ejemplo con algunas propiedades, el cual les permitirá familiarizarse con el simple formato\nComenzamos creando un embed el cual llamaremos \`ejemplo\`.\n> \`${this.prefix}embed create ejemplo\`\nAhora a ponerle un título atractivo\n> \`${this.prefix}embed edit ejemplo title Estoy aprendiendo a editar un embed\`\nBueno ahora pongámosle una descripción.\n> \`${this.prefix}embed edit ejemplo description Esta descripción se ve muy linda\`\nListo pongámosle una imagen y tendremos un simple embed, ten cuidado y pon links que verdaderamente contengan imágenes/gifs. En este caso pondremos un divertido gif.\n> \`${this.prefix}embed edit ejemplo image https://i.imgur.com/mXOijAT.gif\`\nPor último pongámosle un color el cual tiene que ser en código hexadecimal sin el #, si no lo conoces puedes ver los colores [aqui](https://htmlcolorcodes.com/es/).\n> \`${this.prefix}embed edit ejemplo color e658ff\`\nListo esto es un simple embed que si quieres puedes probar tu mismo.`)
                 .addField(`**VARIABLES**`, `Primero que nada ¿qué son las variables? Bueno para eso estoy, las propiedades nos permitiran que podamos hacer cosas "automatizadas" de manera que se puedan remplazar por nombres, canales, links, entre otros, se pueden usar en embeds como también en texto, para las bienvenidas y despedidas. Aquí te doy algunos:\n\`{user}\` - @mención (e.j. @Aviii#5859)\n\`{server}\` - nombre del servidor (e.j. Asuna's Support)\n\`{server.prefix}\` - prefijo del servidor (por defecto: s!)\n Puedes encontrar la lista completa con \`${this.prefix}variables\``)
-                .setColor('#fab1d7')
+                .setColor(this.client.color)
                 .setTimestamp()
                 .setFooter(`Asuna embeds`)
                 .setImage('https://i.imgur.com/c3Gii3Z.png')
@@ -53,6 +53,7 @@ module.exports = class EmbedCommand extends BaseCommand {
             case 'list': {
                 const lista = await this.client.db.embed.find({ guildID: msg.guild.id }).exec()
                 const embed = new Discord.MessageEmbed()
+                .setColor(this.client.color)
                 if (!lista.length) {
                     embed.setDescription('> El servidor no cuenta con ningún embed')
                     return msg.channel.send(embed)

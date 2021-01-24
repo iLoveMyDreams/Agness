@@ -15,9 +15,10 @@ module.exports = class PatCommand extends BaseCommand {
         if (!mention) return msg.channel.send('Menciona a alguien para darle palmaditas')
         if (mention.id === msg.author.id) return msg.channel.send('No podés darte palmaditas a ti mismo')
         let embed = new Discord.MessageEmbed()
-            .setColor('#FDB2A2')
+            .setColor(this.client.color)
             .setDescription(`**${msg.author.username}** le da palmaditas a **${mention.user.username}**`)
-            .setImage((await this.client.nekos.sfw.pat()).url)
+            .attachFiles([new Discord.MessageAttachment((await this.client.nekos.sfw.pat()).url, "AsunaPat.gif")])
+            .setImage('attachment://AsunaPat.gif')
         msg.channel.send(embed)
     }
 }

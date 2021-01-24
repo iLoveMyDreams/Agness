@@ -11,9 +11,10 @@ module.exports = class FeetCommand extends BaseCommand {
 
     async run(msg) {
         let embed = new Discord.MessageEmbed()
-            .setColor('#FDB2A2')
+            .setColor(this.client.color)
             .setDescription(`**${msg.author.username}** Disfruta de las Imágenes. ^^`)
-            .setImage((await this.client.nekos.nsfw.feetGif()).url)
+            .attachFiles([new Discord.MessageAttachment((await this.client.nekos.nsfw.feetGif()).url, "AsunaFeet.gif")])
+            .setImage('attachment://AsunaFeet.gif')
         msg.channel.send(embed)
     }
 }

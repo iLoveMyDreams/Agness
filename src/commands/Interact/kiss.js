@@ -15,9 +15,10 @@ module.exports = class KissCommand extends BaseCommand {
         if (!mention) return msg.channel.send('Menciona a alguien para darle un beso')
         if (mention.id === msg.author.id) return msg.channel.send('No podés besarte a ti mismo')
         let embed = new Discord.MessageEmbed()
-            .setColor('#FDB2A2')
+            .setColor(this.client.color)
             .setDescription(`**${msg.author.username}** le dio beso a **${mention.user.username}**`)
-            .setImage((await this.client.nekos.sfw.kiss()).url)
+            .attachFiles([new Discord.MessageAttachment((await this.client.nekos.sfw.kiss()).url, "AsunaKiss.gif")])
+            .setImage('attachment://AsunaKiss.gif')
         msg.channel.send(embed)
     }
 }
