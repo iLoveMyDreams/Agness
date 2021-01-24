@@ -5,6 +5,9 @@ module.exports = class LeaveCommand extends BaseCommand {
         super(client, {
             name: 'leave',
             alias: ['setleave'],
+            description: 'Establece el canal y los mensajes que mas prefieras cuando alguien salga de tu servidor >:c',
+            usage: (prefix) => `${prefix}leave [channel/message] <propiedades>`,
+            example: (prefix) => `${prefix}leave channel #despedidas`,
             category: 'Config',
             memberGuildPermissions: ['ADMINISTRATOR']
         })

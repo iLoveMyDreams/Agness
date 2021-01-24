@@ -5,6 +5,9 @@ module.exports = class TagsCommand extends BaseCommand {
         super(client, {
             name: 'tag',
             alias: ['tags'],
+            description: 'Crea comandos personalizados para tu servidor.',
+            usage: (prefix) => `${prefix}tag [add/edit/delete] [tag_name] <propiedades>`,
+            example: (prefix) => `${prefix}tag add cool (message:Si que eres cool!)`,
             botGuildPermissions: ['MANAGE_ROLES'],
             memberGuildPermissions: ['ADMINISTRATOR'],
             category: 'Config'

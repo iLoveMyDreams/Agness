@@ -6,6 +6,9 @@ module.exports = class EmbedCommand extends BaseCommand {
         super(client, {
             name: 'embed',
             alias: ['eb', 'emb'],
+            description: 'Crea embeds personalizados para tus tags, bienvenidas y despedidas. ¡Tu pones el diseño!',
+            usage: (prefix) => `${prefix}embed [create/edit/preview/delete/list] <embed_name> <propiedades>`,
+            example: (prefix) => `${prefix}embed create bienvenida`,
             category: 'Config',
             memberGuildPermissions: ['ADMINISTRATOR'],
         })

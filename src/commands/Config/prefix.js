@@ -5,6 +5,9 @@ module.exports = class PrefixCommand extends BaseCommand {
         super(client, {
             name: 'prefix',
             category: 'Config',
+            description: 'Establece mi pefijo para poder usarlo como quieras',
+            usage: (prefix) => `${prefix}prefix <newPrefix>`,
+            example: (prefix) => `${prefix}prefix a!`,
             memberGuildPermissions: ['ADMINISTRATOR']
         })
     }

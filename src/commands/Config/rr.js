@@ -5,6 +5,9 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
         super(client, {
             name: 'rrole',
             alias: ['rroles', 'rr'],
+            description: 'Puedes poner roles por reacciones en el mensaje que quieras, roles de colores, roles para pings, todo es posible!',
+            usage: (prefix) => `${prefix}rrole [@role] [type] [messageID] <#channel>`,
+            example: (prefix) => `${prefix}rrole @Guapo normal 12345`,
             botGuildPermissions: ['MANAGE_ROLES'],
             memberGuildPermissions: ['ADMINISTRATOR'],
             category: 'Config'
@@ -16,7 +19,7 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
         const embed = new Discord.MessageEmbed()
             .setColor('#FDB2A2')
         if (!args[0]) {
-            embed.setDescription(`> Uso correcto: ${this.prefix}rr [@role] [type] [messageID] <#channel>`)
+            embed.setDescription(`> Uso correcto: ${this.prefix}rrole [@role] [type] [messageID] <#channel>`)
             return msg.channel.send(embed)
         }
         if(args[0].toLowerCase() === 'types'){
@@ -26,7 +29,7 @@ Only => Solo se podrá obtener un reaction rol del mismo tipo en el mensaje.`)
         return msg.channel.send(embed)
         }
         if (!args[1] || !args[2]) {
-            embed.setDescription(`> Uso correcto: ${this.prefix}rr [@role] [type] [messageID] <#channel>`)
+            embed.setDescription(`> Uso correcto: ${this.prefix}rrole [@role] [type] [messageID] <#channel>`)
             return msg.channel.send(embed)
         }
         //rol: 0
