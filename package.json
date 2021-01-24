@@ -8,9 +8,12 @@
   },
   "keywords": [],
   "author": "AviiiDev",
-  "contributors": ["Drylotrans"],
+  "contributors": [
+    "Drylotrans"
+  ],
   "license": "MIT",
   "dependencies": {
+    "canvas": "^2.6.1",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "image-url-validator": "^0.2.4",
