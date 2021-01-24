@@ -35,7 +35,7 @@ Only => Solo se podrá obtener un reaction rol del mismo tipo en el mensaje.`)
         //rol: 0
 
         const matchRole = args[0].match(/^<@&(\d+)>$/);
-        let rol = matchRole ? msg.guild.roles.resolve(matchRole[0]) : msg.guild.roles.resolve(args[0])
+        let rol = matchRole ? msg.guild.roles.resolve(matchRole[1]) : msg.guild.roles.resolve(args[0])
 
         if (!rol) {
             embed.setDescription('> No pude encontrar ese rol o no es válido.')
@@ -63,7 +63,7 @@ Only => Solo se podrá obtener un reaction rol del mismo tipo en el mensaje.`)
         //canal 3
 
         const matchChannel = args[3] ? args[3].match(/^<#(\d+)>$/) : false
-        let canal = args[3] ? matchChannel ? msg.guild.channels.resolve(matchChannel[0]) : msg.guild.channels.resolve(args[3]) : msg.channel
+        let canal = args[3] ? matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[3]) : msg.channel
 
         if (!canal) {
             embed.setDescription('> No pude encontrar el canal o no es válido.')
