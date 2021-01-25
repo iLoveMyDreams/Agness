@@ -6,7 +6,8 @@ const tags = Schema({
     message: { type: String, default: '' },
     embed_name: { type: String, default: '' },
     addRoleID: [String],
-    deleteRoleID: [String]
+    deleteRoleID: [String],
+    image: { type: String, default: '' }
 });
 
 module.exports = model('tags', tags);

@@ -1,3 +1,5 @@
+const isImageURL = require('image-url-validator')
+
 module.exports = class MessageEvent {
     constructor(client) {
         this.client = client;
@@ -36,6 +38,7 @@ module.exports = class MessageEvent {
         if (!tag) return false
         let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: tag.embed_name }).exec()
         const replaceText = (text) => this.client.replaceText(text, { channel: msg.channel, member: msg.member, prefix })
+        let files = tag.image ? [new Discord.MessageAttachment(tag.image, 'image.png')] : null
         let embed = embed_DB ? new Discord.MessageEmbed() : null
         if (embed_DB) {
             if (embed_DB.author_text) {
@@ -59,17 +62,18 @@ module.exports = class MessageEvent {
         tag.addRoleID.forEach((rId) => {
             let role = msg.guild.roles.resolve(rId)
             if (!role) return;
-            if(!role.editable) return;
+            if (!role.editable) return;
             msg.member.roles.add(role.id)
         })
         tag.deleteRoleID.forEach((rId) => {
             let role = msg.guild.roles.resolve(rId)
             if (!role) return;
-            if(!role.editable) return;
+            if (!role.editable) return;
             msg.member.roles.remove(role.id)
         })
-        if (!tag.message && !embed) return;
-        msg.channel.send(await replaceText(tag.message), { embed })
+        console.log(files, tag.image)
+        if (!tag.message && !embed && !files) return;
+        msg.channel.send(await replaceText(tag.message), { embed, files })
         return true
     }
 }

@@ -1,4 +1,5 @@
 const BaseCommand = require('../../Utils/BaseCommand.js')
+const isImageURL = require('image-url-validator')
 
 module.exports = class TagsCommand extends BaseCommand {
     constructor(client) {
@@ -44,12 +45,16 @@ module.exports = class TagsCommand extends BaseCommand {
                     if (['addrole', 'removerole'].includes(name)) options[name] = values.map((r) => msg.guild.roles.resolve(r));
                     else options[name] = !values[1] && values[0] ? values[0] : values
                 })
+                options.image = ''
                 options.message = ''
                 variableMessage.forEach((variable) => {
-                    let [name, value] = variable.split(':')
-                    if (name === 'message') options.message = value
+                    let [name, ...value] = variable.split(':')
+                    if (name === 'image') options.image = value.join(':')
+                    else if (name === 'message') options.message = value.join(':')
                 })
-                if (!options.message && !options.embed) return msg.channel.send('Debes poner un mensaje o embed para enviar o los dos')
+                if (!options.message && !options.embed && !options.image) return msg.channel.send('Debes poner un mensaje, embed o imagen para enviar o los tres')
+                if (options.image)
+                    if (!(await isImageURL(options.image))) return message.channel.send('Debes poner una imagen válida.');
                 if (options.embed) {
                     let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: options.embed }).exec()
                     if (!checkear) return msg.channel.send('No hay un embed con ese nombre')
@@ -62,7 +67,8 @@ module.exports = class TagsCommand extends BaseCommand {
                     removeRoleID: options.removerole.map((r) => r.id),
                     addRoleID: options.addrole.map((r) => r.id),
                     embed_name: options.embed,
-                    message: options.message
+                    message: options.message,
+                    image: options.image
                 })
                 tag.save()
                 msg.channel.send(`Tag con el nombre **${args[1].toLowerCase()}** creado correctamente`)
@@ -87,12 +93,16 @@ module.exports = class TagsCommand extends BaseCommand {
                     if (['addrole', 'removerole'].includes(name)) options[name] = values.map((r) => msg.guild.roles.resolve(r));
                     else options[name] = !values[1] && values[0] ? values[0] : values
                 })
+                options.image = ''
                 options.message = ''
                 variableMessage.forEach((variable) => {
-                    let [name, value] = variable.split(':')
-                    if (name === 'message') options.message = value
+                    let [name, ...value] = variable.split(':')
+                    if (name === 'image') options.image = value.join(':')
+                    else if (name === 'message') options.message = value.join(':')
                 })
-                if (!options.message && !options.embed) return msg.channel.send('Debes poner un mensaje o embed para enviar o los dos')
+                if (!options.message && !options.embed && !options.image) return msg.channel.send('Debes poner un mensaje, embed o imagen para enviar o los tres')
+                if (options.image)
+                    if (!(await isImageURL(options.image))) return message.channel.send('Debes poner una imagen válida.');
                 if (options.embed) {
                     let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: options.embed }).exec()
                     if (!checkear) return msg.channel.send('No hay un embed con ese nombre')
@@ -103,6 +113,7 @@ module.exports = class TagsCommand extends BaseCommand {
                 tag.addRoleID = options.addrole.map((r) => r.id)
                 tag.embed_name = options.embed
                 tag.message = options.message
+                tag.image = options.image
                 tag.save()
                 msg.channel.send(`Tag con el nombre **${args[1].toLowerCase()}** editado correctamente`)
                 break;
@@ -123,9 +134,9 @@ module.exports = class TagsCommand extends BaseCommand {
                 }
                 embedList.setAuthor(
                     `Lista de tags de ${msg.guild.name}`,
-                    msg.guild.iconURL() ?
-                        msg.guild.iconURL({ dynamic: true }) :
-                        null
+                    msg.guild.iconURL()
+                        ? msg.guild.iconURL({ dynamic: true })
+                        : null
                 )
                     .setDescription(lista.map(x => x.name).join('\n'))
                 msg.channel.send(embedList)
@@ -135,6 +146,7 @@ module.exports = class TagsCommand extends BaseCommand {
             case 'properties': {
                 msg.channel.send(`**Propiedades de un tag**
 > \`(message:[text])\` - Mensajes normales.
+> \`(image:[url])\` - Envía la imagen como archivo.
 > \`{embed:[embed_name]}\` - Insertar un embed ya creado.
 > \`{addRole:[rolID]}\` - Añade un rol.
 > \`{removeRole:[roleID]}\` - Remueve un rol.`)
