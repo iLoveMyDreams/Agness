@@ -34,7 +34,7 @@ module.exports = class EmbedCommand extends BaseCommand {
         switch (args[0].toLowerCase()) {
             case 'create': {
                 const lista = await this.client.db.embed.find({ guildID: msg.guild.id }).exec()
-                if(lista.length >= 10) return msg.channel.send('> Por ahora solo se pueden tener 10 embeds por servidor')
+                if (lista.length >= 10) return msg.channel.send('> Por ahora solo se pueden tener 10 embeds por servidor')
                 if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
                 let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec()
                 if (checkear) return msg.channel.send('> Ya hay un embed con ese nombre')
@@ -53,7 +53,7 @@ module.exports = class EmbedCommand extends BaseCommand {
             case 'list': {
                 const lista = await this.client.db.embed.find({ guildID: msg.guild.id }).exec()
                 const embed = new Discord.MessageEmbed()
-                .setColor(this.client.color)
+                    .setColor(this.client.color)
                 if (!lista.length) {
                     embed.setDescription('> El servidor no cuenta con ningún embed')
                     return msg.channel.send(embed)
@@ -81,65 +81,91 @@ module.exports = class EmbedCommand extends BaseCommand {
                 if (edit == 'author') {
                     if (!args[3]) return msg.channel.send('Coloca algo')
                     const parts = args.slice(3).join(' ').split(' | ')
-                    if (parts.length === 1) {
-                        embed_DB.author_text = parts[0]
-
-                    } else if (parts.length === 2) {
-                        if (!exceptions.includes(parts[1])) {
-                            if (
-                                !(await isImageURL(parts[1]))
-                            ) return msg.channel.send('Pon una url válida para la imagen.')
+                    if (args[3] !== 'Null') {
+                        if (parts.length === 1) {
+                            embed_DB.author_text = parts[0]
+                            embed_DB.author_image = ''
+                        } else if (parts.length === 2) {
+                            if (!exceptions.includes(parts[1])) {
+                                if (
+                                    !(await isImageURL(parts[1]))
+                                ) return msg.channel.send('Pon una url válida para la imagen.')
+                            }
+                            embed_DB.author_text = parts[0]
+                            embed_DB.author_image = parts[1]
+                        } else {
+                            return msg.channel.send('> Creo que te equivocaste. Intenta de nuevo')
                         }
-                        embed_DB.author_text = parts[0]
-                        embed_DB.author_image = parts[1]
                     } else {
-                        return msg.channel.send('> Creo que te equivocaste. Intenta de nuevo')
+                        embed_DB.author_text = ''
+                        embed_DB.author_image = ''
                     }
                 }
                 else if (edit === 'title') {
                     if (!args[3]) return msg.channel.send('Coloca algo')
-                    embed_DB.title = args.slice(3).join(' ')
+                    if (args[3] !== 'Null') {
+                        embed_DB.title = args.slice(3).join(' ')
+                    } else {
+                        embed_DB.title = ''
+                    }
                 }
                 else if (edit === 'description') {
                     if (!args[3]) return msg.channel.send('Coloca algo')
-                    embed_DB.description = args.slice(3).join(' ')
+                    if (args[3] !== 'Null') {
+                        embed_DB.description = args.slice(3).join(' ')
+                    } else {
+                        embed_DB.description = ''
+                    }
                 }
                 else if (edit == 'thumbnail') {
                     if (!args[3]) return msg.channel.send('Coloca la imagen')
                     if (args[4]) return msg.channel.send('Qué tratas de hacer?')
-                    if (!exceptions.includes(args[3])) {
-                        if (
-                            !(await isImageURL(args[3]))
-                        ) return msg.channel.send('Pon una url valida para la imagen.')
+                    if (args[3] !== 'Null') {
+                        if (!exceptions.includes(args[3])) {
+                            if (
+                                !(await isImageURL(args[3]))
+                            ) return msg.channel.send('Pon una url valida para la imagen.')
+                        }
+                        embed_DB.thumbnail = args[3]
+                    } else {
+                        embed_DB.thumbnail = ''
                     }
-                    embed_DB.thumbnail = args[3]
                 }
                 else if (edit == 'image') {
                     if (!args[3]) return msg.channel.send('Coloca la imagen')
                     if (args[4]) return msg.channel.send('Qué tratas de hacer?')
-                    if (!exceptions.includes(args[3])) {
-                        if (
-                            !(await isImageURL(args[3]))
-                        ) return msg.channel.send('Pon una url válida para la imagen.')
+                    if (args[3] !== 'Null') {
+                        if (!exceptions.includes(args[3])) {
+                            if (
+                                !(await isImageURL(args[3]))
+                            ) return msg.channel.send('Pon una url válida para la imagen.')
+                        }
+                        embed_DB.image = args[3]
+                    } else {
+                        embed_DB.image = ''
                     }
-                    embed_DB.image = args[3]
                 }
                 else if (edit == 'footer') {
                     if (!args[3]) return msg.channel.send('Coloca algo')
                     const parts = args.slice(3).join(' ').split(' | ')
-                    if (parts.length === 1) {
-                        embed_DB.footer_text = parts[0]
-
-                    } else if (parts.length === 2) {
-                        if (!exceptions.includes(parts[1])) {
-                            if (
-                                !(await isImageURL(parts[1]))
-                            ) return msg.channel.send('Pon una url válida para la imagen.')
+                    if (args[3] !== 'Null') {
+                        if (parts.length === 1) {
+                            embed_DB.footer_text = parts[0]
+                            embed_DB.footer_image = ''
+                        } else if (parts.length === 2) {
+                            if (!exceptions.includes(parts[1])) {
+                                if (
+                                    !(await isImageURL(parts[1]))
+                                ) return msg.channel.send('Pon una url válida para la imagen.')
+                            }
+                            embed_DB.footer_text = parts[0]
+                            embed_DB.footer_image = parts[1]
+                        } else {
+                            return msg.channel.send('> Creo que te equivocaste. Intenta de nuevo')
                         }
-                        embed_DB.footer_text = parts[0]
-                        embed_DB.footer_image = parts[1]
                     } else {
-                        return msg.channel.send('> Creo que te equivocaste. Intenta de nuevo')
+                        embed_DB.footer_text = ''
+                        embed_DB.footer_image = ''
                     }
                 }
                 else if (edit == 'timestamp') {
@@ -154,9 +180,13 @@ module.exports = class EmbedCommand extends BaseCommand {
                 else if (edit == 'color') {
                     if (!args[3]) return msg.channel.send('Pon un color hex sin #')
                     if (args[4]) return msg.channel.send('Qué tratas de hacer?')
-                    var isOk = /^[0-9A-F]{6}$/i.test(args[3])
-                    if (isOk === false) return msg.channel.send('¡Por favor, proporciona un código hex válido, sin #!')
-                    embed_DB.color = args[3]
+                    if (args[3] !== 'Null') {
+                        var isOk = /^[0-9A-F]{6}$/i.test(args[3])
+                        if (isOk === false) return msg.channel.send('¡Por favor, proporciona un código hex válido, sin #!')
+                        embed_DB.color = args[3]
+                    } else {
+                        embed_DB.color = ''
+                    }
                 }
                 else {
                     return msg.channel.send('> La propiedad que colocaste no es válida.')
