@@ -9,14 +9,17 @@ module.exports = class AvatarCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        const user = msg.mentions.users.first() || (await this.client.users.fetch(args[0], false, true)) ||
-            this.client.users.cache.find(a => a.username === args.join(' ')) ||
-            this.client.users.cache.find(a => a.tag === args.join(' ')) || msg.author;
+        let user = msg.mentions.users.first() ||
+            this.client.users.cache.get(args[0]) ||
+            this.client.users.cache.find(e => (e.username === args.join(" ") ||
+                (e.tag === args.join(" ")))) ||
+            (msg.guild ? (msg.guild.members.cache.find(e => (e.nickname === args.join(" ")))) : undefined) ||
+            (args[0] ? await this.client.users.fetch(args[0]).catch(() => { }) : undefined) || msg.author;
         const embed = new Discord.MessageEmbed()
             .setColor(this.client.color)
             .setDescription(`Avatar de **${user.tag}**
-> [Link del Avatar](${user.displayAvatarURL({ dynamic: true, size: 2048 })})`)
-            .setImage(user.displayAvatarURL({ dynamic: true, size: 2048 }))
+> [Link del Avatar](${user.displayAvatarURL({ dynamic: true, size: 4096 })})`)
+            .setImage(user.displayAvatarURL({ dynamic: true, size: 4096 }))
         msg.channel.send(embed)
     }
 }
