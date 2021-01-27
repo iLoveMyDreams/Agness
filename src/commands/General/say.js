@@ -9,7 +9,7 @@ module.exports = class SayCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        if (msg.deletable) await message.delete();
+        if (msg.deletable) await msg.delete();
         if (!args[0]) return msg.channel.send('> A sos re trol ?')
         if (
             (msg.content.match(/@(everyone|here)/gi) ||
