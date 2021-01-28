@@ -3,7 +3,6 @@ global.Discord = require('discord.js')
 const mongoose = require('mongoose')
 const fs = require('fs')
 const path = require('path')
-const nekosClient = require('nekos.life')
 new (
     class Asuna extends Discord.Client {
         constructor() {
@@ -19,8 +18,7 @@ new (
             this.loadCommands()
             this.loadEvents()
             this.login(process.env.TOKEN)
-            this.nekos = new nekosClient()
-            this.color = '#FDB2A2'
+            this.color = '#637cf6'
         }
 
         loadEvents() {
