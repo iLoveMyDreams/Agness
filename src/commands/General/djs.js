@@ -13,6 +13,6 @@ module.exports = class DJSCommand extends BaseCommand {
         if (!response) return msg.channel.send('No obtuve resultados');
         let embed = await response.json().catch(() => { });
         if (!embed) return msg.channel.send("No encontre nada en la documentación.")
-        message.channel.send({ embed: embed }).catch(() => { });
+        msg.channel.send({ embed: embed }).catch(() => { });
     }
 }
