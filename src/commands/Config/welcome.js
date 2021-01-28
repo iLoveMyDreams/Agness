@@ -62,7 +62,7 @@ module.exports = class WelcomeCommand extends BaseCommand {
             }
             case 'autorole':{
                 switch (args[1]) {
-                    case 'user':
+                    case 'user':{
                         let rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2])
                         if(!rol) return msg.channel.send('> Debes mencionar un rol o darme una ID')
                         let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
@@ -71,7 +71,7 @@ module.exports = class WelcomeCommand extends BaseCommand {
                         server.save()
                         msg.channel.send(`> Ahora se dara el rol ${rol} cuando un usuario entren al servidor`, { allowedMentions: { roles: [] }})
                         break;
-                
+                    }
                     case 'bot':{
                         let rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2])
                         if(!rol) return msg.channel.send('> Debes mencionar un rol o darme una ID')
@@ -80,6 +80,11 @@ module.exports = class WelcomeCommand extends BaseCommand {
                         server.botRoleID = rol.id
                         server.save()
                         msg.channel.send(`> Ahora se dara el rol ${rol} cuando un bot entren al servidor`, { allowedMentions: { roles: [] }})
+                        break;
+                    }
+                    default:{
+                        msg.channel.send(`Debes escoger que tipo a que tipo de miembro quieres dar el rol.
+> ${this.prefix}welcome autorole [user | bot] [@role | rolID]`)
                     }
                 }
                 break;

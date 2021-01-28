@@ -11,14 +11,14 @@ module.exports = class MessageEvent {
         if (!channel) return;
 
         if(!member.user.bot && server.userRoleID){
-            let rol = message.guild.roles.resolve(server.userRoleID)
+            let rol = member.guild.roles.resolve(server.userRoleID)
             if(!rol) return;
             if(!rol.editable) return;
             member.roles.add(rol.id)
         }
         
         if(member.user.bot && server.botRoleID){
-            let rol = message.guild.roles.resolve(server.botRoleID)
+            let rol = member.guild.roles.resolve(server.botRoleID)
             if(!rol) return;
             if(!rol.editable) return;
             member.roles.add(rol.id)
