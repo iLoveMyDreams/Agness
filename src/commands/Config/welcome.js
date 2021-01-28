@@ -60,6 +60,30 @@ module.exports = class WelcomeCommand extends BaseCommand {
                 }
                 break;
             }
+            case 'autorole':{
+                switch (args[1]) {
+                    case 'user':
+                        let rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2])
+                        if(!rol) return msg.channel.send('> Debes mencionar un rol o darme una ID')
+                        let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
+                        if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, userRoleID: rol.id })
+                        server.userRoleID = rol.id
+                        server.save()
+                        msg.channel.send(`> Ahora se dara el rol ${rol} cuando un usuario entren al servidor`, { allowedMentions: { roles: [] }})
+                        break;
+                
+                    case 'bot':{
+                        let rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2])
+                        if(!rol) return msg.channel.send('> Debes mencionar un rol o darme una ID')
+                        let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
+                        if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, botRoleID: rol.id })
+                        server.botRoleID = rol.id
+                        server.save()
+                        msg.channel.send(`> Ahora se dara el rol ${rol} cuando un bot entren al servidor`, { allowedMentions: { roles: [] }})
+                    }
+                }
+                break;
+            }
             default: {
                 msg.channel.send(`Pon una propiedad valida
 > welcome channel [#mencion]

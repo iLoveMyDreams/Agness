@@ -9,6 +9,20 @@ module.exports = class MessageEvent {
         if (!server) return;
         let channel = member.guild.channels.resolve(server.channelID)
         if (!channel) return;
+
+        if(!member.user.bot && server.userRoleID){
+            let rol = message.guild.roles.resolve(server.userRoleID)
+            if(!rol) return;
+            if(!rol.editable) return;
+            member.roles.add(rol.id)
+        }
+        
+        if(member.user.bot && server.botRoleID){
+            let rol = message.guild.roles.resolve(server.botRoleID)
+            if(!rol) return;
+            if(!rol.editable) return;
+            member.roles.add(rol.id)
+        }
         let embed = server.embed_name ? new Discord.MessageEmbed() : null
         let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name }).exec()
         let prefix = 'a?'
