@@ -21,31 +21,37 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
         const embed = new Discord.MessageEmbed()
             .setColor('#FDB2A2')
         if (!args[0]) {
-            embed.setDescription(`> Uso correcto: ${this.prefix}rrole [@role] [type] [messageID] <#channel>`)
+            embed.setDescription(`>>> Uso correcto:
+${this.prefix}rrole [@role] [type] [messageID] <#channel>
+${this.prefix}rrole delete [emoji] [messageID]`)
             return msg.channel.send(embed)
         }
-        if (args[0].toLowerCase() === 'types') {
-            embed.addField('Tipos:', `Normal => Se puede obtener y quitar el rol con la misma reacción.
+        switch (args[0].toLowerCase()) {
+            case 'types': {
+                embed.addField('Tipos:', `Normal => Se puede obtener y quitar el rol con la misma reacción.
 Unique => Solo se puede obtener, mas no quitar.
 Only => Solo se podrá obtener un reaction rol del mismo tipo en el mensaje.`)
-            return msg.channel.send(embed)
-        } else if (args[0].toLowerCase() === 'delete') {
-            if (!args[1] || !args[2]) {
-                embed.setDescription(`> Uso correcto: ${this.prefix}rrole delete [emoji] [messageID]`)
                 return msg.channel.send(embed)
             }
-            if (!this.emojiUnicode.test(args[1]) || !this.emojiDiscord.test(args[1])) {
-                embed.setDescription('> Debes poner un emoji.')
+            case 'delete': {
+                if (!args[1] || !args[2]) {
+                    embed.setDescription(`> Uso correcto: ${this.prefix}rrole delete [emoji] [messageID]`)
+                    return msg.channel.send(embed)
+                }
+                if (!this.emojiUnicode.test(args[1]) && !this.emojiDiscord.test(args[1])) {
+                    embed.setDescription('> Debes poner un emoji.')
+                    return msg.channel.send(embed)
+                }
+                let emojiID = args[1].includes(':') ? args[1].split(':')[2].slice(0, -1) : args[1]
+                let emojiCheck = await this.client.db.reaction.findOneAndDelete({ guildID: msg.guild.id, messageID: args[2], reaction: emojiID }).exec()
+                console.log(emojiID)
+                if (!emojiCheck) {
+                    embed.setDescription('> No se pudo eliminar el reactionrol, comprueba si ya existe uno con esa ID de mensaje y emoji dentro del servidor.')
+                    return msg.channel.send(embed)
+                }
+                embed.setDescription('> Reactionrol eliminado correctamente.')
                 return msg.channel.send(embed)
             }
-            let emojiID = this.emojiDiscord.test(args[1]) ? args[1].split(':')[1] : args[1]
-            let emojiCheck = await this.client.db.reaction.findOneAndDelete({ guildID: msg.guild.id, messageID: args[2], reaction: emojiID }).exec()
-            if (!emojiCheck) {
-                embed.setDescription('> No se pudo eliminar el reactionrol, comprueba si ya existe uno con esa ID de mensaje y emoji dentro del servidor.')
-                return msg.channel.send(embed)
-            }
-            embed.setDescription('> Reactionrol eliminado correctamente.')
-            return msg.channel.send(embed)
         }
         if (!args[1] || !args[2]) {
             embed.setDescription(`> Uso correcto: ${this.prefix}rrole [@role] [type] [messageID] <#channel>`)
