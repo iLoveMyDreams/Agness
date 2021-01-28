@@ -18,9 +18,7 @@ Si necesitas una informacion mas detallada de cada comando puedes utilizar:
 > ${this.prefix}help <comando>`)
                 .addField(`Categorias`, `> ${this.prefix}help Config • Comandos de Configuración
 > ${this.prefix}help General • Comandos en general
-> ${this.prefix}help Images • Imagenes de todo tipo
-> ${this.prefix}help Interact • Comandos Interactivo
-> ${this.prefix}help NSFW • Comandos para adultos`)
+> ${this.prefix}help Images • Imagenes de todo tipo`)
                 .addField(`Enlaces`, `**[Link de Invitación](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Servidor de Soporte](https://discord.gg/K63NqEDm86)**`)
             return msg.channel.send(embed)
         }
