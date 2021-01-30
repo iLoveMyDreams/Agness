@@ -4,7 +4,7 @@ module.exports = class AvatarCommand extends BaseCommand {
       super(client, {
         name: "avatar",
         alias: ["av", "pfp", "foto"],
-        memberChannelPermissions = ['EMBED_LINKS'],
+        memberChannelPermissions: ['EMBED_LINKS'],
       });
     }
 

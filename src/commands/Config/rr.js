@@ -10,7 +10,7 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
             example: (prefix) => `${prefix}rrole @Guapo normal 12345`,
             botGuildPermissions: ['MANAGE_ROLES'],
             memberGuildPermissions: ['ADMINISTRATOR'],
-            memberChannelPermissions = ['EMBED_LINKS'],
+            memberChannelPermissions: ['EMBED_LINKS'],
             category: 'Config'
         })
         this.types = ['normal', 'unique', 'only']
