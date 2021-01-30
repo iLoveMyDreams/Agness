@@ -6,7 +6,7 @@ module.exports = class CatCommand extends BaseCommand {
         super(client, {
             name: 'supreme',
             alias: ['goku'],
-            category: 'Images'
+            category: 'Images',
         })
     }
 

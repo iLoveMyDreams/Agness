@@ -31,6 +31,7 @@ module.exports = class BaseCommand {
         if (this.guildOnly && !msg.guild) return msg.reply('Este comando solo puede ser utilizado en servidores.');
         if (this.devsOnly && !devs.includes(msg.author.id)) return msg.reply('Este comando solo puede ser usado únicamente por desarrolladores.');
         if (msg.guild && !msg.channel.nsfw && this.nsfwOnly) return msg.reply('Este comando solo se puede utilizar en canales NSFW.')
+        if(msg.guild && !['SEND_MESSAGES'].some((x) => msg.channel.permissionsFor(msg.guild.me).has(x))) return;
         if (msg.guild && this.botGuildPermissions[0] && !this.botGuildPermissions.some((x) => msg.guild.me.hasPermission(x))) {
             return msg.reply(`No tengo los suficientes permisos: \`${this.botGuildPermissions.join(', ')}\``);
         }

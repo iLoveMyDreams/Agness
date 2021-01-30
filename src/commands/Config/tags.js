@@ -11,6 +11,7 @@ module.exports = class TagsCommand extends BaseCommand {
             example: (prefix) => `${prefix}tag add cool (message:Si que eres cool!)`,
             botGuildPermissions: ['MANAGE_ROLES'],
             memberGuildPermissions: ['ADMINISTRATOR'],
+            memberChannelPermissions = ['EMBED_LINKS'],
             category: 'Config'
         })
     }

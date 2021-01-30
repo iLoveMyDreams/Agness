@@ -23,6 +23,7 @@ module.exports = class WelcomeCommand extends BaseCommand {
                 const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false
                 let canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1])
                 if (!canal || canal.type !== 'text') return msg.channel.send('> No encontré un canal, o el canal mencionado no es de texto.')
+                if(!canal.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return msg.channel.send('> No puedo mandar mensajes en ese canal.')
                 let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, channelID: canal.id })
                 server.channelID = canal.id

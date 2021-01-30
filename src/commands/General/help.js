@@ -4,7 +4,8 @@ module.exports = class HelpCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'help',
-            alias: ['ayuda']
+            alias: ['ayuda'],
+            memberChannelPermissions = ['EMBED_LINKS'],
         })
     }
 

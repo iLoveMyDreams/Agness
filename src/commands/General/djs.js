@@ -3,7 +3,8 @@ const fetch = require('node-fetch');
 module.exports = class DJSCommand extends BaseCommand {
     constructor(client) {
         super(client, {
-            name: 'djs'
+            name: 'djs',
+            memberChannelPermissions = ['EMBED_LINKS'],
         })
     }
 

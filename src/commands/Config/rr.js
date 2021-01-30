@@ -10,6 +10,7 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
             example: (prefix) => `${prefix}rrole @Guapo normal 12345`,
             botGuildPermissions: ['MANAGE_ROLES'],
             memberGuildPermissions: ['ADMINISTRATOR'],
+            memberChannelPermissions = ['EMBED_LINKS'],
             category: 'Config'
         })
         this.types = ['normal', 'unique', 'only']
@@ -93,7 +94,11 @@ Only => Solo se podrá obtener un reaction rol del mismo tipo en el mensaje.`)
             return msg.channel.send(embed)
         }
         if (!canal.viewable) {
-            embed.setDescription('> No tengo permisos para ver ese canal.')
+            embed.setDescription('> No tengo permisos para ver el canal.')
+            return msg.channel.send(embed)
+        }
+        if(!canal.permissionsFor(msg.guild.me).has('ADD_REACTIONS')){
+            embed.setDescription('> No tengo permisos para agregar reacciones en el canal.')
             return msg.channel.send(embed)
         }
         try {
