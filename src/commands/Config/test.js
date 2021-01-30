@@ -11,6 +11,20 @@ module.exports = class TestCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        msg.channel.send(this.client.ws.ping + 'ms')
+        if (!args[0]) return msg.channel.send(`> Uso correcto: ${this.prefix}test [welcome/leave]`)
+        switch (args[0]) {
+            case 'leave': {
+                this.client.emit('guildMemberRemove', msg.member)
+                break;
+            }
+            case 'welcome': {
+                this.client.emit('guildMemberAdd', msg.member)
+                break;
+            }
+            default: {
+                msg.channel.send(`> Uso correcto: ${this.prefix}test [welcome/leave]`)
+                break;
+            }
+        }
     }
 }
