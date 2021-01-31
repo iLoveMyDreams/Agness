@@ -11,7 +11,7 @@ module.exports = class MessageEvent {
 
         if (!guild || user.bot) return
 
-        let miembro = guild.member(user); 
+        let miembro = guild.member(user);
 
         let emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emoji }).exec()
         if (!emojiCheck) return;

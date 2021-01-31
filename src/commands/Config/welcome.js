@@ -23,7 +23,7 @@ module.exports = class WelcomeCommand extends BaseCommand {
                 const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false
                 let canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1])
                 if (!canal || canal.type !== 'text') return msg.channel.send('> No encontré un canal, o el canal mencionado no es de texto.')
-                if(!canal.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return msg.channel.send('> No puedo mandar mensajes en ese canal.')
+                if (!canal.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return msg.channel.send('> No puedo mandar mensajes en ese canal.')
                 let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, channelID: canal.id })
                 server.channelID = canal.id
@@ -61,29 +61,29 @@ module.exports = class WelcomeCommand extends BaseCommand {
                 }
                 break;
             }
-            case 'autorole':{
+            case 'autorole': {
                 switch (args[1]) {
-                    case 'user':{
+                    case 'user': {
                         let rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2])
-                        if(!rol) return msg.channel.send('> Debes mencionar un rol o darme una ID')
+                        if (!rol) return msg.channel.send('> Debes mencionar un rol o darme una ID')
                         let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                         if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, userRoleID: rol.id })
                         server.userRoleID = rol.id
                         server.save()
-                        msg.channel.send(`> Ahora se dara el rol ${rol} cuando un usuario entren al servidor`, { allowedMentions: { roles: [] }})
+                        msg.channel.send(`> Ahora se dara el rol ${rol} cuando un usuario entren al servidor`, { allowedMentions: { roles: [] } })
                         break;
                     }
-                    case 'bot':{
+                    case 'bot': {
                         let rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2])
-                        if(!rol) return msg.channel.send('> Debes mencionar un rol o darme una ID')
+                        if (!rol) return msg.channel.send('> Debes mencionar un rol o darme una ID')
                         let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                         if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, botRoleID: rol.id })
                         server.botRoleID = rol.id
                         server.save()
-                        msg.channel.send(`> Ahora se dara el rol ${rol} cuando un bot entren al servidor`, { allowedMentions: { roles: [] }})
+                        msg.channel.send(`> Ahora se dara el rol ${rol} cuando un bot entren al servidor`, { allowedMentions: { roles: [] } })
                         break;
                     }
-                    default:{
+                    default: {
                         msg.channel.send(`Debes escoger que tipo a que tipo de miembro quieres dar el rol.
 > ${this.prefix}welcome autorole [user | bot] [@role | rolID]`)
                     }

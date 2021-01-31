@@ -35,6 +35,6 @@ module.exports = class MessageEvent {
             if (embed_DB) embed.setColor('#' + embed_DB.color)
         }
         if (!server.message && !embed) return;
-        channel.send(await replaceText(server.message), { embed })
+        channel.send(await replaceText(server.message), { embed }).catch(() => { })
     }
 }

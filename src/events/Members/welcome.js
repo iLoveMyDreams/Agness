@@ -10,18 +10,18 @@ module.exports = class MessageEvent {
         let channel = member.guild.channels.resolve(server.channelID)
         if (!channel) return;
 
-        if(!member.user.bot && server.userRoleID){
+        if (!member.user.bot && server.userRoleID) {
             let rol = member.guild.roles.resolve(server.userRoleID)
-            if(!rol) return;
-            if(!rol.editable) return;
-            member.roles.add(rol.id)
+            if (!rol) return;
+            if (!rol.editable) return;
+            member.roles.add(rol.id).catch(() => { })
         }
-        
-        if(member.user.bot && server.botRoleID){
+
+        if (member.user.bot && server.botRoleID) {
             let rol = member.guild.roles.resolve(server.botRoleID)
-            if(!rol) return;
-            if(!rol.editable) return;
-            member.roles.add(rol.id)
+            if (!rol) return;
+            if (!rol.editable) return;
+            member.roles.add(rol.id).catch(() => { })
         }
         let embed = server.embed_name ? new Discord.MessageEmbed() : null
         let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name }).exec()
@@ -49,6 +49,6 @@ module.exports = class MessageEvent {
             if (embed_DB) embed.setColor('#' + embed_DB.color)
         }
         if (!server.message && !embed) return;
-        channel.send(await replaceText(server.message), { embed })
+        channel.send(await replaceText(server.message), { embed }).catch(() => { })
     }
 }

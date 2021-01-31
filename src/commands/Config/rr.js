@@ -89,7 +89,7 @@ Only => Solo se podrá obtener un reaction rol del mismo tipo en el mensaje.`)
         const matchChannel = args[3] ? args[3].match(/^<#(\d+)>$/) : false
         let canal = args[3] ? matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[3]) : msg.channel
 
-        if (!canal) {
+        if (!canal || canal.type !== 'text') {
             embed.setDescription('> No pude encontrar el canal o no es válido.')
             return msg.channel.send(embed)
         }

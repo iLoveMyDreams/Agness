@@ -28,6 +28,7 @@ module.exports = class MessageEvent {
             cmd.run(msg, args)
         } catch (e) {
             console.log(e.message || e)
+            msg.channel.send(`A ocurrido un error inesperado, aqui tienes una pequeña referencia: ${e.message || e}`)
         } finally {
             console.log(`CMD >> ${msg.author.tag} ejecutó el comando ${cmd.name}`)
         }
