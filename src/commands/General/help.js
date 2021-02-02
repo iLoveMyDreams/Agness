@@ -73,10 +73,10 @@ If you need more detailed information about each command, you can use:
                 .addField('Cooldown', cmd.cooldown, true)
                 .addField('Use', cmd.usage(this.prefix), true)
                 .addField('Example', cmd.example(this.prefix), true)
-                .addField('In maintenance?', cmd.enabled ? 'No' : 'Si', true)
-                .addField('NSFW Only?', cmd.nsfwOnly ? 'Si' : 'No', true)
-                .addField('Servers Only?', cmd.guildOnly ? 'Si' : 'No', true)
-                .addField('Developers Only?', cmd.devsOnly ? 'Si' : 'No', true)
+                .addField('In maintenance?', cmd.enabled ? 'No' : 'Yes', true)
+                .addField('NSFW Only?', cmd.nsfwOnly ? 'Yes' : 'No', true)
+                .addField('Servers Only?', cmd.guildOnly ? 'Yes' : 'No', true)
+                .addField('Developers Only?', cmd.devsOnly ? 'Yes' : 'No', true)
                 .addField('Bot Permissions', `> Channel:
   ${cmd.botChannelPermissions.length ? cmd.botChannelPermissions.join(', ') : 'Doesn\'t need.'}
   > Server:
