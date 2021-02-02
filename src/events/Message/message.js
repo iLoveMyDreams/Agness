@@ -1,5 +1,3 @@
-const isImageURL = require('image-url-validator')
-
 module.exports = class MessageEvent {
     constructor(client) {
         this.client = client;
