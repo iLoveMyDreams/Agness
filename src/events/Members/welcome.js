@@ -1,4 +1,4 @@
-module.exports = class MessageEvent {
+module.exports = class GuildMemberAddEvent {
     constructor(client) {
         this.client = client;
         this.name = 'guildMemberAdd';
