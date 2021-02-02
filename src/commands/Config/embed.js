@@ -18,12 +18,38 @@ module.exports = class EmbedCommand extends BaseCommand {
         let exceptions = ['{user.avatar}', '{server.icon}', '{server.owner.avatar}']
         if (!args[0]) {
             const embed = new Discord.MessageEmbed()
-                .setTitle(`¿Para que sirve un embed?`)
-                .setDescription(`Te permitirá crear un texto con mayor estética para insertarlos en tus bienvenidas, despedidas, reglas, etc., para mejorar en cuanto estética a tu servidor. Lo siguiente son pasos para poder crear y editar tu embed.`)
-                .addField(`**1. Creando y poniéndole un nombre**`, `El nombre nos permitirá identificar nuestro embed para que no se mezcle con los demás a la hora de ponerlos en bienvenidas, despedidas, etc. ¿Cómo? Pues agregando \`{embed:[name]}\`.Remplazando \`name\` por el nombre de nuestro embed. Para esto puedes crearlo y ponerle el nombre que gustes así:\n> \`${this.prefix}embed create [name]\``)
-                .addField(`**2. Editando nuestro embed**`, `Bueno llegó la hora de editarlo de la manera que tu quieras, ¡Tu creatividad importa!, a continuación te muestro las propiedades del embed:\n> \`author\` - [ text | link de imagen(opcional) ]\n> \`thumbnail\` - [ link imagen ])\n> \`title\` - [ text ]\n> \`description\` - [ text ]\n> \`footer\` - [ text | link de imagen(opcional) ]\n> \`image\` - [ link de imagen(opcional) ]\n> \`color\` - [ hex code ]\n> \`timestamp\` - [ yes/no ]\nEl modo de uso es intuitivo con lo cual les sera más fácil aprenderse cada propiedad y el modo de edición del embed, y es el siguiente:\n> \`${this.prefix}embed edit [name] [propiedad] [valor]\``)
-                .addField(`**EJEMPLO**`, `Ahora veamos un pequeño ejemplo con algunas propiedades, el cual les permitirá familiarizarse con el simple formato\nComenzamos creando un embed el cual llamaremos \`ejemplo\`.\n> \`${this.prefix}embed create ejemplo\`\nAhora a ponerle un título atractivo\n> \`${this.prefix}embed edit ejemplo title Estoy aprendiendo a editar un embed\`\nBueno ahora pongámosle una descripción.\n> \`${this.prefix}embed edit ejemplo description Esta descripción se ve muy linda\`\nListo pongámosle una imagen y tendremos un simple embed, ten cuidado y pon links que verdaderamente contengan imágenes/gifs. En este caso pondremos un divertido gif.\n> \`${this.prefix}embed edit ejemplo image https://i.imgur.com/mXOijAT.gif\`\nPor último pongámosle un color el cual tiene que ser en código hexadecimal sin el #, si no lo conoces puedes ver los colores [aqui](https://htmlcolorcodes.com/es/).\n> \`${this.prefix}embed edit ejemplo color e658ff\`\nListo esto es un simple embed que si quieres puedes probar tu mismo.`)
-                .addField(`**VARIABLES**`, `Primero que nada ¿qué son las variables? Bueno para eso estoy, las propiedades nos permitiran que podamos hacer cosas "automatizadas" de manera que se puedan remplazar por nombres, canales, links, entre otros, se pueden usar en embeds como también en texto, para las bienvenidas y despedidas. Aquí te doy algunos:\n\`{user}\` - @mención (e.j. @Aviii#5859)\n\`{server}\` - nombre del servidor (e.j. Asuna's Support)\n\`{server.prefix}\` - prefijo del servidor (por defecto: s!)\n Puedes encontrar la lista completa con \`${this.prefix}variables\``)
+                .setTitle(`Why do I need an embed?`)
+                .setDescription(`You may need it to make your server look much better aesthetically, since it will allow you to create rich text, which you can put in your welcomes, farewells and custom commands. Creativity is up to you!`)
+                .addField(`1 Create and name your embed.`, `The name will allow us to identify our embed so that everything looks more orderly when it comes to putting it in welcomes, farewells and custom commands. How? Well, adding \`{embed:[embed_name]}\`. Replacing \`embed_name\` with the name of our embed. For this you can create it and give it the name you like like this:
+> \`${this.prefix} embed create [embed_name]\``)
+                .addField(`2. Editing our embed`, `Well, it's time to edit it the way you want, Your creativity matters! Here I show you the properties of the embed:
+> \`author\` - [ text | < Image link > ]
+> \`thumbnail\` - [ Image link ]
+> \`title\` - [ text ]
+> \`description\` - [ text ]
+> \`footer\` - [ text | < Image link > ]
+> \`image\` - [ Image link ]
+> \`color\` - [ Hex Code ]
+> \`timestamp\` - [ yes/no ]
+The way of use is intuitive with which it will be easier for them to learn each property. Well without more, the embed editing mode, and it is as follows:
+> \`${this.prefix}embed edit [ name ] [ property ] [ value ]\``)
+                .addField(`**EXAMPLE**`, `Now let's look at a small example with some properties, which will allow you to familiarize yourself with the simple format.
+We start by creating an embed which we will call \`example\`.
+> \`${this.prefix}embed create example\`
+Now to give it an attractive title
+> \`${this.prefix}embed edit example title I am learning how to edit an embed.\`
+Bueno ahora pongámosle una descripción.
+> \`${this.prefix}embed edit example description Esta descripción se ve muy linda\`
+Let's put an image on it and we will have a simple embed, be careful and put links that really contain images or gifs. In this case we will put a funny gif.
+> \`${this.prefix}embed edit example image https://i.imgur.com/mXOijAT.gif\`
+Finally let's put a color which has to be in hexadecimal code without the #, if you don't know them you can see the colors [here](https://htmlcolorcodes.com/es/).
+> \`${this.prefix}embed edit example color e658ff\`
+Ready this is a simple embed that if you want you can test yourself.`)
+                .addField(`**VARIABLES**`, `First of all, what are variables? Well for that I am, the properties will allow us to do "automated" things so that they can be replaced by names, channels, links, among others, they can be used in embeds as well as in text, for welcomes and goodbyes. Here I give you some:
+\`{user}\` - @mention (e.j. @Aviii.#0721)
+\`{server}\` - server name (e.j. Asuna's Support)
+\`{server.prefix}\` - server prefix (por defecto: a?)
+You can find the full list with \`${this.prefix}variables\``)
                 .setColor(this.client.color)
                 .setTimestamp()
                 .setFooter(`Asuna embeds`)
@@ -34,20 +60,23 @@ module.exports = class EmbedCommand extends BaseCommand {
         switch (args[0].toLowerCase()) {
             case 'create': {
                 const lista = await this.client.db.embed.find({ guildID: msg.guild.id }).exec()
-                if (lista.length >= 10) return msg.channel.send('> Por ahora solo se pueden tener 10 embeds por servidor')
-                if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
+                if (lista.length >= 10) return msg.channel.send('For now you can only have 10 embeds per server.')
+                if (!args[1]) return msg.channel.send(`You did not put the name of the embed to create.
+> ${this.prefix}embed create [ embed_name ]`)
                 let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec()
-                if (checkear) return msg.channel.send('> Ya hay un embed con ese nombre')
+                if (checkear) return msg.channel.send('There is already an embed with that name. Try another.')
                 let nuevo = new this.client.db.embed({ guildID: msg.guild.id, embed_name: args[1] })
                 await nuevo.save()
-                msg.channel.send('> Embed creado correctamente.')
+                msg.channel.send(`Embed created successfully. Now you can edit it with:
+> ${this.prefix}embed edit [ name ] [ property ] [ value ]`)
                 break;
             }
             case 'delete': {
-                if (!args[1]) return msg.channel.send(`> No colocaste el nombre del embed a crear.`)
+                if (!args[1]) return msg.channel.send(`You did not put the name of the embed that I should delete.
+> ${this.prefix}embed delete [ embed_name ]`)
                 let checkear = await this.client.db.embed.findOneAndDelete({ guildID: msg.guild.id, embed_name: args[1] }).exec()
-                if (!checkear) return msg.channel.send('> No hay ningún embed con ese nombre.')
-                msg.channel.send('> Embed eliminado correctamente.')
+                if (!checkear) return msg.channel.send('There is no embed with that name.')
+                msg.channel.send('Embed removed successfully.')
                 break;
             }
             case 'list': {
@@ -55,11 +84,11 @@ module.exports = class EmbedCommand extends BaseCommand {
                 const embed = new Discord.MessageEmbed()
                     .setColor(this.client.color)
                 if (!lista.length) {
-                    embed.setDescription('> El servidor no cuenta con ningún embed')
+                    embed.setDescription('The server does not have any embed.')
                     return msg.channel.send(embed)
                 }
                 embed.setAuthor(
-                    `Lista de embeds de ${msg.guild.name}`,
+                    `Embed list of ${msg.guild.name}`,
                     msg.guild.iconURL() ?
                         msg.guild.iconURL({ dynamic: true }) :
                         null
@@ -69,19 +98,19 @@ module.exports = class EmbedCommand extends BaseCommand {
                 break;
             }
             case 'edit': {
-                if (!args[1]) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
-> ${this.prefix}embed edit <nombre> <propiedad> [texto]`)
-
+                if (!args[1]) return msg.channel.send(`You didn't tell me the embed to edit. Or maybe you are executing the command wrong, right way:
+> ${this.prefix}embed edit [ embed_name ] [ property ] [ value ]`)
                 let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec()
-                if (!embed_DB) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
-> ${this.prefix}embed edit <nombre> <propiedad> [texto]`)
+                if (!embed_DB) return msg.channel.send(`I can't find an embed with that name. Or maybe you are executing the command wrong, right way:
+> ${this.prefix}embed edit [ embed_name ] [ property ] [ value ]`)
 
                 const edit = args[2].toLowerCase()
 
                 if (edit == 'author') {
-                    if (!args[3]) return msg.channel.send('Coloca algo')
+                    if (!args[3]) return msg.channel.send(`You must give me the value you want to put. Or maybe you are executing the command the wrong way, right way:
+>  ${this.prefix}embed edit [ embed_name ] author [ text | < Image link > ]`)
                     const parts = args.slice(3).join(' ').split(' | ')
-                    if (args[3] !== 'Null') {
+                    if (args[3].toLowerCase() !== 'null') {
                         if (parts.length === 1) {
                             embed_DB.author_text = parts[0]
                             embed_DB.author_image = ''
@@ -89,12 +118,14 @@ module.exports = class EmbedCommand extends BaseCommand {
                             if (!exceptions.includes(parts[1])) {
                                 if (
                                     !(await isImageURL(parts[1]))
-                                ) return msg.channel.send('Pon una url válida para la imagen.')
+                                ) return msg.channel.send(`You must give me the URL of a valid image or gif. Or maybe you are executing the command the wrong way, right way:
+>  ${this.prefix}embed edit [ embed_name ] author [ text | < Image link > ]`)
                             }
                             embed_DB.author_text = parts[0]
                             embed_DB.author_image = parts[1]
                         } else {
-                            return msg.channel.send('> Creo que te equivocaste. Intenta de nuevo')
+                            return msg.channel.send(`I think you were wrong. Try again, correct way:
+>  ${this.prefix}embed edit [ embed_name ] author [ text | < Image link > ]`)
                         }
                     } else {
                         embed_DB.author_text = ''
@@ -102,29 +133,32 @@ module.exports = class EmbedCommand extends BaseCommand {
                     }
                 }
                 else if (edit === 'title') {
-                    if (!args[3]) return msg.channel.send('Coloca algo')
-                    if (args[3] !== 'Null') {
+                    if (!args[3]) return msg.channel.send(`You must give me the value you want to put. Or maybe you are executing the command the wrong way, right way:
+>  ${this.prefix}embed edit [ embed_name ] title [ text ]`)
+                    if (args[3].toLowerCase() !== 'null') {
                         embed_DB.title = args.slice(3).join(' ')
                     } else {
                         embed_DB.title = ''
                     }
                 }
                 else if (edit === 'description') {
-                    if (!args[3]) return msg.channel.send('Coloca algo')
-                    if (args[3] !== 'Null') {
+                    if (!args[3]) return msg.channel.send(`You must give me the value you want to put. Or maybe you are executing the command the wrong way, right way:
+>  ${this.prefix}embed edit [ embed_name ] description [ text ]`)
+                    if (args[3].toLowerCase() !== 'null') {
                         embed_DB.description = args.slice(3).join(' ')
                     } else {
                         embed_DB.description = ''
                     }
                 }
                 else if (edit == 'thumbnail') {
-                    if (!args[3]) return msg.channel.send('Coloca la imagen')
-                    if (args[4]) return msg.channel.send('Qué tratas de hacer?')
-                    if (args[3] !== 'Null') {
+                    if (!args[3]) return msg.channel.send(`You must give me the value you want to put. Or maybe you are executing the command the wrong way, right way:
+>  ${this.prefix}embed edit [ embed_name ] thumbnail [ Image link ]`)
+                    if (args[3].toLowerCase() !== 'null') {
                         if (!exceptions.includes(args[3])) {
                             if (
                                 !(await isImageURL(args[3]))
-                            ) return msg.channel.send('Pon una url valida para la imagen.')
+                            ) return msg.channel.send(`You must give me the URL of a valid image or gif. Or maybe you are executing the command the wrong way, right way:
+>  ${this.prefix}embed edit [ embed_name ] thumbnail [ Image link ]`)
                         }
                         embed_DB.thumbnail = args[3]
                     } else {
@@ -132,13 +166,14 @@ module.exports = class EmbedCommand extends BaseCommand {
                     }
                 }
                 else if (edit == 'image') {
-                    if (!args[3]) return msg.channel.send('Coloca la imagen')
-                    if (args[4]) return msg.channel.send('Qué tratas de hacer?')
-                    if (args[3] !== 'Null') {
+                    if (!args[3]) return msg.channel.send(`You must give me the value you want to put. Or maybe you are executing the command the wrong way, right way:
+>  ${this.prefix}embed edit [ embed_name ] image [ Image link ]`)
+                    if (args[3].toLowerCase() !== 'null') {
                         if (!exceptions.includes(args[3])) {
                             if (
                                 !(await isImageURL(args[3]))
-                            ) return msg.channel.send('Pon una url válida para la imagen.')
+                            ) return msg.channel.send(`You must give me the URL of a valid image or gif. Or maybe you are executing the command the wrong way, right way:
+>  ${this.prefix}embed edit [ embed_name ] image [ Image link ]`)
                         }
                         embed_DB.image = args[3]
                     } else {
@@ -146,9 +181,10 @@ module.exports = class EmbedCommand extends BaseCommand {
                     }
                 }
                 else if (edit == 'footer') {
-                    if (!args[3]) return msg.channel.send('Coloca algo')
+                    if (!args[3]) return msg.channel.send(`You must give me the value you want to put. Or maybe you are executing the command the wrong way, right way:
+>  ${this.prefix}embed edit [ embed_name ] footer [ text | < Image link > ]`)
                     const parts = args.slice(3).join(' ').split(' | ')
-                    if (args[3] !== 'Null') {
+                    if (args[3].toLowerCase() !== 'null') {
                         if (parts.length === 1) {
                             embed_DB.footer_text = parts[0]
                             embed_DB.footer_image = ''
@@ -156,12 +192,14 @@ module.exports = class EmbedCommand extends BaseCommand {
                             if (!exceptions.includes(parts[1])) {
                                 if (
                                     !(await isImageURL(parts[1]))
-                                ) return msg.channel.send('Pon una url válida para la imagen.')
+                                ) return msg.channel.send(`You must give me the URL of a valid image or gif. Or maybe you are executing the command the wrong way, right way:
+>  ${this.prefix}embed edit [ embed_name ] footer [ text | < Image link > ]`)
                             }
                             embed_DB.footer_text = parts[0]
                             embed_DB.footer_image = parts[1]
                         } else {
-                            return msg.channel.send('> Creo que te equivocaste. Intenta de nuevo')
+                            return msg.channel.send(`I think you were wrong. Try again, correct way:
+>  ${this.prefix}embed edit [ embed_name ] author [ text | < Image link > ]`)
                         }
                     } else {
                         embed_DB.footer_text = ''
@@ -169,27 +207,33 @@ module.exports = class EmbedCommand extends BaseCommand {
                     }
                 }
                 else if (edit == 'timestamp') {
+                    if(!args[3]) return msg.channel.send(`You must give me the value you want to put. Or maybe you are executing the command the wrong way, right way:
+>  ${this.prefix}embed edit [ embed_name ] timestamp [ yes/no ]`)
                     if (args[3] === 'yes') {
                         embed_DB.timestamp = true
                     } else if (args[3] === 'no') {
                         embed_DB.timestamp = false
                     } else {
-                        return msg.channel.send('Pon yes/no')
+                        return msg.channel.send(`You gave me another value.
+>  ${this.prefix}embed edit [ embed_name ] timestamp [ yes/no ]`)
                     }
                 }
                 else if (edit == 'color') {
-                    if (!args[3]) return msg.channel.send('Pon un color hex sin #')
-                    if (args[4]) return msg.channel.send('Qué tratas de hacer?')
-                    if (args[3] !== 'Null') {
+                    if (!args[3]) return msg.channel.send(`You must give me the value you want to put. Or maybe you are executing the command the wrong way, right way:
+>  ${this.prefix}embed edit [ embed_name ] color [ Hex Code ]`)
+                    if (args[3].toLowerCase() !== 'null') {
                         var isOk = /^[0-9A-F]{6}$/i.test(args[3])
-                        if (isOk === false) return msg.channel.send('¡Por favor, proporciona un código hex válido, sin #!')
+                        if (isOk === false) return msg.channel.send(`You must give me a hex color without #. Or maybe you are executing the command the wrong way, right way:
+>  ${this.prefix}embed edit [ embed_name ] color [ Hex Code ]`)
                         embed_DB.color = args[3]
                     } else {
                         embed_DB.color = ''
                     }
                 }
                 else {
-                    return msg.channel.send('> La propiedad que colocaste no es válida.')
+                    return msg.channel.send(`La propiedad que colocas no es válida. Puedes ver la lista de propiedades con \`${this.prefix}embed properties\`.
+Or maybe you are executing the command the wrong way, right way:
+> \`${this.prefix}embed edit [ name ] [ property ] [ value ]`)
                 }
                 embed_DB.save()
 
@@ -213,15 +257,17 @@ module.exports = class EmbedCommand extends BaseCommand {
                 if (embed_DB.timestamp) embed.setTimestamp()
                 if (embed_DB) embed.setColor('#' + embed_DB.color)
 
-                msg.channel.send(embed)
+                msg.channel.send(`The ${edit} property of the ${args[1]} embed was edited correctly.
+You can add the embed to welcome, goodbye or custom commands with {embed:${args[1]}}.
+Here's a preview of the embed:The image property of the example embed was edited correctly, you can add the embed to welcome, goodbye or custom commands with {embed: a}. Here's a preview of the embed:`, embed)
                 break;
             }
             case 'preview': {
-                if (!args[1]) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
-> ${this.prefix}embed preview <nombre> `)
+                if (!args[1]) return msg.channel.send(`You didn't tell me the embed to edit. Or maybe you are executing the command wrong, right way:
+> ${this.prefix}embed preview [ embed_name ]`)
                 let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec()
-                if (!embed_DB) return msg.channel.send(`> No puedo encontrar un embed con ese nombre. O tal vez estás ejecutando mal el comando, forma correcta:
-> ${this.prefix}embed preview <nombre> `)
+                if (!embed_DB) return msg.channel.send(`I can't find an embed with that name. Or maybe you are executing the command wrong, right way:
+> ${this.prefix}embed preview [ embed_name ]`)
                 const embed = new Discord.MessageEmbed()
                 if (embed_DB.author_text) {
                     embed_DB.author_image ?
@@ -246,19 +292,19 @@ module.exports = class EmbedCommand extends BaseCommand {
             }
             case 'propiedades':
             case 'properties': {
-                msg.channel.send(`**Propiedades de un embed**
-> \`author\` - [ text | link de imagen(opcional) ]
-> \`thumbnail\` - [ link imagen ]
+                msg.channel.send(`**Properties of an embed**
+> \`author\` - [ text | < Image link > ]
+> \`thumbnail\` - [ Image link ]
 > \`title\` - [ text ]
 > \`description\` - [ text ]
-> \`footer\` - [ text | link de imagen(opcional) ]
-> \`image\` - [ link de imagen(opcional) ]
-> \`color\` - [ hex code ]
+> \`footer\` - [ text | < Image link > ]
+> \`image\` - [ Image link ]
+> \`color\` - [ Hex Code ]
 > \`timestamp\` - [ yes/no ]`)
                 break;
             }
             default:
-                msg.channel.send(`> Introduce una propiedad válida. Utiliza \`${this.prefix}embed\` para ver un mini tutorial.`)
+                msg.channel.send(`What do you want to do with the embed command? If you don't know how it works and you need a tutorial, you can use: \`${this.prefix}embed\``)
                 break;
         }
     }
