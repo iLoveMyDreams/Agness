@@ -17,8 +17,6 @@
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "image-url-validator": "^0.2.4",
-    "mongoose": "^5.11.9",
-    "nekos.life": "^2.0.7",
-    "tnai": "^1.0.5"
+    "mongoose": "^5.11.9"
   }
 }
