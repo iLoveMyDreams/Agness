@@ -6,6 +6,9 @@ module.exports = class TestCommand extends BaseCommand {
             name: 'test',
             alias: ['emit'],
             category: 'Config',
+            description: 'Do a simulation of events in the bot',
+            usage: (prefix) => `${prefix}test [event: welcome/leave]`,
+            example: (prefix) => `${prefix}test welcome`,
             memberGuildPermissions: ['ADMINISTRATOR']
         })
     }
@@ -21,7 +24,7 @@ module.exports = class TestCommand extends BaseCommand {
                 break;
             }
             default: {
-                msg.channel.send(`> Uso correcto: ${this.prefix}test [welcome/leave]`)
+                msg.channel.send(`> Correct use: ${this.prefix}test [welcome/leave]`)
                 break;
             }
         }
