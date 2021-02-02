@@ -38,7 +38,7 @@ We start by creating an embed which we will call \`example\`.
 > \`${this.prefix}embed create example\`
 Now to give it an attractive title
 > \`${this.prefix}embed edit example title I am learning how to edit an embed.\`
-Bueno ahora pongámosle una descripción.
+Well now let's put a description on it.
 > \`${this.prefix}embed edit example description Esta descripción se ve muy linda\`
 Let's put an image on it and we will have a simple embed, be careful and put links that really contain images or gifs. In this case we will put a funny gif.
 > \`${this.prefix}embed edit example image https://i.imgur.com/mXOijAT.gif\`
@@ -46,9 +46,8 @@ Finally let's put a color which has to be in hexadecimal code without the #, if 
 > \`${this.prefix}embed edit example color e658ff\`
 Ready this is a simple embed that if you want you can test yourself.`)
                 .addField(`**VARIABLES**`, `First of all, what are variables? Well for that I am, the properties will allow us to do "automated" things so that they can be replaced by names, channels, links, among others, they can be used in embeds as well as in text, for welcomes and goodbyes. Here I give you some:
-\`{user}\` - @mention (e.j. @Aviii.#0721)
-\`{server}\` - server name (e.j. Asuna's Support)
-\`{server.prefix}\` - server prefix (por defecto: a?)
+\`{user}\` - @Mention (e.j. @Aviii.#0721 ❤️)
+\`{server}\` - Server name (e.j. ${this.client.user.username}'s Support)
 You can find the full list with \`${this.prefix}variables\``)
                 .setColor(this.client.color)
                 .setTimestamp()
@@ -259,7 +258,7 @@ Or maybe you are executing the command the wrong way, right way:
 
                 msg.channel.send(`The ${edit} property of the ${args[1]} embed was edited correctly.
 You can add the embed to welcome, goodbye or custom commands with {embed:${args[1]}}.
-Here's a preview of the embed:The image property of the example embed was edited correctly, you can add the embed to welcome, goodbye or custom commands with {embed: a}. Here's a preview of the embed:`, embed)
+Here's a preview of the embed:`, embed)
                 break;
             }
             case 'preview': {
