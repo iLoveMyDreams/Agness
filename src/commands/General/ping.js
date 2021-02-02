@@ -8,6 +8,6 @@ module.exports = class PingCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        msg.channel.send(this.client.ws.ping + 'ms')
+        msg.channel.send(`Pong! ${this.client.ws.ping}ms.`)
     }
 }

@@ -10,56 +10,46 @@ module.exports = class VariablesCommand extends BaseCommand {
 
     async run(msg) {
         const embed = new Discord.MessageEmbed()
-            .setTitle(`Variables de Asuna.`)
-            .setDescription(
-                `Estas variables pueden ser usadas editando embeds y en los mensajes de bienvenida/despedida.`
-            )
+            .setTitle(`${this.client.user.username} Variables`)
+            .setDescription('These variables can be used when editing embeds and in welcome/leave messages.')
+            .addField('User Information',
+                `\`{user}\` - @Mention (e.j. @Aviii.#0721 ❤️)
+\`{user.name}\` - Username (e.j. Aviii.)
+\`{user.discrim}\` - User tag (e.j. 0721)
+\`{user.nick}\` - Member's nickname, if none, it will show 'No nickname.'
+\`{user.createdate}\` - Account creation date
+\`{user.joindate}\` - Date you joined the server
+\`{user.id}\` - User ID (e.j. 710880777662890095)
+\`{user.avatar}\` - Link to the user avatar`)
+            .addField('Server Information',
+                `\`{server}\` - Server name (e.j. ${this.client.user.username}'s Support)
+\`{server.prefix}\` - Server prefix (by default, a?)
+\`{server.id}\` - Server ID (e.j. 773629394894848030)
+\`{server.membercount}\` - Number of total members
+\`{server.membercount.nobots}\` - Number of total members (no bots)
+\`{server.membercount.bots}\` - Number of total members (bots)
+\`{server.rolecount}\` - Number of roles
+\`{server.channelcount}\` - Number of channels
+\`{server.channelcount.voice}\` - Number of voice channels
+\`{server.emojiscount}\` - Number of total emojis
+\`{server.emojiscount.animate}\` - Number of animated emojis
+\`{server.emojiscount.noanimate}\` - Number of non-animated emojis
+\`{server.createdate}\` - Server creation date
+\`{server.boostlevel}\` - Boost level of the server
+\`{server.boostcount}\` - Number of boosts in the server
+\`{server.icon}\` - Link to the server avatar`)
+            .addField('Server Owner Information',
+                `\`{server.owner}\` - @Mention to the owner (e.j. @Aviii.#0721)
+\`{server.owner.id}\` - Owner ID (e.j. 710880777662890095)
+\`{server.owner.nick}\` - Owner's nickname, if none, it will show 'No nickname.'
+\`{server.owner.avatar}\` - Link to the owner avatar`)
+            .addField('Channel Information',
+                `\`{channel}\` - Mention to the channel (e.j. #memes)
+\`{channel.id}\` - Channel ID (e.j. 773629394894848033)
+\`{channel.name}\` - Channel name (e.j. memes)
+\`{channel.createdate}\` - Channel creation date`)
+            .setFooter(`${this.client.user.username} Variables`)
             .setColor(this.client.color)
-            .addField(
-                `Información del Usuario`,
-                `\`{user}\` - @mencion (e.j. @Aviii.#0721)
-\`{user.name}\` - nombre de usuario (e.j. Aviii.)
-\`{user.discrim}\` - tag del usuario (e.j. 0721)
-\`{user.nick}\` - apodo del miembro, si no tiene devolvera "No tiene apodo."
-\`{user.createdate}\` - fecha de creación de la cuenta
-\`{user.joindate}\` - fecha en la que se unió al servidor
-\`{user.id}\` - ID del usuario (e.j. 710880777662890095)
-\`{user.avatar}\` - link de la foto de perfil`
-            )
-            .addField(
-                `Información del Servidor`,
-                `\`{server}\` - nombre del servidor (e.j. Asuna's Support)
-\`{server.prefix}\` - prefijo del servidor (por defecto: a?)
-\`{server.id}\` - ID del servidor (e.j. 773629394894848030)
-\`{server.membercount}\` - número de miembros en total
-\`{server.membercount.nobots}\` - número de miembros no bots
-\`{server.membercount.bots}\` - número de miembros bots
-\`{server.rolecount}\` - número roles
-\`{server.channelcount}\` - número canales en total
-\`{server.channelcount.voice}\` - número canales de voz
-\`{server.emojiscount}\` - número de emojis en total
-\`{server.emojiscount.animate}\` - número de emojis animados
-\`{server.emojiscount.noanimate}\` - número de emojis no animados
-\`{server.createdate}\` - fecha de creación del servidor
-\`{server.boostlevel}\` - nivel del servidor
-\`{server.boostcount}\` - cantidad de boosts del servidor
-\`{server.icon}\` - link de la foto del servidor`
-            )
-            .addField(
-                `Información del Owner/del servidor`,
-                `\`{server.owner}\` - mención al owner (e.j. @Aviii.#0721)
-\`{server.owner.id}\` - ID del owner (e.j. 710880777662890095)
-\`{server.owner.nick}\` - apodo del owner, si no tiene devolvera "No tiene apodo."
-\`{server.owner.avatar}\` - link de la foto de perfil`
-            )
-            .addField(
-                `Información de un Canal`,
-                `\`{channel}\` - mención del canal (e.j. #memes)
-\`{channel.id}\` - ID del canal (e.j. 773629394894848033)
-\`{channel.name}\` - nombre del canal (e.j. memes)
-\`{channel.createdate}\` - fecha de creacion del canal`
-            )
-            .setFooter(`Asuna variables`)
             .setTimestamp()
         msg.channel.send(embed)
     }

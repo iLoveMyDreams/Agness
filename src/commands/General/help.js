@@ -13,14 +13,14 @@ module.exports = class HelpCommand extends BaseCommand {
         const embed = new Discord.MessageEmbed()
             .setColor(this.client.color)
         if (!args[0]) {
-            embed.setTitle(`Panel de ayuda de ${this.client.user.username}`)
-                .setDescription(`Hola! en estos momentos cuento con 5 categorias y ${this.client.commands.size - 1} comandos
-Si necesitas una informacion mas detallada de cada comando puedes utilizar:
-> ${this.prefix}help <comando>`)
-                .addField(`Categorias`, `> ${this.prefix}help Config • Comandos de Configuración
-> ${this.prefix}help General • Comandos en general
-> ${this.prefix}help Images • Imagenes de todo tipo`)
-                .addField(`Enlaces`, `**[Link de Invitación](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Servidor de Soporte](https://discord.gg/K63NqEDm86)**`)
+            embed.setTitle(`${this.client.user.username} Help Panel`)
+                .setDescription(`Hi! At the moment I have 3 categories and ${this.client.commands.size - 1} commands.
+If you need more detailed information about each command, you can use:
+> ${this.prefix}help <Command>`)
+                .addField(`Categories`, `> ${this.prefix}help Config • Configuration Commands
+> ${this.prefix}help General • Commands in general
+> ${this.prefix}help Images • Images of all types`)
+                .addField('Links', `**[Invite](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Support Server](https://discord.gg/K63NqEDm86)**`)
             return msg.channel.send(embed)
         }
         const categorias = this.client.commands.filter((x) => x.category.toLowerCase() == args[0].toLowerCase()).array()
@@ -56,39 +56,39 @@ Si necesitas una informacion mas detallada de cada comando puedes utilizar:
                 cmdList += '\n';
             }
             const embed_list = new Discord.MessageEmbed()
-                .setTitle(`Comandos de la categoría ${categorias[0].category}`)
-                .setDescription(`Esta categoria cuenta con \`${categorias.length}\` comandos.
-  Si necesitas información mas detallada de cada uno de los comandos puedes usar:
-  > ${this.prefix}help <comando>`)
-                .addField(`Lista de comandos:`, `\`\`\`\n${cmdList}\n\`\`\``)
+                .setTitle(`Commands in the category ${categorias[0].category}`)
+                .setDescription(`This category has \`${categorias.length}\` commands.
+If you need more detailed information about each command, you can use:
+> ${this.prefix}help <Command>`)
+                .addField('List of commands', `\`\`\`\n${cmdList}\n\`\`\``)
                 .setColor(this.client.color)
 
             msg.channel.send(embed_list);
         } else if (cmd) {
             const comand_embed = new Discord.MessageEmbed()
-                .setTitle(`Ayuda del comando ${cmd.name}`)
+                .setTitle(`${cmd.name} Command Help`)
                 .setDescription(cmd.description)
-                .addField('Categoria', cmd.category, true)
-                .addField('Alias', cmd.alias.length ? cmd.alias.join(' | ') : 'No tiene alias', true)
+                .addField('Category', cmd.category, true)
+                .addField('Aliases', cmd.alias.length ? cmd.alias.join(' | ') : 'No aliases', true)
                 .addField('Cooldown', cmd.cooldown, true)
-                .addField(`Uso:`, cmd.usage(this.prefix), true)
-                .addField('Ejemplo', cmd.example(this.prefix), true)
-                .addField('¿En mantenimiento?', cmd.enabled ? 'No' : 'Si', true)
-                .addField('¿Solo NSFW?', cmd.nsfwOnly ? 'Si' : 'No', true)
-                .addField('¿Solo Servidores?', cmd.guildOnly ? 'Si' : 'No', true)
-                .addField('¿Solo Devs?', cmd.devsOnly ? 'Si' : 'No', true)
-                .addField('Permisos del bot:', `> En el canal:
-  ${cmd.botChannelPermissions.length ? cmd.botChannelPermissions.join(', ') : 'No necesita.'}
-  > En el servidor:
-  ${cmd.botGuildPermissions.length ? cmd.botGuildPermissions.join(', ') : 'No necesita.'}`, true)
-                .addField('Permisos del miembro:', `> En el canal:
-  ${cmd.memberChannelPermissions.length ? cmd.memberChannelPermissions.join(', ') : 'No necesita.'}
-  > En el servidor:
-  ${cmd.memberGuildPermissions.length ? cmd.memberGuildPermissions.join(', ') : 'No necesita.'}`, true)
+                .addField('Use', cmd.usage(this.prefix), true)
+                .addField('Example', cmd.example(this.prefix), true)
+                .addField('In maintenance?', cmd.enabled ? 'No' : 'Si', true)
+                .addField('NSFW Only?', cmd.nsfwOnly ? 'Si' : 'No', true)
+                .addField('Servers Only?', cmd.guildOnly ? 'Si' : 'No', true)
+                .addField('Developers Only?', cmd.devsOnly ? 'Si' : 'No', true)
+                .addField('Bot Permissions', `> Channel:
+  ${cmd.botChannelPermissions.length ? cmd.botChannelPermissions.join(', ') : 'Doesn\'t need.'}
+  > Server:
+  ${cmd.botGuildPermissions.length ? cmd.botGuildPermissions.join(', ') : 'Doesn\'t need.'}`, true)
+                .addField('Member Permissions:', `> Channel
+  ${cmd.memberChannelPermissions.length ? cmd.memberChannelPermissions.join(', ') : 'Doesn\'t need.'}
+  > Server:
+  ${cmd.memberGuildPermissions.length ? cmd.memberGuildPermissions.join(', ') : 'Doesn\'t need.'}`, true)
                 .setColor(this.client.color)
             msg.channel.send(comand_embed);
         } else {
-            msg.channel.send(`> Comando o categoria no encontrados.`);
+            msg.channel.send(`> Command or category not found.`);
         }
     }
 }
