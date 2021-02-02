@@ -6,9 +6,9 @@ module.exports = class EmbedCommand extends BaseCommand {
         super(client, {
             name: 'embed',
             alias: ['eb', 'emb'],
-            description: 'Crea embeds personalizados para tus tags, bienvenidas y despedidas. ¡Tu pones el diseño!',
-            usage: (prefix) => `${prefix}embed [create/edit/preview/delete/list] <embed_name> <propiedades>`,
-            example: (prefix) => `${prefix}embed create bienvenida`,
+            description: 'Create custom embeds for your tags, welcomes and farewells. You put the design!',
+            usage: (prefix) => `${prefix}embed [ create/edit/preview/delete/list ] < embed_name > < property > < value >`,
+            example: (prefix) => `${prefix}embed create welcome`,
             category: 'Config',
             memberGuildPermissions: ['ADMINISTRATOR'],
         })
@@ -39,7 +39,7 @@ We start by creating an embed which we will call \`example\`.
 Now to give it an attractive title
 > \`${this.prefix}embed edit example title I am learning how to edit an embed.\`
 Well now let's put a description on it.
-> \`${this.prefix}embed edit example description Esta descripción se ve muy linda\`
+> \`${this.prefix}embed edit example description This description looks very cute\`
 Let's put an image on it and we will have a simple embed, be careful and put links that really contain images or gifs. In this case we will put a funny gif.
 > \`${this.prefix}embed edit example image https://i.imgur.com/mXOijAT.gif\`
 Finally let's put a color which has to be in hexadecimal code without the #, if you don't know them you can see the colors [here](https://htmlcolorcodes.com/es/).
