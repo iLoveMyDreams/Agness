@@ -123,10 +123,11 @@ module.exports = class TagsCommand extends BaseCommand {
             }
             case 'list': {
                 const lista = await this.client.db.tags.find({ guildID: msg.guild.id }).exec()
+                const embed = new Discord.MessageEmbed()
+                .setColor(this.client.color)
                 if (!lista.length)
-                    return msg.channel.send(new Discord.MessageEmbed()
-                        .setDescription('> The server doesn\'t has any embed'))
-                return msg.channel.send(embedList.setAuthor('Server tag list', msg.guild.icon ? msg.guild.iconURL({ dynamic: true }) : null)
+                    return msg.channel.send(embed.setDescription('> The server doesn\'t has any embed'))
+                return msg.channel.send(embed.setAuthor('Server tag list', msg.guild.icon ? msg.guild.iconURL({ dynamic: true }) : null)
                     .setDescription(lista.map(x => x.name).join('\n')));
             }
             case 'propiedades':
