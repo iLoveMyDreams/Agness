@@ -1,5 +1,9 @@
-const BaseCommand = require('../../Utils/BaseCommand.js')
+/*
+Copied from https://github.com/AndreMor955/gidget
+Thanks Andremor ❤️
+*/
 
+const BaseCommand = require('../../Utils/BaseCommand.js')
 module.exports = class GuildsCommand extends BaseCommand {
     constructor(client) {
         super(client, {
