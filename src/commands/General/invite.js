@@ -3,7 +3,7 @@ const BaseCommand = require('../../Utils/BaseCommand.js')
 module.exports = class InviteCommand extends BaseCommand {
     constructor(client) {
         super(client, {
-            name: 'invite'
+            name: 'invite',
         })
     }
 
