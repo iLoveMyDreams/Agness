@@ -46,7 +46,7 @@ If you need more detailed information about each command, you can use:
                 .setColor(this.client.color));
         } else if (cmd) {
             return msg.channel.send(new Discord.MessageEmbed()
-                .setTitle(`${cmd.name} Command Help`)
+                .setTitle(`${cmd.name.replace(/^[a-z]/gi, (c) => c.toUpperCase())} Command Help`)
                 .setDescription(cmd.description)
                 .addField('Category', cmd.category, true)
                 .addField('Aliases', cmd.alias.length ? cmd.alias.join(' | ') : 'No aliases', true)
