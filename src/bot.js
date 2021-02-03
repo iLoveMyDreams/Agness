@@ -87,25 +87,25 @@ new (
                 .replace(/{channel\.createdate}/gi, channel.createdAt)
         }
 
-        async generateEmbed(embed, replaceText) {
+        async generateEmbed(embedInfo, replaceText) {
             const embed = new Discord.MessageEmbed()
-            if (embed.author_text) {
-                embed.author_image ?
-                    embed.setAuthor(await replaceText(embed.author_text), await replaceText(embed.author_image)) :
-                    embed.setAuthor(await replaceText(embed.author_text))
+            if (embedInfo.author_text) {
+                embedInfo.author_image
+                    ? embed.setAuthor(await replaceText(embedInfo.author_text), await replaceText(embedInfo.author_image))
+                    : embed.setAuthor(await replaceText(embedInfo.author_text))
             }
-            if (embed.title) embed.setTitle(await replaceText(embed.title))
-            if (embed.description) embed.setDescription(await replaceText(embed.description))
-            if (embed.thumbnail) embed.setThumbnail(await replaceText(embed.thumbnail))
-            if (embed.image) embed.setImage(await replaceText(embed.image))
+            if (embedInfo.title) embed.setTitle(await replaceText(embedInfo.title))
+            if (embedInfo.description) embed.setDescription(await replaceText(embedInfo.description))
+            if (embedInfo.thumbnail) embed.setThumbnail(await replaceText(embedInfo.thumbnail))
+            if (embedInfo.image) embed.setImage(await replaceText(embedInfo.image))
 
-            if (embed.footer_text) {
-                embed.footer_image ?
-                    embed.setFooter(await replaceText(embed.footer_text), await replaceText(embed.footer_image)) :
-                    embed.setFooter(await replaceText(embed.footer_text))
+            if (embedInfo.footer_text) {
+                embedInfo.footer_image
+                    ? embed.setFooter(await replaceText(embedInfo.footer_text), await replaceText(embedInfo.footer_image))
+                    : embed.setFooter(await replaceText(embedInfo.footer_text))
             }
-            if (embed.timestamp) embed.setTimestamp()
-            if (embed) embed.setColor('#' + embed.color)
+            if (embedInfo.timestamp) embed.setTimestamp()
+            if (embedInfo.color) embed.setColor('#' + embedInfo.color)
 
             return embed;
         }
