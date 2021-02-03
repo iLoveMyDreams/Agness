@@ -23,49 +23,31 @@ If you need more detailed information about each command, you can use:
                 .addField('Links', `**[Invite](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Support Server](https://discord.gg/K63NqEDm86)**`)
             return msg.channel.send(embed)
         }
-        const categorias = this.client.commands.filter((x) => x.category.toLowerCase() == args[0].toLowerCase()).array()
+        const category = this.client.commands.filter((x) => x.category.toLowerCase() == args[0].toLowerCase()).array()
         const cmd = this.client.commands.get(args[0].toLowerCase()) || this.client.commands.find((x) => x.alias && x.alias.includes(args[0].toLowerCase()));
 
-        if (categorias.length) {
-            function split(arr, length) {
-                let chunks = [],
-                    i = 0,
-                    n = arr.length;
-                while (i < n) {
-                    chunks.push(arr.slice(i, i += length));
-                }
-                return chunks;
-            }
-
-            function repeat(string, length) {
-                let str = '';
-                for (let i = 0; i < length; i++) {
-                    str += string;
-                }
-                return str;
-            }
-
-            const commands = split(categorias.map((x) => x.name), 4);
+        if (category.length) {
+            const lines = Array(Math.ceil(category.length / 4)).fill([])
+                .map((_, i) => category.map((c) => c.name).slice(i * 4, (i * 4) + 4));
 
             let cmdList = '';
-            for (const cmds of commands) {
-                for (const cmdname of cmds) {
-                    const diff = parseInt(17 - cmdname.length);
-                    cmdList += `${cmdname}${repeat(' ', diff)}`;
+            for (const cmds of lines) {
+                for (const cmd of cmds) {
+                    const diff = parseInt(17 - cmd.length);
+                    cmdList += `${cmd}${Array(diff).fill(' ').join('')}`;
                 }
                 cmdList += '\n';
             }
-            const embed_list = new Discord.MessageEmbed()
-                .setTitle(`Commands in the category ${categorias[0].category}`)
-                .setDescription(`This category has \`${categorias.length}\` commands.
+
+            return msg.channel.send(new Discord.MessageEmbed()
+                .setTitle(`Commands in the category ${category[0].category}`)
+                .setDescription(`This category has \`${category.length}\` commands.
 If you need more detailed information about each command, you can use:
 > ${this.prefix}help <Command>`)
                 .addField('List of commands', `\`\`\`\n${cmdList}\n\`\`\``)
-                .setColor(this.client.color)
-
-            msg.channel.send(embed_list);
+                .setColor(this.client.color));
         } else if (cmd) {
-            const comand_embed = new Discord.MessageEmbed()
+            return msg.channel.send(new Discord.MessageEmbed()
                 .setTitle(`${cmd.name} Command Help`)
                 .setDescription(cmd.description)
                 .addField('Category', cmd.category, true)
@@ -78,17 +60,14 @@ If you need more detailed information about each command, you can use:
                 .addField('Servers Only?', cmd.guildOnly ? 'Yes' : 'No', true)
                 .addField('Developers Only?', cmd.devsOnly ? 'Yes' : 'No', true)
                 .addField('Bot Permissions', `> Channel:
-  ${cmd.botChannelPermissions.length ? cmd.botChannelPermissions.join(', ') : 'Doesn\'t need.'}
-  > Server:
-  ${cmd.botGuildPermissions.length ? cmd.botGuildPermissions.join(', ') : 'Doesn\'t need.'}`, true)
+${cmd.botChannelPermissions.length ? cmd.botChannelPermissions.join(', ') : 'Doesn\'t need.'}
+> Server:
+${cmd.botGuildPermissions.length ? cmd.botGuildPermissions.join(', ') : 'Doesn\'t need.'}`, true)
                 .addField('Member Permissions:', `> Channel
-  ${cmd.memberChannelPermissions.length ? cmd.memberChannelPermissions.join(', ') : 'Doesn\'t need.'}
-  > Server:
-  ${cmd.memberGuildPermissions.length ? cmd.memberGuildPermissions.join(', ') : 'Doesn\'t need.'}`, true)
-                .setColor(this.client.color)
-            msg.channel.send(comand_embed);
-        } else {
-            msg.channel.send(`> Command or category not found.`);
-        }
+${cmd.memberChannelPermissions.length ? cmd.memberChannelPermissions.join(', ') : 'Doesn\'t need.'}
+> Server:
+${cmd.memberGuildPermissions.length ? cmd.memberGuildPermissions.join(', ') : 'Doesn\'t need.'}`, true)
+                .setColor(this.client.color));
+        } else return msg.channel.send(`> Command or category not found.`);
     }
 }
