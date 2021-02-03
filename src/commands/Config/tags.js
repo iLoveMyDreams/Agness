@@ -10,19 +10,20 @@ module.exports = class TagsCommand extends BaseCommand {
             usage: (prefix) => `${prefix}tag [option: add/edit/delete] [tag_name] <properties>`,
             example: (prefix) => `${prefix}tag add cool (message:Yes, you're so cool!)`,
             memberGuildPermissions: ['ADMINISTRATOR'],
-            memberChannelPermissions: ['EMBED_LINKS'],
+            botChannelPermissions: ['EMBED_LINKS'],
             category: 'Config'
         })
     }
 
     async run(msg, args) {
         if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
+            .setColor(this.client.color)
             .addField('Correct use', `> ${this.prefix}tag [add/edit/delete] [tag_name] <properties>`)
             .setFooter(`To see the properties, use: ${this.prefix}tag properties`))
         switch (args[0].toLowerCase()) {
             case 'add': {
                 const lista = await this.client.db.tags.find({ guildID: msg.guild.id }).exec()
-                if (lista.length >= 10) return msg.channel.send('> For now, you can only have 10 tags per server.')
+                if (lista.length >= 10) return msg.channel.send('For now, you can only have 10 tags per server.')
                 if (!args[1]) return msg.channel.send('You must put a valid name.')
                 if (this.client.commands.find(c => c.name === args[1].toLowerCase() || c.alias.includes(args[1].toLowerCase())))
                     return msg.channel.send('You can\'t create a tag with the name of a command.')

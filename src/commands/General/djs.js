@@ -5,7 +5,7 @@ module.exports = class DJSCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'djs',
-            memberChannelPermissions: ['EMBED_LINKS'],
+            botChannelPermissions: ['EMBED_LINKS'],
         })
     }
 

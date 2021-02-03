@@ -10,7 +10,7 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
             example: (prefix) => `${prefix}rrole @Beautiful normal #autoroles`,
             botGuildPermissions: ['MANAGE_ROLES'],
             memberGuildPermissions: ['ADMINISTRATOR'],
-            memberChannelPermissions: ['EMBED_LINKS'],
+            botChannelPermissions: ['EMBED_LINKS'],
             category: 'Config'
         })
         this.types = ['normal', 'unique', 'only']
@@ -22,9 +22,9 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
         const embed = new Discord.MessageEmbed()
             .setColor(this.client.color)
         if (!args[0])
-            return msg.channel.send(embed.setDescription(`>>> Correct use:
-            ${this.prefix}rrole [@role] [type] [messageID] <#channel>
-            ${this.prefix}rrole delete [emoji] [messageID]`))
+            return msg.channel.send(embed.setDescription(`**Correct use:**
+> ${this.prefix}rrole [@role] [type] [messageID] <#channel>
+> ${this.prefix}rrole delete [emoji] [messageID]`))
         switch (args[0].toLowerCase()) {
             case 'types':
                 return msg.channel.send(embed.addField('Types', `Normal => The role can be obtained and removed with the same reaction.
