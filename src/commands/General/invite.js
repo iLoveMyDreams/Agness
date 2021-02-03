@@ -4,6 +4,7 @@ module.exports = class InviteCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'invite',
+            botChannelPermissions: ['EMBED_LINKS'],
         })
     }
 
