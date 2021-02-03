@@ -14,7 +14,7 @@ module.exports = class SayCommand extends BaseCommand {
         if (
             (msg.content.match(/@(everyone|here)/gi) ||
                 msg.content.match(/<@&(\d{17,19})>/gi)) &&
-            !msg.member.hasPermission('MENTION_EVERYONE')
+            !msg.member.permissions.has('MENTION_EVERYONE')
         ) return msg.channel.send('> You must have the permission of mention everyone to execute this command.')
         msg.channel.send(args.join(' '))
     }

@@ -57,7 +57,7 @@ module.exports = class TagsCommand extends BaseCommand {
                     let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: options.embed }).exec()
                     if (!checkear) return msg.channel.send('There\'s no an embed with that name.')
                 }
-                if ((options.addrole.length > 0 || options.removerole.length > 0) && !msg.guild.me.hasPermission('MANAGE_ROLES')) return msg.channel.send('I don\'t have enough permissions to add or remove roles.')
+                if ((options.addrole.length > 0 || options.removerole.length > 0) && !msg.guild.me.permissions.has('MANAGE_ROLES')) return msg.channel.send('I don\'t have enough permissions to add or remove roles.')
                 if (options.addrole.some(r => !r || !r.editable)) return msg.channel.send('The specified role doesn\'t exists or I can\'t add it.')
                 if (options.removerole.some(r => !r || !r.editable)) return msg.channel.send('The specified role doesn\'t exists or I can\'t remove it.')
                 tag = new this.client.db.tags({
@@ -106,7 +106,7 @@ module.exports = class TagsCommand extends BaseCommand {
                     let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: options.embed }).exec()
                     if (!checkear) return msg.channel.send('There\'s no a embed with that name.')
                 }
-                if ((options.addrole.length > 0 || options.removerole.length > 0) && !msg.guild.me.hasPermission('MANAGE_ROLES')) return msg.channel.send('I don\'t have enough permissions to add or remove roles.')
+                if ((options.addrole.length > 0 || options.removerole.length > 0) && !msg.guild.me.permissions.has('MANAGE_ROLES')) return msg.channel.send('I don\'t have enough permissions to add or remove roles.')
                 if (options.addrole.some(r => !r || !r.editable)) return msg.channel.send('The role doesn\'t exists or I can\'t add it.')
                 if (options.removerole.some(r => !r || !r.editable)) return msg.channel.send('The role doesn\'t exists or I can\'t remove it')
                 tag.deleteRoleID = options.removerole.map((r) => r.id)
