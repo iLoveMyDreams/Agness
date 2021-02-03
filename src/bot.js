@@ -86,5 +86,28 @@ new (
                 .replace(/{channel\.name}/gi, channel.name)
                 .replace(/{channel\.createdate}/gi, channel.createdAt)
         }
+
+        async generateEmbed(embed, replaceText) {
+            const embed = new Discord.MessageEmbed()
+            if (embed.author_text) {
+                embed.author_image ?
+                    embed.setAuthor(await replaceText(embed.author_text), await replaceText(embed.author_image)) :
+                    embed.setAuthor(await replaceText(embed.author_text))
+            }
+            if (embed.title) embed.setTitle(await replaceText(embed.title))
+            if (embed.description) embed.setDescription(await replaceText(embed.description))
+            if (embed.thumbnail) embed.setThumbnail(await replaceText(embed.thumbnail))
+            if (embed.image) embed.setImage(await replaceText(embed.image))
+
+            if (embed.footer_text) {
+                embed.footer_image ?
+                    embed.setFooter(await replaceText(embed.footer_text), await replaceText(embed.footer_image)) :
+                    embed.setFooter(await replaceText(embed.footer_text))
+            }
+            if (embed.timestamp) embed.setTimestamp()
+            if (embed) embed.setColor('#' + embed.color)
+
+            return embed;
+        }
     }
 )()

@@ -38,26 +38,9 @@ module.exports = class MessageEvent {
         let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: tag.embed_name }).exec()
         const replaceText = (text) => this.client.replaceText(text, { channel: msg.channel, member: msg.member, prefix })
         let files = tag.image ? [new Discord.MessageAttachment(tag.image, 'image.png')] : null
-        let embed = embed_DB ? new Discord.MessageEmbed() : null
-        if (embed_DB) {
-            if (embed_DB.author_text) {
-                embed_DB.author_image ?
-                    embed.setAuthor(await replaceText(embed_DB.author_text), await replaceText(embed_DB.author_image)) :
-                    embed.setAuthor(await replaceText(embed_DB.author_text))
-            }
-            if (embed_DB.title) embed.setTitle(await replaceText(embed_DB.title))
-            if (embed_DB.description) embed.setDescription(await replaceText(embed_DB.description))
-            if (embed_DB.thumbnail) embed.setThumbnail(await replaceText(embed_DB.thumbnail))
-            if (embed_DB.image) embed.setImage(await replaceText(embed_DB.image))
-
-            if (embed_DB.footer_text) {
-                embed_DB.footer_image ?
-                    embed.setFooter(await replaceText(embed_DB.footer_text), await replaceText(embed_DB.footer_image)) :
-                    embed.setFooter(await replaceText(embed_DB.footer_text))
-            }
-            if (embed_DB.timestamp) embed.setTimestamp()
-            if (embed_DB) embed.setColor('#' + embed_DB.color)
-        }
+        let embed;
+        if (embed_DB)
+            embed = await this.client.generateEmbed(embed_DB, replaceText)
         tag.addRoleID.forEach((rId) => {
             let role = msg.guild.roles.resolve(rId)
             if (!role) return;

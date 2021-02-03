@@ -5,9 +5,9 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
         super(client, {
             name: 'rrole',
             alias: ['rroles', 'rr'],
-            description: 'Puedes poner roles por reacciones en el mensaje que quieras, roles de colores, roles para pings, todo es posible!',
+            description: 'You can put roles for reaction in the message that you want, colored roles, roles for mentions; everything is possible!',
             usage: (prefix) => `${prefix}rrole [@role] [type] [messageID] <#channel>`,
-            example: (prefix) => `${prefix}rrole @Guapo normal 12345`,
+            example: (prefix) => `${prefix}rrole @Beautiful normal #autoroles`,
             botGuildPermissions: ['MANAGE_ROLES'],
             memberGuildPermissions: ['ADMINISTRATOR'],
             memberChannelPermissions: ['EMBED_LINKS'],
@@ -20,131 +20,82 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
 
     async run(msg, args) {
         const embed = new Discord.MessageEmbed()
-            .setColor('#FDB2A2')
-        if (!args[0]) {
-            embed.setDescription(`>>> Uso correcto:
-${this.prefix}rrole [@role] [type] [messageID] <#channel>
-${this.prefix}rrole delete [emoji] [messageID]`)
-            return msg.channel.send(embed)
-        }
+            .setColor(this.client.color)
+        if (!args[0])
+            return msg.channel.send(embed.setDescription(`>>> Correct use:
+            ${this.prefix}rrole [@role] [type] [messageID] <#channel>
+            ${this.prefix}rrole delete [emoji] [messageID]`))
         switch (args[0].toLowerCase()) {
-            case 'types': {
-                embed.addField('Tipos:', `Normal => Se puede obtener y quitar el rol con la misma reacción.
-Unique => Solo se puede obtener, mas no quitar.
-Only => Solo se podrá obtener un reaction rol del mismo tipo en el mensaje.`)
-                return msg.channel.send(embed)
-            }
+            case 'types':
+                return msg.channel.send(embed.addField('Types', `Normal => The role can be obtained and removed with the same reaction.
+Unique => It can only be obtained, but not removed.
+Only => Only one role reaction of the same type can be obtained in the message.`));
             case 'delete': {
-                if (!args[1] || !args[2]) {
-                    embed.setDescription(`> Uso correcto: ${this.prefix}rrole delete [emoji] [messageID]`)
-                    return msg.channel.send(embed)
-                }
-                if (!this.emojiUnicode.test(args[1]) && !this.emojiDiscord.test(args[1])) {
-                    embed.setDescription('> Debes poner un emoji.')
-                    return msg.channel.send(embed)
-                }
+                if (!args[1] || !args[2])
+                    return msg.channel.send(embed.setDescription(`> Correct use: ${this.prefix}rrole delete [emoji] [messageID]`))
+                if (!this.emojiUnicode.test(args[1]) && !this.emojiDiscord.test(args[1]))
+                    return msg.channel.send(embed.setDescription('> You must put an emoji.'))
                 let emojiID = args[1].includes(':') ? args[1].split(':')[2].slice(0, -1) : args[1]
                 let emojiCheck = await this.client.db.reaction.findOneAndDelete({ guildID: msg.guild.id, messageID: args[2], reaction: emojiID }).exec()
-                console.log(emojiID)
-                if (!emojiCheck) {
-                    embed.setDescription('> No se pudo eliminar el reactionrol, comprueba si ya existe uno con esa ID de mensaje y emoji dentro del servidor.')
-                    return msg.channel.send(embed)
-                }
-                embed.setDescription('> Reactionrol eliminado correctamente.')
-                return msg.channel.send(embed)
+                if (!emojiCheck)
+                    return msg.channel.send(embed.setDescription('> The reaction role couldn\'t be removed, check if there\'s one with that message ID and emoji in the server.'))
+                return msg.channel.send(embed.setDescription('> Reaction role removed successfully.'));
             }
         }
-        if (!args[1] || !args[2]) {
-            embed.setDescription(`> Uso correcto: ${this.prefix}rrole [@role] [type] [messageID] <#channel>`)
-            return msg.channel.send(embed)
-        }
-        //rol: 0
+        if (!args[1] || !args[2])
+            return msg.channel.send(embed.setDescription(`> Correct use: ${this.prefix}rrole [@role] [type] [messageID] <#channel>`))
 
         const matchRole = args[0].match(/^<@&(\d+)>$/);
         let rol = matchRole ? msg.guild.roles.resolve(matchRole[1]) : msg.guild.roles.resolve(args[0])
+        if (!rol)
+            return msg.channel.send(embed.setDescription('> I couldn\'t find that role or it\'s invalid.'))
+        if (!rol.editable)
+            return msg.channel.send(embed.setDescription('> I don\'t have enough permissions to give that role.'))
 
-        if (!rol) {
-            embed.setDescription('> No pude encontrar ese rol o no es válido.')
-            return msg.channel.send(embed)
-        }
-        if (!rol.editable) {
-            embed.setDescription('> No tengo los suficientes permisos para dar ese rol.')
-            return msg.channel.send(embed)
-        }
+        if (!this.types.includes(args[1].toLowerCase()))
+            return msg.channel.send(embed.setDescription('> That\'s not a type of reaction role.')
+                .addField('Types', `Normal => The role can be obtained and removed with the same reaction.
+Unique => It can only be obtained, but not removed.
+Only => Only one role reaction of the same type can be obtained in the message.`))
 
-        //type: 1
-
-        if (!this.types.includes(args[1].toLowerCase())) {
-            embed.setDescription('> No es un tipo valido de reaction rol.')
-                .addField('Tipos:', `Normal => Se puede obtener y quitar el rol con la misma reacción.
-Unique => Solo se puede obtener, mas no quitar.
-Only => Solo se podrá obtener un reaction rol del mismo tipo en el mensaje.`)
-            return msg.channel.send(embed)
-        }
-
-        //mensaje 2
         const msgID = args[2]
-        //canal 3
-
         const matchChannel = args[3] ? args[3].match(/^<#(\d+)>$/) : false
         let canal = args[3] ? matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[3]) : msg.channel
 
-        if (!canal || canal.type !== 'text') {
-            embed.setDescription('> No pude encontrar el canal o no es válido.')
-            return msg.channel.send(embed)
-        }
-        if (!canal.viewable) {
-            embed.setDescription('> No tengo permisos para ver el canal.')
-            return msg.channel.send(embed)
-        }
-        if(!canal.permissionsFor(msg.guild.me).has('ADD_REACTIONS')){
-            embed.setDescription('> No tengo permisos para agregar reacciones en el canal.')
-            return msg.channel.send(embed)
-        }
+        if (!canal || canal.type !== 'text')
+            return msg.channel.send(embed.setDescription('> I couldn\'t find the channel or it\'s invalid.'))
+        if (!canal.viewable)
+            return msg.channel.send(embed.setDescription('> I don\'t have permissions to see that channel.'))
+        if (!canal.permissionsFor(msg.guild.me).has('ADD_REACTIONS'))
+            return msg.channel.send(embed.setDescription('> I don\'t have permissions to add reactions in that channel.'))
         try {
             var mensaje = await canal.messages.fetch(msgID)
-            if (!mensaje) {
-                embed.setDescription('> El mensaje no fue encontrado.')
-                return msg.channel.send(embed)
-            }
+            if (!mensaje)
+                return msg.channel.send(embed.setDescription('> The message was not found.'))
         } catch (e) {
-            embed.setDescription('> Hubo un error al encontrar el mensaje, intenta de nuevo.')
-            return msg.channel.send(embed)
+            return msg.channel.send(embed.setDescription('> There was an error finding the message, try again.'))
         }
 
-        //------//
-        embed.setDescription(`Estoy alistando el reaction rol para ${rol}.
-Solo falta que reacciones con el emoji con el que quieras que se dé el rol.`)
-        let enviado = await msg.channel.send(embed)
+        let enviado = await msg.channel.send(embed.setDescription(`I'm preparing the reaction role for ${rol}.
+You just need to react with the emoji with which you want the role to be given.`))
         try {
             const filter = (r, u) => u.id === msg.author.id
             let colector = await enviado.awaitReactions(filter, { max: 1, time: 30e3, error: ['time'] })
             let emoji = colector.first().emoji
-
             enviado.delete()
-
-            if (emoji.id && !this.client.emojis.resolve(emoji.id)) {
-                embed.setDescription('> No puede encontrar ese emoji en mi caché, intenta poniendo el emoji en el servidor.')
-                return msg.channel.send(embed)
-            }
+            if (emoji.id && !this.client.emojis.resolve(emoji.id))
+                return msg.channel.send(embed.setDescription('> I couldn\'t find that emoji in my cache, try adding the emoji on the server.'))
             let emojiID = emoji.id || emoji.name
-
             let emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emojiID }).exec()
-            if (emojiCheck) {
-                embed.setDescription('> Ya hay un reaction rol con ese emoji.')
-                return msg.channel.send(embed)
-            }
-
+            if (emojiCheck)
+                return msg.channel.send(embed.setDescription('> There\'s already a role reaction with that emoji.'))
             let nuevaDB = new this.client.db.reaction({ guildID: msg.guild.id, messageID: mensaje.id, roleID: rol.id, reaction: emojiID, type: args[1].toLowerCase() })
             await nuevaDB.save()
-
             mensaje.react(emoji)
-
-            embed.setDescription(`Ahora se dará el rol ${rol} cuando reaccionen al emoji: ${emoji}`)
-            msg.channel.send(embed)
+            msg.channel.send(embed.setDescription(`Now, the role ${rol} will be given when they react to the emoji: ${emoji}`))
         } catch (e) {
             enviado.delete()
-            msg.channel.send('> Se acabó el tiempo ;(')
+            msg.channel.send('> Time is over ;(')
         }
     }
 }

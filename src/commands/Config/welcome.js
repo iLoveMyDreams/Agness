@@ -5,59 +5,59 @@ module.exports = class WelcomeCommand extends BaseCommand {
         super(client, {
             name: 'welcome',
             alias: ['setwelcome'],
-            description: 'Establece el canal y los mensajes que mas prefieras cuando alguien entre a tu servidor c:',
-            usage: (prefix) => `${prefix}welcome [channel/message] <propiedades>`,
-            example: (prefix) => `${prefix}welcome channel #bienvenida`,
+            description: 'Set the channel and messages that you prefer the most when someone joins to your server c:',
+            usage: (prefix) => `${prefix}welcome [option: channel/message] <properties>`,
+            example: (prefix) => `${prefix}welcome channel #welcome`,
             category: 'Config',
             memberGuildPermissions: ['ADMINISTRATOR']
         })
     }
 
     async run(msg, args) {
-        if (!args[0]) return msg.channel.send(`Pon una propiedad válida
-> welcome channel [#mención]
-> welcome message [texto] | <{embed:[embed_name]}>`)
+        if (!args[0]) return msg.channel.send(`Put a valid property
+> welcome channel [#mention]
+> welcome message [text] | <{embed:[embed_name]}>`)
         switch (args[0].toLowerCase()) {
             case 'channel': {
-                if (!args[1]) return msg.channel.send('> Dame la id o mención del rol.')
+                if (!args[1]) return msg.channel.send('> Give me the ID or mention of the role.')
                 const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false
                 let canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1])
-                if (!canal || canal.type !== 'text') return msg.channel.send('> No encontré un canal, o el canal mencionado no es de texto.')
-                if (!canal.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return msg.channel.send('> No puedo mandar mensajes en ese canal.')
+                if (!canal || canal.type !== 'text') return msg.channel.send('> I didn\'t find a channel of the mentioned channel is not of text')
+                if (!canal.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return msg.channel.send('> I can\'t send messages in that channel')
                 let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, channelID: canal.id })
                 server.channelID = canal.id
                 server.save()
-                msg.channel.send(`> El nuevo canal de bienvenidas ahora es ${canal}.`)
+                msg.channel.send(`> The welcomes channel is now ${canal}.`)
                 break;
             }
             case 'message': {
-                if (!args[1]) return msg.channel.send('> Pon el mensaje de bienvenida.')
+                if (!args[1]) return msg.channel.send('> You must put a welcome message.')
                 if (/{embed:.+}/gi.test(args[1])) {
                     let embed = args[1].match(/{embed:.+}/gi)[0].split(':')[1].slice(0, -1)
                     if (embed) {
                         let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec()
-                        if (!checkear) return msg.channel.send('> No hay un embed con ese nombre')
+                        if (!checkear) return msg.channel.send('> There\'s no embed with that name')
                     }
                     let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                     if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, embed_name: embed })
                     server.embed_name = embed
                     server.message = ''
                     server.save()
-                    msg.channel.send(`> El nuevo embed a usar en las bienvenidas ahora es ${embed}`)
+                    msg.channel.send(`> The new embed to use in the welcomes is now ${embed}`)
                 } else {
                     let [message, embed] = args.slice(1).join(' ').split(' | ').map((m) => m.trim())
                     if (embed) {
                         embed = embed.split(':')[1].slice(0, -1)
                         let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec()
-                        if (!checkear) return msg.channel.send('> No hay un embed con ese nombre')
+                        if (!checkear) return msg.channel.send('> There\'s no embed with that name')
                     }
                     let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                     if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, embed_name: embed ? embed : '', message })
                     server.embed_name = embed ? embed : ''
                     server.message = message
                     server.save()
-                    msg.channel.send(`> Se ha actualizado el mensaje ${embed ? 'y embed ' : ''}de bienvenida correctamente`)
+                    msg.channel.send(`> The message ${embed ? 'and embed ' : ''}of welcomes has been updated`)
                 }
                 break;
             }
@@ -65,35 +65,35 @@ module.exports = class WelcomeCommand extends BaseCommand {
                 switch (args[1]) {
                     case 'user': {
                         let rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2])
-                        if (!rol) return msg.channel.send('> Debes mencionar un rol o darme una ID')
+                        if (!rol) return msg.channel.send('> Give me the ID or mention of the role')
                         let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                         if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, userRoleID: rol.id })
                         server.userRoleID = rol.id
                         server.save()
-                        msg.channel.send(`> Ahora se dara el rol ${rol} cuando un usuario entren al servidor`, { allowedMentions: { roles: [] } })
+                        msg.channel.send(`> Now, the role ${rol} will be given when a user joins the server`, { allowedMentions: { roles: [] } })
                         break;
                     }
                     case 'bot': {
                         let rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2])
-                        if (!rol) return msg.channel.send('> Debes mencionar un rol o darme una ID')
+                        if (!rol) return msg.channel.send('> Give me the ID or mention of the role')
                         let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec()
                         if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, botRoleID: rol.id })
                         server.botRoleID = rol.id
                         server.save()
-                        msg.channel.send(`> Ahora se dara el rol ${rol} cuando un bot entren al servidor`, { allowedMentions: { roles: [] } })
+                        msg.channel.send(`> Now, the role ${rol} will be given when a bot joins the server`, { allowedMentions: { roles: [] } })
                         break;
                     }
                     default: {
-                        msg.channel.send(`Debes escoger que tipo a que tipo de miembro quieres dar el rol.
-> ${this.prefix}welcome autorole [user | bot] [@role | rolID]`)
+                        msg.channel.send(`You must choose what type of member you want to give the role to.
+> ${this.prefix}welcome autorole [user | bot] [@role]`)
                     }
                 }
                 break;
             }
             default: {
-                msg.channel.send(`Pon una propiedad valida
-> welcome channel [#mencion]
-> welcome message [texto] | <{embed:[embed_name]}>`)
+                msg.channel.send(`Put a valid property
+> welcome channel [#mention]
+> welcome message [text] | <{embed:[embed_name]}>`)
                 break;
             }
         }

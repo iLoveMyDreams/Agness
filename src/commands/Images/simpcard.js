@@ -11,14 +11,14 @@ module.exports = class CatCommand extends BaseCommand {
 
 	async run(msg, args) {
 		let user = msg.mentions.users.first() || (args[0] ? await this.client.users.fetch(args[0]).catch(() => { }) : msg.author) || msg.author
-
 		let avatar = user.displayAvatarURL({ dynamic: false, format: 'png', size: 256 });
 		const canvas = createCanvas(318, 192);
 		const ctx = canvas.getContext('2d');
-
-		const bg = await loadImage('https://i.imgur.com/GGBymND.jpg');
+		const [bg, img] = await Promise.all([
+			loadImage('https://i.imgur.com/GGBymND.jpg'),
+			loadImage(avatar)
+		]);
 		ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
-
 		ctx.beginPath();
 		ctx.arc(70, 75, 50, 0, Math.PI * 2);
 		ctx.fillStyle = '#ffffff';
@@ -26,11 +26,7 @@ module.exports = class CatCommand extends BaseCommand {
 		ctx.stroke();
 		ctx.closePath();
 		ctx.clip();
-
-		let imagen = await loadImage(avatar);
-		ctx.drawImage(imagen, 20, 23.5, 100, 100);
-
-		const att = new Discord.MessageAttachment(canvas.toBuffer(), 'AsunaSimpCard.png')
-		msg.channel.send(att)
+		ctx.drawImage(img, 20, 23.5, 100, 100);
+		msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'AsunaSimpCard.png'))
 	}
 }

@@ -22,8 +22,8 @@ module.exports = class LeaveCommand extends BaseCommand {
                 if (!args[1]) return msg.channel.send('> Give me the ID or mention of the role.')
                 const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false
                 let canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1])
-                if (!canal || canal.type !== 'text') return msg.channel.send('> I didn\'t find a channel of the mentioned channel is not of text.')
-                if (!canal.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return msg.channel.send('> I can\'t send messages in that channel.')
+                if (!canal || canal.type !== 'text') return msg.channel.send('> I didn\'t find a channel of the mentioned channel is not of text')
+                if (!canal.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return msg.channel.send('> I can\'t send messages in that channel')
                 let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec()
                 if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, channelID: canal.id })
                 server.channelID = canal.id
@@ -32,7 +32,7 @@ module.exports = class LeaveCommand extends BaseCommand {
                 break;
             }
             case 'message': {
-                if (!args[1]) return msg.channel.send('> Put a leave message.')
+                if (!args[1]) return msg.channel.send('> You must put a leave message.')
                 if (/{embed:.+}/gi.test(args[1])) {
                     let embed = args[1].match(/{embed:.+}/gi)[0].split(':')[1].slice(0, -1)
                     if (embed) {
@@ -57,14 +57,14 @@ module.exports = class LeaveCommand extends BaseCommand {
                     server.embed_name = embed ? embed : ''
                     server.message = message
                     server.save()
-                    msg.channel.send(`> The message ${embed ? 'and embed ' : ''}of leaves has been updated.`)
+                    msg.channel.send(`> The message ${embed ? 'and embed ' : ''}of leaves has been updated`)
                 }
                 break;
             }
             default:
                 msg.channel.send(`Put a valid property
-> welcome channel [#mention]
-> welcome message [text] | <{embed:[embed_name]}>`)
+> leave channel [#mention]
+> leave message [text] | <{embed:[embed_name]}>`)
                 break;
         }
     }

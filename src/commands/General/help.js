@@ -10,19 +10,17 @@ module.exports = class HelpCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        const embed = new Discord.MessageEmbed()
+        if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
             .setColor(this.client.color)
-        if (!args[0]) {
-            embed.setTitle(`${this.client.user.username} Help Panel`)
-                .setDescription(`Hi! At the moment I have 3 categories and ${this.client.commands.size - 1} commands.
+            .setTitle(`${this.client.user.username} Help Panel`)
+            .setDescription(`Hi! At the moment I have 3 categories and ${this.client.commands.size - 1} commands.
 If you need more detailed information about each command, you can use:
 > ${this.prefix}help <Command>`)
-                .addField(`Categories`, `> ${this.prefix}help Config • Configuration Commands
+            .addField(`Categories`, `> ${this.prefix}help Config • Configuration Commands
 > ${this.prefix}help General • Commands in general
 > ${this.prefix}help Images • Images of all types`)
-                .addField('Links', `**[Invite](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Support Server](https://discord.gg/K63NqEDm86)**`)
-            return msg.channel.send(embed)
-        }
+            .addField('Links', `**[Invite](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Support Server](https://discord.gg/K63NqEDm86)**`))
+
         const category = this.client.commands.filter((x) => x.category.toLowerCase() == args[0].toLowerCase()).array()
         const cmd = this.client.commands.get(args[0].toLowerCase()) || this.client.commands.find((x) => x.alias && x.alias.includes(args[0].toLowerCase()));
 

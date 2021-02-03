@@ -6,9 +6,9 @@ module.exports = class TagsCommand extends BaseCommand {
         super(client, {
             name: 'tag',
             alias: ['tags'],
-            description: 'Crea comandos personalizados para tu servidor.',
-            usage: (prefix) => `${prefix}tag [add/edit/delete] [tag_name] <propiedades>`,
-            example: (prefix) => `${prefix}tag add cool (message:Si que eres cool!)`,
+            description: 'Create custom commands for your server.',
+            usage: (prefix) => `${prefix}tag [option: add/edit/delete] [tag_name] <properties>`,
+            example: (prefix) => `${prefix}tag add cool (message:Yes, you're so cool)`,
             botGuildPermissions: ['MANAGE_ROLES'],
             memberGuildPermissions: ['ADMINISTRATOR'],
             memberChannelPermissions: ['EMBED_LINKS'],
@@ -17,20 +17,17 @@ module.exports = class TagsCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        let embedCorrect = new Discord.MessageEmbed()
-            .addField(
-                'Uso correcto:',
-                `> ${this.prefix}tag [add/edit/delete] [tag_name] <propiedades>`)
-            .setFooter(`Para ver las propiedades usa: ${this.prefix}tag propiedades`)
-        if (!args[0]) return msg.channel.send(embedCorrect)
+        if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
+            .addField('Correct use', `> ${this.prefix}tag [add/edit/delete] [tag_name] <properties>`)
+            .setFooter(`To see the properties, use: ${this.prefix}tag properties`))
         switch (args[0].toLowerCase()) {
             case 'add': {
                 const lista = await this.client.db.tags.find({ guildID: msg.guild.id }).exec()
-                if (lista.length >= 10) return msg.channel.send('> Por ahora solo se pueden tener 10 tags por servidor')
-                if (!args[1]) return msg.channel.send('Pon un nombre válido')
+                if (lista.length >= 10) return msg.channel.send('> For now, you can only have 10 tags per server')
+                if (!args[1]) return msg.channel.send('You must put a valid name')
                 if (this.client.commands.find(c => c.name === args[1].toLowerCase() || c.alias.includes(args[1].toLowerCase()))) return msg.channel.send('No puedes crear un tag con el nombre de un comando')
                 let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec()
-                if (tag) return msg.channel.send('Ya existe un tag con ese nombre')
+                if (tag) return msg.channel.send('There\'s already a tag with that name')
                 let variables = args.slice(2).join(' ').split('{').map((s) => s.split('}')[0])
                 let variableMessage = args.slice(2).join(' ').split('(').map((s) => s.split(')')[0])
                 let options = {
@@ -53,15 +50,15 @@ module.exports = class TagsCommand extends BaseCommand {
                     if (name === 'image') options.image = value.join(':')
                     else if (name === 'message') options.message = value.join(':')
                 })
-                if (!options.message && !options.embed && !options.image) return msg.channel.send('Debes poner un mensaje, embed o imagen para enviar o los tres')
+                if (!options.message && !options.embed && !options.image) return msg.channel.send('You must put a message, embed or image to send or all three')
                 if (options.image)
-                    if (!(await isImageURL(options.image))) return message.channel.send('Debes poner una imagen válida.');
+                    if (!(await isImageURL(options.image))) return message.channel.send('You must put a valid image');
                 if (options.embed) {
                     let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: options.embed }).exec()
-                    if (!checkear) return msg.channel.send('No hay un embed con ese nombre')
+                    if (!checkear) return msg.channel.send('There\'s no an embed with that name')
                 }
-                if (options.addrole.some(r => !r || !r.editable)) return msg.channel.send('No existe o no puedo dar ese rol.')
-                if (options.removerole.some(r => !r || !r.editable)) return msg.channel.send('No existe o no puedo quitar ese rol')
+                if (options.addrole.some(r => !r || !r.editable)) return msg.channel.send('The role doesn\'t exists or I can\'t add it')
+                if (options.removerole.some(r => !r || !r.editable)) return msg.channel.send('The role doesn\'t exists or I can\'t remove it')
                 tag = new this.client.db.tags({
                     guildID: msg.guild.id,
                     name: args[1].toLowerCase(),
@@ -72,13 +69,13 @@ module.exports = class TagsCommand extends BaseCommand {
                     image: options.image
                 })
                 tag.save()
-                msg.channel.send(`Tag con el nombre **${args[1].toLowerCase()}** creado correctamente`)
+                msg.channel.send(`Tag with the name **${args[1].toLowerCase()}** created successfully`)
                 break;
             }
             case 'edit': {
-                if (!args[1]) return msg.channel.send('Pon un nombre válido')
+                if (!args[1]) return msg.channel.send('You must put a valid name')
                 let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec()
-                if (!tag) return msg.channel.send('No existe un tag con ese nombre')
+                if (!tag) return msg.channel.send('There\'s no a tag with that name')
                 let variables = args.slice(2).join(' ').split('{').map((s) => s.split('}')[0])
                 let variableMessage = args.slice(2).join(' ').split('(').map((s) => s.split(')')[0])
                 let options = {
@@ -101,62 +98,47 @@ module.exports = class TagsCommand extends BaseCommand {
                     if (name === 'image') options.image = value.join(':')
                     else if (name === 'message') options.message = value.join(':')
                 })
-                if (!options.message && !options.embed && !options.image) return msg.channel.send('Debes poner un mensaje, embed o imagen para enviar o los tres')
+                if (!options.message && !options.embed && !options.image) return msg.channel.send('You must put a message, embed or image to send or all three')
                 if (options.image)
-                    if (!(await isImageURL(options.image))) return message.channel.send('Debes poner una imagen válida.');
+                    if (!(await isImageURL(options.image))) return message.channel.send('You must put a valid image');
                 if (options.embed) {
                     let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: options.embed }).exec()
-                    if (!checkear) return msg.channel.send('No hay un embed con ese nombre')
+                    if (!checkear) return msg.channel.send('There\'s no a embed with that name')
                 }
-                if (options.addrole.some(r => !r || !r.editable)) return msg.channel.send('No existe o no puedo dar ese rol.')
-                if (options.removerole.some(r => !r || !r.editable)) return msg.channel.send('No existe o no puedo quitar ese rol')
+                if (options.addrole.some(r => !r || !r.editable)) return msg.channel.send('The role doesn\'t exists or I can\'t add it.')
+                if (options.removerole.some(r => !r || !r.editable)) return msg.channel.send('The role doesn\'t exists or I can\'t remove it')
                 tag.deleteRoleID = options.removerole.map((r) => r.id)
                 tag.addRoleID = options.addrole.map((r) => r.id)
                 tag.embed_name = options.embed
                 tag.message = options.message
                 tag.image = options.image
                 tag.save()
-                msg.channel.send(`Tag con el nombre **${args[1].toLowerCase()}** editado correctamente`)
-                break;
+                return msg.channel.send(`Tag with the name **${args[1].toLowerCase()}** edited successfully`);
             }
             case 'delete': {
-                if (!args[1]) return msg.channel.send('Pon un nombre válido')
+                if (!args[1]) return msg.channel.send('You must put an valid name')
                 let tag = await this.client.db.tags.findOneAndDelete({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec()
-                if (!tag) return msg.channel.send('No existe un tag con ese nombre')
-                msg.channel.send(`Tag con el nombre **${args[1].toLowerCase()}** eliminado correctamente`)
-                break;
+                if (!tag) return msg.channel.send('There\'s no a tag with that name')
+                return msg.channel.send(`Tag with the name **${args[1].toLowerCase()}** deleted successfully`);
             }
             case 'list': {
                 const lista = await this.client.db.tags.find({ guildID: msg.guild.id }).exec()
-                const embedList = new Discord.MessageEmbed()
-                if (!lista.length) {
-                    embedList.setDescription('> El servidor no cuenta con ningún tag')
-                    return msg.channel.send(embedList)
-                }
-                embedList.setAuthor(
-                    `Lista de tags de ${msg.guild.name}`,
-                    msg.guild.iconURL()
-                        ? msg.guild.iconURL({ dynamic: true })
-                        : null
-                )
-                    .setDescription(lista.map(x => x.name).join('\n'))
-                msg.channel.send(embedList)
-                break;
+                if (!lista.length)
+                    return msg.channel.send(new Discord.MessageEmbed()
+                        .setDescription('> The server doesn\'t has any embed'))
+                return msg.channel.send(embedList.setAuthor('Server tag list', msg.guild.icon ? msg.guild.iconURL({ dynamic: true }) : null)
+                    .setDescription(lista.map(x => x.name).join('\n')));
             }
             case 'propiedades':
-            case 'properties': {
-                msg.channel.send(`**Propiedades de un tag**
-> \`(message:[text])\` - Mensajes normales.
-> \`(image:[url])\` - Envía la imagen como archivo.
-> \`{embed:[embed_name]}\` - Insertar un embed ya creado.
-> \`{addRole:[rolID]}\` - Añade un rol.
-> \`{removeRole:[roleID]}\` - Remueve un rol.`)
-                break;
-            }
-            default: {
-                msg.channel.send(embedCorrect)
-                break;
-            }
+            case 'properties':
+                return msg.channel.send(`**Properties of a tag**
+> \`(message:[text])\` - The normal text of the message to send
+> \`(image:[url])\` - Send an image as attachment
+> \`{embed:[embed_name]}\` - Send an embed already created (embed command)
+> \`{addRole:[roleID]}\` - Adds a role
+> \`{removeRole:[roleID]}\` - Removes a role`);
+            default:
+                return msg.channel.send(embedCorrect);
         }
     }
 }

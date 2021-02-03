@@ -6,15 +6,15 @@ module.exports = class PrefixCommand extends BaseCommand {
             name: 'prefix',
             category: 'Config',
             description: 'Set my prefix to whatever you want',
-            usage: (prefix) => `${prefix}prefix <NewPrefix>`,
+            usage: (prefix) => `${prefix}prefix [new prefix]`,
             example: (prefix) => `${prefix}prefix a!`,
             memberGuildPermissions: ['ADMINISTRATOR']
         })
     }
 
     async run(msg, args) {
-        if (!args[0]) return msg.channel.send('> Put the new prefix.')
-        if (args[0].length > 5) return msg.channel.send('> Put a prefix of less than 5 characters.')
+        if (!args[0]) return msg.channel.send('> You must put the new prefix.')
+        if (args[0].length > 5) return msg.channel.send('> You must put a prefix of less than 5 characters.')
         let server = await this.client.db.prefix.findOne({ _id: msg.guild.id }).exec()
         if (!server) server = new this.client.db.prefix({ _id: msg.guild.id, prefix: args[0] })
         server.prefix = args[0]
