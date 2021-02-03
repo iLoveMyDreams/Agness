@@ -127,12 +127,13 @@ You can find the full list with \`${this.prefix}variables\``)
                         }
                         break;
                     }
+                    case 'title':
                     case 'description': {
                         if (!args[3]) return msg.channel.send(`You must give me the value you want to put. Or maybe you are executing the command the wrong way, right way:
->  ${this.prefix}embed edit [embed_name] description [text]`)
+>  ${this.prefix}embed edit [embed_name] ${edit} [text]`)
                         if (args[3].toLowerCase() !== 'null')
-                            embed_DB.description = args.slice(3).join(' ')
-                        else embed_DB.description = ''
+                            embed_DB[edit] = args.slice(3).join(' ')
+                        else embed_DB[edit] = ''
                         break;
                     }
                     case 'image':
@@ -171,10 +172,9 @@ You can find the full list with \`${this.prefix}variables\``)
                         break;
                     }
                     default:
-                        msg.channel.send(`The property that you put isn't valid. You can see the list of the properties with \`${this.prefix}embed properties\`.
+                        return msg.channel.send(`The property that you put isn't valid. You can see the list of the properties with \`${this.prefix}embed properties\`.
 Or maybe you are executing the command the wrong way, right way:
-> \`${this.prefix}embed edit [name] [property] [value]`)
-                        return;
+> \`${this.prefix}embed edit [name] [property] [value]`);
                 }
 
                 embed_DB.save()
