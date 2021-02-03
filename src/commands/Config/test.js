@@ -23,10 +23,8 @@ module.exports = class TestCommand extends BaseCommand {
                 this.client.emit('guildMemberAdd', msg.member)
                 break;
             }
-            default: {
-                msg.channel.send(`> Correct use: ${this.prefix}test [welcome/leave]`)
-                break;
-            }
+            default:
+                return msg.channel.send(`> Correct use: ${this.prefix}test [welcome/leave]`);
         }
     }
 }

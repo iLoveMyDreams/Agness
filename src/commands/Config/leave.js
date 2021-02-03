@@ -22,8 +22,8 @@ module.exports = class LeaveCommand extends BaseCommand {
                 if (!args[1]) return msg.channel.send('> Give me the ID or mention of the role.')
                 const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false
                 let canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1])
-                if (!canal || canal.type !== 'text') return msg.channel.send('> I didn\'t find a channel of the mentioned channel is not of text')
-                if (!canal.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return msg.channel.send('> I can\'t send messages in that channel')
+                if (!canal || canal.type !== 'text') return msg.channel.send('> I didn\'t find a channel of the mentioned channel is not of text.')
+                if (!['SEND_MESSAGES', 'EMBED_LINKS'].some((p) => canal.permissionsFor(msg.guild.me).has(p))) return msg.channel.send('> I can\'t send messages or embeds in that channel.')
                 let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec()
                 if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, channelID: canal.id })
                 server.channelID = canal.id
@@ -37,27 +37,27 @@ module.exports = class LeaveCommand extends BaseCommand {
                     let embed = args[1].match(/{embed:.+}/gi)[0].split(':')[1].slice(0, -1)
                     if (embed) {
                         let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec()
-                        if (!checkear) return msg.channel.send('> There\'s no embed with that name')
+                        if (!checkear) return msg.channel.send('> There\'s no embed with that name.')
                     }
                     let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec()
                     if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, embed_name: embed })
                     server.embed_name = embed
                     server.message = ''
                     server.save()
-                    msg.channel.send(`> The new embed to use in the leaves is now ${embed}`)
+                    msg.channel.send(`> The new embed to use in the leaves is now ${embed}.`)
                 } else {
                     let [message, embed] = args.slice(1).join(' ').split(' | ').map((m) => m.trim())
                     if (embed) {
                         embed = embed.split(':')[1].slice(0, -1)
                         let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec()
-                        if (!checkear) return msg.channel.send('> There\'s no embed with that name')
+                        if (!checkear) return msg.channel.send('> There\'s no embed with that name.')
                     }
                     let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec()
                     if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, embed_name: embed ? embed : '', message })
                     server.embed_name = embed ? embed : ''
                     server.message = message
                     server.save()
-                    msg.channel.send(`> The message ${embed ? 'and embed ' : ''}of leaves has been updated`)
+                    msg.channel.send(`> The message ${embed ? 'and embed ' : ''}of leaves has been updated.`)
                 }
                 break;
             }

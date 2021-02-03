@@ -17,13 +17,13 @@ module.exports = class MessageEvent {
             msg.mentions.users.delete(msg.mentions.users.first().id)
         const args = msg.content.slice(usedPrefix.length).trim().split(/ +/g)
         const command = args.shift().toLowerCase()
-        if (await this.handleTag(msg, this.prefix, command)) return;
+        if (await this.isTag(msg, this.prefix, command)) return;
         const cmd = this.client.commands.find(c => c.name === command || c.alias.includes(command))
         if (!cmd) return;
-        cmd.prepare({ serverPrefix: prefix });
-        if (cmd.canRun(msg)) return;
         try {
-            cmd.run(msg, args)
+            cmd.prepare({ serverPrefix: prefix });
+            if (!cmd.canRun(msg)) return;
+            cmd.run(msg, args);
         } catch (e) {
             console.log(e.message || e)
             msg.channel.send(`An unexpected error has occurred, here is a small reference: ${e.message || e}`)
@@ -32,7 +32,7 @@ module.exports = class MessageEvent {
         }
     }
 
-    async handleTag(msg, prefix, name) {
+    async isTag(msg, prefix, name) {
         let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name }).exec()
         if (!tag) return false
         let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: tag.embed_name }).exec()
@@ -53,7 +53,6 @@ module.exports = class MessageEvent {
             if (!role.editable) return;
             msg.member.roles.remove(role.id)
         })
-        console.log(files, tag.image)
         if (!tag.message && !embed && !files) return;
         msg.channel.send(await replaceText(tag.message), { embed, files })
         return true

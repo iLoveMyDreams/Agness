@@ -19,6 +19,6 @@ module.exports = class PrefixCommand extends BaseCommand {
         if (!server) server = new this.client.db.prefix({ _id: msg.guild.id, prefix: args[0] })
         server.prefix = args[0]
         await server.save()
-        msg.channel.send(`> My new prefix is: \`${args[0]}\``)
+        msg.channel.send(`> My new prefix is: \`${args[0]}\`.`)
     }
 }

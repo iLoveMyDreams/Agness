@@ -6,7 +6,7 @@ module.exports = class ReactionRoleCommand extends BaseCommand {
             name: 'rrole',
             alias: ['rroles', 'rr'],
             description: 'You can put roles for reaction in the message that you want, colored roles, roles for mentions; everything is possible!',
-            usage: (prefix) => `${prefix}rrole [@role] [type] [messageID] <#channel>`,
+            usage: (prefix) => `${prefix}rrole [@role] [type: normal/unique/only] [messageID] <#channel>`,
             example: (prefix) => `${prefix}rrole @Beautiful normal #autoroles`,
             botGuildPermissions: ['MANAGE_ROLES'],
             memberGuildPermissions: ['ADMINISTRATOR'],

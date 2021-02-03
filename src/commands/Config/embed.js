@@ -86,7 +86,7 @@ You can find the full list with \`${this.prefix}variables\``)
                 if (!lista.length)
                     return msg.channel.send(embed.setDescription('The server doesn\'t have any embed.'))
                 msg.channel.send(embed.setAuthor(`Embed list of ${msg.guild.name}`, msg.guild.icon ? msg.guild.iconURL({ dynamic: true }) : null)
-                    .setDescription(lista.map(x => x.embed_name).join('\n')))
+                    .setDescription(lista.map((e, i) => `**${i + 1}**. ${e.embed_name}`).join('\n')))
                 break;
             }
             case 'edit': {
