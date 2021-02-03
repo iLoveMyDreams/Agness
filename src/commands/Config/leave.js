@@ -14,7 +14,9 @@ module.exports = class LeaveCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        if (!args[0]) return msg.channel.send(new Discord.MessageEmbed().setDescription(`You must put a valid property.
+        if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
+        .setColor(this.client.color)
+        .setDescription(`You must put a valid property.
 > leave channel [#mention]
 > leave message [text] | <{embed:[embed_name]}>`))
         switch (args[0].toLowerCase()) {
@@ -62,7 +64,9 @@ module.exports = class LeaveCommand extends BaseCommand {
                 break;
             }
             default:
-                msg.channel.send(new Discord.MessageEmbed().setDescription(`You must put a valid property.
+                msg.channel.send(new Discord.MessageEmbed()
+                .setColor(this.client.color)
+                .setDescription(`You must put a valid property.
 > leave channel [#mention]
 > leave message [text] | <{embed:[embed_name]}>`))
                 break;

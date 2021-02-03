@@ -14,7 +14,9 @@ module.exports = class WelcomeCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        if (!args[0]) return msg.channel.send(new Discord.MessageEmbed().setDescription(`You must put a valid property.
+        if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
+            .setColor(this.client.color)
+            .setDescription(`You must put a valid property.
 > welcome channel [#mention]
 > welcome message [text] | <{embed:[embed_name]}>`))
         switch (args[0].toLowerCase()) {
@@ -91,7 +93,9 @@ module.exports = class WelcomeCommand extends BaseCommand {
                 break;
             }
             default:
-                return msg.channel.send(new Discord.MessageEmbed().setDescription(`You must put a valid property.
+                return msg.channel.send(new Discord.MessageEmbed()
+                    .setColor(this.client.color)
+                    .setDescription(`You must put a valid property.
 > welcome channel [#mention]
 > welcome message [text] | <{embed:[embed_name]}>`));
         }
