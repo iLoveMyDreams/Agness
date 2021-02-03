@@ -10,7 +10,7 @@ module.exports = class TagsCommand extends BaseCommand {
             usage: (prefix) => `${prefix}tag [option: add/edit/delete] [tag_name] <properties>`,
             example: (prefix) => `${prefix}tag add cool (message:Yes, you're so cool!)`,
             memberGuildPermissions: ['ADMINISTRATOR'],
-            memberChannelPermissions: ['EMBED_LINKS'],
+            botChannelPermissions: ['EMBED_LINKS'],
             category: 'Config'
         })
     }

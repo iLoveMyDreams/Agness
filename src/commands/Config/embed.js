@@ -11,6 +11,7 @@ module.exports = class EmbedCommand extends BaseCommand {
             example: (prefix) => `${prefix}embed create welcome`,
             category: 'Config',
             memberGuildPermissions: ['ADMINISTRATOR'],
+            botChannelPermissions: ['EMBED_LINKS']
         })
     }
 
