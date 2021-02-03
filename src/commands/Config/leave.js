@@ -14,9 +14,9 @@ module.exports = class LeaveCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        if (!args[0]) return msg.channel.send(`Put a valid property
+        if (!args[0]) return msg.channel.send(new Discord.MessageEmbed().setDescription(`You must put a valid property.
 > leave channel [#mention]
-> leave message [text] | <{embed:[embed_name]}>`)
+> leave message [text] | <{embed:[embed_name]}>`))
         switch (args[0].toLowerCase()) {
             case 'channel': {
                 if (!args[1]) return msg.channel.send('> Give me the ID or mention of the role.')
@@ -62,9 +62,9 @@ module.exports = class LeaveCommand extends BaseCommand {
                 break;
             }
             default:
-                msg.channel.send(`Put a valid property
+                msg.channel.send(new Discord.MessageEmbed().setDescription(`You must put a valid property.
 > leave channel [#mention]
-> leave message [text] | <{embed:[embed_name]}>`)
+> leave message [text] | <{embed:[embed_name]}>`))
                 break;
         }
     }

@@ -14,9 +14,9 @@ module.exports = class WelcomeCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        if (!args[0]) return msg.channel.send(`Put a valid property
+        if (!args[0]) return msg.channel.send(new Discord.MessageEmbed().setDescription(`You must put a valid property.
 > welcome channel [#mention]
-> welcome message [text] | <{embed:[embed_name]}>`)
+> welcome message [text] | <{embed:[embed_name]}>`))
         switch (args[0].toLowerCase()) {
             case 'channel': {
                 if (!args[1]) return msg.channel.send('> Give me the ID or mention of the role.')
@@ -91,9 +91,9 @@ module.exports = class WelcomeCommand extends BaseCommand {
                 break;
             }
             default:
-                return msg.channel.send(`Put a valid property
+                return msg.channel.send(new Discord.MessageEmbed().setDescription(`You must put a valid property.
 > welcome channel [#mention]
-> welcome message [text] | <{embed:[embed_name]}>`);
+> welcome message [text] | <{embed:[embed_name]}>`));
         }
     }
 }
