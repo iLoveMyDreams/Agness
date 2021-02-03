@@ -7,7 +7,7 @@ module.exports = class TagsCommand extends BaseCommand {
             name: 'tag',
             alias: ['tags'],
             description: 'Create custom commands for your server.',
-            usage: (prefix) => `${prefix}tag [option: add/edit/delete] [tag_name] <properties>`,
+            usage: (prefix) => `${prefix}tag [option: add/edit/delete/list] [tag_name] <properties>`,
             example: (prefix) => `${prefix}tag add cool (message:Yes, you're so cool!)`,
             memberGuildPermissions: ['ADMINISTRATOR'],
             botChannelPermissions: ['EMBED_LINKS'],
@@ -18,8 +18,8 @@ module.exports = class TagsCommand extends BaseCommand {
     async run(msg, args) {
         if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
             .setColor(this.client.color)
-            .addField('Correct use', `> ${this.prefix}tag [add/edit/delete] [tag_name] <properties>`)
-            .setFooter(`To see the properties, use: ${this.prefix}tag properties`))
+            .addField('Correct use', `> ${this.prefix}tags [add/edit/delete] [tag_name] <properties>`)
+            .setFooter(`To see the properties, use: ${this.prefix}tags properties`))
         switch (args[0].toLowerCase()) {
             case 'add': {
                 const lista = await this.client.db.tags.find({ guildID: msg.guild.id }).exec()
@@ -129,7 +129,7 @@ module.exports = class TagsCommand extends BaseCommand {
                 const embed = new Discord.MessageEmbed()
                     .setColor(this.client.color)
                 if (!lista.length)
-                    return msg.channel.send(embed.setDescription('> The server doesn\'t has any embed.'))
+                    return msg.channel.send(embed.setDescription('> The server doesn\'t has any tag (custom command).'))
                 return msg.channel.send(embed.setAuthor('Server tag list', msg.guild.icon ? msg.guild.iconURL({ dynamic: true }) : null)
                     .setDescription(lista.map((t, i) => `**${i + 1}**. ${t.name}`).join('\n')));
             }
@@ -143,8 +143,8 @@ module.exports = class TagsCommand extends BaseCommand {
 > \`{removeRole:[roleID]}\` - Removes a role (put another *:roleID* to remove one more role).`);
             default:
                 return msg.channel.send(new Discord.MessageEmbed()
-                    .addField('Correct use', `> ${this.prefix}tag [add/edit/delete] [tag_name] <properties>`)
-                    .setFooter(`To see the properties, use: ${this.prefix}tag properties`));
+                    .addField('Correct use', `> ${this.prefix}tags [add/edit/delete/list] [tag_name] <properties>`)
+                    .setFooter(`To see the properties, use: ${this.prefix}tags properties`));
         }
     }
 }
