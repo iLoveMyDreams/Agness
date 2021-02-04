@@ -107,6 +107,8 @@ You can find the full list with \`${this.prefix}variables\``)
                         if (!args[3]) return msg.channel.send(`You must give me the value you want to put. Or maybe you are executing the command the wrong way, right way:
 >  ${this.prefix}embed edit [embed_name] ${edit} [text | <Image link>]`)
                         const parts = args.slice(3).join(' ').split(' | ')
+                        if (edit === 'footer' && parts[0].length > 2048) return msg.channel.send(`The footer must have 2048 characters or less.`)
+                        if (edit === 'author' && parts[0].length > 256) return msg.channel.send('The author must have 256 characters or less.')
                         if (args[3].toLowerCase() !== 'null') {
                             if (parts.length === 1) {
                                 embed_DB[`${edit}_text`] = parts[0]
@@ -131,7 +133,7 @@ You can find the full list with \`${this.prefix}variables\``)
                     case 'description': {
                         if (!args[3]) return msg.channel.send(`You must give me the value you want to put. Or maybe you are executing the command the wrong way, right way:
 >  ${this.prefix}embed edit [embed_name] ${edit} [text]`)
-                        if (edit === 'title' && args.slice(3).join(' ').length >= 256) return msg.channel.send('The title must have 255 characters or less.')
+                        if (edit === 'title' && args.slice(3).join(' ').length > 256) return msg.channel.send('The title must have 256 characters or less.')
                         if (args[3].toLowerCase() !== 'null')
                             embed_DB[edit] = args.slice(3).join(' ')
                         else embed_DB[edit] = ''
