@@ -54,7 +54,7 @@ You can find the full list with \`${this.prefix}variables\``)
                 .setColor(this.client.color)
                 .setTimestamp()
                 .setFooter(`${this.client.user.username} embeds`)
-                .setImage('https://i.imgur.com/xqOg6Hj.png')
+                .setImage('https://i.imgur.com/2lpwIJg.png')
             return msg.channel.send(embed)
         }
         const replaceText = (text) => this.client.replaceText(text, { channel: msg.channel, member: msg.member, prefix: this.prefix })

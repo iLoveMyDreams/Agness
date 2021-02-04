@@ -19,7 +19,7 @@ If you need more detailed information about each command, you can use:
             .addField(`Categories`, `> ${this.prefix}help Config • Configuration Commands
 > ${this.prefix}help General • Commands in general
 > ${this.prefix}help Images • Images of all types`)
-            .addField('Links', `**[Invite](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Support Server](https://discord.gg/K63NqEDm86)**`))
+            .addField('Links', `**[Bot Invite](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Support Server](https://discord.gg/K63NqEDm86)**`))
 
         const category = this.client.commands.filter((x) => x.category.toLowerCase() == args[0].toLowerCase()).array()
         const cmd = this.client.commands.get(args[0].toLowerCase()) || this.client.commands.find((x) => x.alias && x.alias.includes(args[0].toLowerCase()));

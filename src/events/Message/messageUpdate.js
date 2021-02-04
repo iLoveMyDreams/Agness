@@ -5,6 +5,7 @@ module.exports = class MessageUpdateEvent {
     }
 
     async run(oldMsg, newMsg) {
+        if(oldMsg.content === newMsg.content) return;
         this.client.emit('message', newMsg);
     }
 }
