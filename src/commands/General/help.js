@@ -58,13 +58,13 @@ If you need more detailed information about each command, you can use:
                 .addField('Servers Only?', cmd.guildOnly ? 'Yes' : 'No', true)
                 .addField('Developers Only?', cmd.devsOnly ? 'Yes' : 'No', true)
                 .addField('Bot Permissions', `> Channel:
-${cmd.botChannelPermissions.length ? cmd.botChannelPermissions.join(', ') : 'Doesn\'t need.'}
+${cmd.botChannelPermissions.length ? cmd.botChannelPermissions.map(this.parsePermission).join(', ') : 'Doesn\'t need.'}
 > Server:
-${cmd.botGuildPermissions.length ? cmd.botGuildPermissions.join(', ') : 'Doesn\'t need.'}`, true)
+${cmd.botGuildPermissions.length ? cmd.botGuildPermissions.map(this.parsePermission).join(', ') : 'Doesn\'t need.'}`, true)
                 .addField('Member Permissions:', `> Channel
-${cmd.memberChannelPermissions.length ? cmd.memberChannelPermissions.join(', ') : 'Doesn\'t need.'}
+${cmd.memberChannelPermissions.length ? cmd.memberChannelPermissions.map(this.parsePermission).join(', ') : 'Doesn\'t need.'}
 > Server:
-${cmd.memberGuildPermissions.length ? cmd.memberGuildPermissions.join(', ') : 'Doesn\'t need.'}`, true)
+${cmd.memberGuildPermissions.length ? cmd.memberGuildPermissions.map(this.parsePermission).join(', ') : 'Doesn\'t need.'}`, true)
                 .setColor(this.client.color));
         } else return msg.channel.send(`> Command or category not found.`);
     }

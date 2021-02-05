@@ -57,4 +57,10 @@ module.exports = class BaseCommand {
             .replace(/_/g, ' ')
             .replace(/(?:^|\s)\S/g, (c) => c.toUpperCase());
     }
+		sendEmbed(msg, text, hexColor) {
+			let embedRespuesta = new Discord.MessageEmbed()
+				.setDescription(text)
+				.setColor(hexColor || this.client.color)
+			return msg.channel.send(embedRespuesta)
+    }
 }
