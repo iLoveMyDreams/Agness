@@ -65,7 +65,9 @@ ${cmd.botGuildPermissions.length ? cmd.botGuildPermissions.map(this.parsePermiss
 ${cmd.memberChannelPermissions.length ? cmd.memberChannelPermissions.map(this.parsePermission).join(', ') : 'Doesn\'t need.'}
 > Server:
 ${cmd.memberGuildPermissions.length ? cmd.memberGuildPermissions.map(this.parsePermission).join(', ') : 'Doesn\'t need.'}`, true)
-                .setColor(this.client.color));
+                .setColor(this.client.color)
+							 .setFooter('<> Optional | [] Required')
+							 .setTimestamp());
         } else return msg.channel.send(`> Command or category not found.`);
     }
 }

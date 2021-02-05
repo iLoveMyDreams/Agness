@@ -53,7 +53,7 @@ Ready, this is a simple embed that if you want you can test yourself with:
 You can find the full list with \`${this.prefix}variables\``)
                 .setColor(this.client.color)
                 .setTimestamp()
-                .setFooter(`${this.client.user.username} embeds`)
+                .setFooter(`<> Optional | [] Required`)
                 .setImage('https://i.imgur.com/2lpwIJg.png')
             return msg.channel.send(embed)
         }
@@ -198,7 +198,8 @@ Here's a preview of the embed:`, await this.client.generateEmbed(embed_DB, repla
             }
             case 'propiedades':
             case 'properties': {
-                msg.channel.send(`**Properties of an embed**
+							const embed = new Discord.MessageEmbed()
+                .setDescription(`**Properties of an embed**
 > \`author\` - [text | <Image link>]
 > \`thumbnail\` - [Image link]
 > \`title\` - [text]
@@ -207,6 +208,9 @@ Here's a preview of the embed:`, await this.client.generateEmbed(embed_DB, repla
 > \`image\` - [Image link]
 > \`color\` - [Hex Code]
 > \`timestamp\` - [enabled: yes/no]`)
+							.setFooter('<> Optional | [] Required')
+							.setTimestamp()
+							msg.channel.send(embed)
                 break;
             }
             default:
