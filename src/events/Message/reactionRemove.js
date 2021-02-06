@@ -9,7 +9,7 @@ module.exports = class ReactionRemoveEvent {
         let mensaje = msgReaction.message; 
         let emoji = msgReaction.emoji.id || msgReaction.emoji.name; 
       
-        if (!guild || user.bot) return
+        if (!guild || user.bot) return;
       
         let miembro = await guild.members.fetch(user.id); 
 

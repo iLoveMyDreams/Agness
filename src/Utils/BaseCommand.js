@@ -28,7 +28,12 @@ module.exports = class BaseCommand {
     canRun(msg) {
         if (msg.guild && !msg.channel.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return false;
         if (this.checkCooldowns(msg)) return !!msg.channel.send(`You have to wait **${Number((this.cooldowns.get(msg.author.id) - Date.now()) / 1000).toFixed(2)}s** to execute this command.`)
-        if (!this.enabled && !devs.includes(msg.author.id)) return !msg.reply('This command is under maintenance.', { allowedMentions: { users: [] } });
+				const blacklist = await this.client.db.blacklist.findOne({ userID: msg.author.id });      	
+				if(blacklist) return !msg.channel.send(`You are on the blacklist.
+Reason: \`${blacklist.reason}\`
+Date: \`${blacklist.date.toLocaleString()}\`
+If you want to appeal, fill out the following form:`)
+      	if (!this.enabled && !devs.includes(msg.author.id)) return !msg.reply('This command is under maintenance.', { allowedMentions: { users: [] } });
         if (this.guildOnly && !msg.guild) return !!msg.reply('This command is only available for servers.', { allowedMentions: { users: [] } });
         if (this.devsOnly && !devs.includes(msg.author.id)) return !msg.reply('This command can only be used by developers only.', { allowedMentions: { users: [] } });
         if (msg.guild && !msg.channel.nsfw && this.nsfwOnly) return !msg.reply('This command can only be used on NSFW channels.', { allowedMentions: { users: [] } });

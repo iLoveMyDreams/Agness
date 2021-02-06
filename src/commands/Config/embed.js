@@ -209,6 +209,7 @@ Here's a preview of the embed:`, await this.client.generateEmbed(embed_DB, repla
 > \`color\` - [Hex Code]
 > \`timestamp\` - [enabled: yes/no]`)
 							.setFooter('<> Optional | [] Required')
+							.setColor(this.client.color)
 							.setTimestamp()
 							msg.channel.send(embed)
                 break;

@@ -9,7 +9,7 @@ module.exports = class ReactionAddEvent {
         let mensaje = msgReaction.message; //el mensaje
         let emoji = msgReaction.emoji.id || msgReaction.emoji.name; // el emoji
 
-        if (!guild || user.bot) return
+        if (!guild || user.bot) return;
 
         let miembro = await guild.members.fetch(user.id); 
         
