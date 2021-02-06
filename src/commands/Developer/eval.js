@@ -19,13 +19,17 @@ module.exports = class EvalCommand extends BaseCommand {
             if (typeof evaluated !== 'string') evaluated = util.inspect(evaluated, { depth: 0 });
             const message = await msg.channel.send(evaluated.substring(0, 1990), { code: 'js' });
             await message.react('🔨');
-            await message.awaitReactions(filter, { time: 15000, max: 1 });
-            message.delete().catch(() => { });
+            try {
+                const reaction = await message.awaitReactions(filter, { time: 15000, max: 1 });
+                if (reaction) message.delete();
+            } catch { }
         } catch (e) {
             const message = await msg.channel.send(e.toString(), { code: 'js' });
             await message.react('🔨');
-            await message.awaitReactions(filter, { time: 15000, max: 1 });
-            message.delete().catch(() => { });
+            try {
+                const reaction = await message.awaitReactions(filter, { time: 15000, max: 1 });
+                if (reaction) message.delete();
+            } catch { }
         }
     }
 };
