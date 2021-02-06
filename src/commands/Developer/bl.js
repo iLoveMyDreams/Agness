@@ -28,7 +28,7 @@ ID: ${user.id}`)
 **Correct Use:**
 > ${this.prefix}bl [@mention] [reason]`)
 				const fecha = new Date()
-				blacklist = new this.client.db.blacklist({ userID: user.id, reason: args.slice(1).join(' '), date: fecha()})
+				blacklist = new this.client.db.blacklist({ userID: user.id, reason: args.slice(1).join(' '), date: fecha})
 				blacklist.save()
 			  return this.sendEmbed(msg, `The user was successfully added from the blacklist.
 UserTag: ${user.tag}
