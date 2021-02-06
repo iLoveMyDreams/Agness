@@ -18,7 +18,7 @@ module.exports = class MessageEvent {
         const args = msg.content.slice(usedPrefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
         if (await this.isTag(msg, this.prefix, command)) return;
-        const cmd = this.client.commands.find(c => c.name === command || c.alias.includes(command));
+        const cmd = this.client.commands.find(c => c.name === command || c.aliases.includes(command));
         try {
             if (!cmd) return;
             cmd.prepare({ serverPrefix: prefix });

@@ -4,7 +4,7 @@ module.exports = class BaseCommand {
     constructor(client, options) {
         this.client = client;
         this.name = options.name;
-        this.alias = options.alias || [];
+        this.aliases = options.aliases || [];
         this.category = options.category || 'General';
         this.description = options.description || 'No description.';
         this.usage = options.usage || ((prefix) => `${prefix}${options.name}`);
