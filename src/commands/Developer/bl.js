@@ -21,8 +21,8 @@ module.exports = class EvalCommand extends BaseCommand {
 			if(blacklist){
 				blacklist = await this.client.db.blacklist.findOneAndDelete({ userID: user.id})
 				return this.sendEmbed(msg, `The user was successfully removed from the blacklist.
-UserTag: ${user.tag}
-ID: ${user.id}`)
+> **UserTag:** ${user.tag}
+> **ID:** ${user.id}`)
       } else {
 				if(!args[1]) return this.sendEmbed(msg, `You must give me a username and reason.
 **Correct Use:**
@@ -31,10 +31,10 @@ ID: ${user.id}`)
 				blacklist = new this.client.db.blacklist({ userID: user.id, reason: args.slice(1).join(' '), date: fecha})
 				blacklist.save()
 			  return this.sendEmbed(msg, `The user was successfully added from the blacklist.
-UserTag: ${user.tag}
-ID: ${user.id}
-Reason: ${args.slice(1).join(' ')}
-Date: ${fecha.toLocaleString()}`)
+> **UserTag:** ${user.tag}
+> **ID:** ${user.id}
+> **Reason:** ${args.slice(1).join(' ')}
+> **Date:** ${fecha.toLocaleString()}`)
 			}
     }
 }
