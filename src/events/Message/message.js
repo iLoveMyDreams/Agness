@@ -22,7 +22,7 @@ module.exports = class MessageEvent {
         if (!cmd) return;
         try {
             cmd.prepare({ serverPrefix: prefix });
-            if (!cmd.canRun(msg)) return;
+            if (!(await  canRun())) return;
             cmd.run(msg, args);
         } catch (e) {
             console.log(e.message || e)
