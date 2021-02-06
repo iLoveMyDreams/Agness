@@ -10,18 +10,19 @@ module.exports = class GuildMemberAddEvent {
         let channel = member.guild.channels.resolve(server.channelID);
         if (!channel) return;
 
-        if (!member.user.bot && server.userRoleID) {
-            let rol = member.guild.roles.resolve(server.userRoleID);
-            if (!rol) return;
-            if (!rol.editable) return;
-            member.roles.add(rol.id).catch(() => { });
-        }
-        if (member.user.bot && server.botRoleID) {
-            let rol = member.guild.roles.resolve(server.botRoleID);
-            if (!rol) return;
-            if (!rol.editable) return;
-            member.roles.add(rol.id).catch(() => { });
-        }
+        if (!member.user.bot && server.userRoleID)
+            try {
+                let rol = member.guild.roles.resolve(server.userRoleID);
+                if (rol && rol.editable)
+                    member.roles.add(rol.id);
+            } catch { }
+        if (member.user.bot && server.botRoleID)
+            try {
+                let rol = member.guild.roles.resolve(server.botRoleID);
+                if (rol && rol.editable)
+                    member.roles.add(rol.id);
+            } catch { }
+
         let embed;
         let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name }).exec();
         let prefix = 'a?';
@@ -31,6 +32,8 @@ module.exports = class GuildMemberAddEvent {
         if (embed_DB)
             embed = await this.client.generateEmbed(embed_DB, replaceText);
         if (!server.message && !embed) return;
-        channel.send(await replaceText(server.message), { embed }).catch(() => { });
+        try {
+            channel.send(await replaceText(server.message), { embed });
+        } catch { }
     }
 };

@@ -9,6 +9,7 @@ module.exports = class GuildMemberRemoveEvent {
         if (!server) return;
         let channel = member.guild.channels.resolve(server.channelID);
         if (!channel) return;
+
         let embed;
         let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name }).exec();
         let prefix = 'a?';
@@ -18,6 +19,8 @@ module.exports = class GuildMemberRemoveEvent {
         if (embed_DB)
             embed = await this.client.generateEmbed(embed_DB, replaceText);
         if (!server.message && !embed) return;
-        channel.send(await replaceText(server.message), { embed }).catch(() => { });
+        try {
+            channel.send(await replaceText(server.message), { embed });
+        } catch { }
     }
 };
