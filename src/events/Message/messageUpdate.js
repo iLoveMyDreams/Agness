@@ -8,4 +8,4 @@ module.exports = class MessageUpdateEvent {
         if(oldMsg.content === newMsg.content) return;
         this.client.emit('message', newMsg);
     }
-}
+};

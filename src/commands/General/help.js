@@ -1,4 +1,4 @@
-const BaseCommand = require('../../Utils/BaseCommand.js')
+const BaseCommand = require('../../Utils/BaseCommand.js');
 
 module.exports = class HelpCommand extends BaseCommand {
     constructor(client) {
@@ -6,7 +6,7 @@ module.exports = class HelpCommand extends BaseCommand {
             name: 'help',
             alias: ['ayuda'],
             botChannelPermissions: ['EMBED_LINKS'],
-        })
+        });
     }
 
     async run(msg, args) {
@@ -16,12 +16,12 @@ module.exports = class HelpCommand extends BaseCommand {
             .setDescription(`Hi! At the moment I have 3 categories and ${this.client.commands.size - 1} commands.
 If you need more detailed information about each command, you can use:
 > ${this.prefix}help <Command>`)
-            .addField(`Categories`, `> ${this.prefix}help Config • Configuration Commands
+            .addField('Categories', `> ${this.prefix}help Config • Configuration Commands
 > ${this.prefix}help General • Commands in general
 > ${this.prefix}help Images • Images of all types`)
-            .addField('Links', `**[Bot Invite](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Support Server](https://discord.gg/K63NqEDm86)**`))
+            .addField('Links', '**[Bot Invite](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Support Server](https://discord.gg/K63NqEDm86)**'));
 
-        const category = this.client.commands.filter((x) => x.category.toLowerCase() == args[0].toLowerCase()).array()
+        const category = this.client.commands.filter((x) => x.category.toLowerCase() == args[0].toLowerCase()).array();
         const cmd = this.client.commands.get(args[0].toLowerCase()) || this.client.commands.find((x) => x.alias && x.alias.includes(args[0].toLowerCase()));
 
         if (category.length) {
@@ -66,8 +66,8 @@ ${cmd.memberChannelPermissions.length ? cmd.memberChannelPermissions.map(this.pa
 > Server:
 ${cmd.memberGuildPermissions.length ? cmd.memberGuildPermissions.map(this.parsePermission).join(', ') : 'Doesn\'t need.'}`, true)
                 .setColor(this.client.color)
-							 .setFooter('<> Optional | [] Required')
-							 .setTimestamp());
-        } else return msg.channel.send(`> Command or category not found.`);
+                .setFooter('<> Optional | [] Required')
+                .setTimestamp());
+        } else return msg.channel.send('> Command or category not found.');
     }
-}
+};

@@ -1,13 +1,13 @@
-const BaseCommand = require('../../Utils/BaseCommand.js')
+const BaseCommand = require('../../Utils/BaseCommand.js');
 
 module.exports = class PingCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'ping'
-        })
+        });
     }
 
-    async run(msg, args) {
-        msg.channel.send(`Pong! ${this.client.ws.ping}ms.`)
+    async run(msg) {
+        msg.channel.send(`Pong! ${this.client.ws.ping}ms.`);
     }
-}
+};

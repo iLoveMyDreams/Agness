@@ -1,48 +1,48 @@
-require('dotenv').config()
-global.Discord = require('discord.js')
-const mongoose = require('mongoose')
-const fs = require('fs')
-const path = require('path')
+require('dotenv').config();
+global.Discord = require('discord.js');
+const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
 new (
     class Asuna extends Discord.Client {
         constructor() {
-            super({ partials: ['MESSAGE', 'REACTION'], ws: { intents: 13827 } })
+            super({ partials: ['MESSAGE', 'REACTION'], ws: { intents: 13827 } });
             mongoose.connect(process.env.MONGO_URL, {
                 useNewUrlParser: true, useUnifiedTopology: true
             }, (err) => {
-                if (err) return console.log(`MONGO >> A ocurrido un error: ${err.message || err}`)
-                console.log('MONGO >> Conectado a la Base de Datos')
-            })
-            this.db = require(path.join(__dirname, 'Database', 'index.js'))
-            this.commands = new Discord.Collection()
-            this.loadCommands()
-            this.loadEvents()
-            this.login(process.env.TOKEN)
-            this.color = '#637cf6'
+                if (err) return console.log(`MONGO >> A ocurrido un error: ${err.message || err}`);
+                console.log('MONGO >> Conectado a la Base de Datos');
+            });
+            this.db = require(path.join(__dirname, 'Database', 'index.js'));
+            this.commands = new Discord.Collection();
+            this.loadCommands();
+            this.loadEvents();
+            this.login(process.env.TOKEN);
+            this.color = '#637cf6';
         }
 
         loadEvents() {
-            const carpeta = path.join(__dirname, 'events')
-            const categorias = fs.readdirSync(carpeta).filter(f => fs.statSync(path.join(carpeta, f)).isDirectory())
+            const carpeta = path.join(__dirname, 'events');
+            const categorias = fs.readdirSync(carpeta).filter(f => fs.statSync(path.join(carpeta, f)).isDirectory());
             for (const categoria of categorias) {
-                const events = fs.readdirSync(path.join(carpeta, categoria)).filter(x => x.endsWith('.js'))
+                const events = fs.readdirSync(path.join(carpeta, categoria)).filter(x => x.endsWith('.js'));
                 for (const event of events) {
-                    const eventContent = require(`./events/${categoria}/${event}`)
-                    const eventClass = new eventContent(this)
-                    this.on(eventClass.name, (...a) => eventClass.run(...a))
+                    const eventContent = require(`./events/${categoria}/${event}`);
+                    const eventClass = new eventContent(this);
+                    this.on(eventClass.name, (...a) => eventClass.run(...a));
                 }
             }
         }
 
         loadCommands() {
-            const carpeta = path.join(__dirname, 'commands')
-            const categorias = fs.readdirSync(carpeta).filter(f => fs.statSync(path.join(carpeta, f)).isDirectory())
+            const carpeta = path.join(__dirname, 'commands');
+            const categorias = fs.readdirSync(carpeta).filter(f => fs.statSync(path.join(carpeta, f)).isDirectory());
             for (const categoria of categorias) {
-                const comandos = fs.readdirSync(path.join(carpeta, categoria)).filter(x => x.endsWith('.js'))
+                const comandos = fs.readdirSync(path.join(carpeta, categoria)).filter(x => x.endsWith('.js'));
                 for (const comando of comandos) {
-                    const comadoContent = require(`./commands/${categoria}/${comando}`)
-                    const comandoClass = new comadoContent(this)
-                    this.commands.set(comandoClass.name, comandoClass)
+                    const comadoContent = require(`./commands/${categoria}/${comando}`);
+                    const comandoClass = new comadoContent(this);
+                    this.commands.set(comandoClass.name, comandoClass);
                 }
             }
         }
@@ -84,30 +84,30 @@ new (
                 .replace(/{channel}/gi, channel)
                 .replace(/{channel\.id}/gi, channel.id)
                 .replace(/{channel\.name}/gi, channel.name)
-                .replace(/{channel\.createdate}/gi, channel.createdAt)
+                .replace(/{channel\.createdate}/gi, channel.createdAt);
         }
 
         async generateEmbed(embedInfo, replaceText) {
-            const embed = new Discord.MessageEmbed()
+            const embed = new Discord.MessageEmbed();
             if (embedInfo.author_text) {
                 embedInfo.author_image
                     ? embed.setAuthor(await replaceText(embedInfo.author_text), await replaceText(embedInfo.author_image))
-                    : embed.setAuthor(await replaceText(embedInfo.author_text))
+                    : embed.setAuthor(await replaceText(embedInfo.author_text));
             }
-            if (embedInfo.title) embed.setTitle(await replaceText(embedInfo.title))
-            if (embedInfo.description) embed.setDescription(await replaceText(embedInfo.description))
-            if (embedInfo.thumbnail) embed.setThumbnail(await replaceText(embedInfo.thumbnail))
-            if (embedInfo.image) embed.setImage(await replaceText(embedInfo.image))
+            if (embedInfo.title) embed.setTitle(await replaceText(embedInfo.title));
+            if (embedInfo.description) embed.setDescription(await replaceText(embedInfo.description));
+            if (embedInfo.thumbnail) embed.setThumbnail(await replaceText(embedInfo.thumbnail));
+            if (embedInfo.image) embed.setImage(await replaceText(embedInfo.image));
 
             if (embedInfo.footer_text) {
                 embedInfo.footer_image
                     ? embed.setFooter(await replaceText(embedInfo.footer_text), await replaceText(embedInfo.footer_image))
-                    : embed.setFooter(await replaceText(embedInfo.footer_text))
+                    : embed.setFooter(await replaceText(embedInfo.footer_text));
             }
-            if (embedInfo.timestamp) embed.setTimestamp()
-            if (embedInfo.color) embed.setColor('#' + embedInfo.color)
+            if (embedInfo.timestamp) embed.setTimestamp();
+            if (embedInfo.color) embed.setColor('#' + embedInfo.color);
 
             return embed;
         }
     }
-)()
+)();

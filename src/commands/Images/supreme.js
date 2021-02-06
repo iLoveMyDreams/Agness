@@ -1,4 +1,4 @@
-const BaseCommand = require('../../Utils/BaseCommand.js')
+const BaseCommand = require('../../Utils/BaseCommand.js');
 const { createCanvas, loadImage } = require('canvas');
 
 module.exports = class CatCommand extends BaseCommand {
@@ -7,11 +7,11 @@ module.exports = class CatCommand extends BaseCommand {
             name: 'supreme',
             alias: ['goku'],
             category: 'Images',
-        })
+        });
     }
 
     async run(msg, args) {
-        let user = msg.mentions.users.first() || (args[0] ? await this.client.users.fetch(args[0]).catch(() => { }) : msg.author) || msg.author
+        let user = msg.mentions.users.first() || (args[0] ? await this.client.users.fetch(args[0]).catch(() => { }) : msg.author) || msg.author;
         const canvas = createCanvas(768, 768);
         const ctx = canvas.getContext('2d');
         const [img, bg] = await Promise.all([
@@ -20,6 +20,6 @@ module.exports = class CatCommand extends BaseCommand {
         ]);
         ctx.drawImage(img, 260, 200);
         ctx.drawImage(bg, 0, 0);
-        msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'AsunaSimpCard.png'))
+        msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'AsunaSimpCard.png'));
     }
-}
+};

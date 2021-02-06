@@ -2,23 +2,23 @@ const devs = process.env.DEVS ? process.env.DEVS.split(', ') : [];
 
 module.exports = class BaseCommand {
     constructor(client, options) {
-        this.client = client
-        this.name = options.name
-        this.alias = options.alias || []
-        this.category = options.category || 'General'
-        this.description = options.description || 'No description.'
-        this.usage = options.usage || ((prefix) => `${prefix}${options.name}`)
-        this.example = options.example || ((prefix) => `${prefix}${options.name}`)
-        this.botGuildPermissions = options.botGuildPermissions || []
-        this.botChannelPermissions = options.botChannelPermissions || []
-        this.memberGuildPermissions = options.memberGuildPermissions || []
-        this.memberChannelPermissions = options.memberChannelPermissions || []
-        this.cooldown = options.cooldown || 2
-        this.enabled = options.enabled || true
-        this.guildOnly = options.guildOnly || true
-        this.nsfwOnly = options.nsfwOnly || false
-        this.devsOnly = options.devsOnly || false
-        this.cooldowns = new Discord.Collection()
+        this.client = client;
+        this.name = options.name;
+        this.alias = options.alias || [];
+        this.category = options.category || 'General';
+        this.description = options.description || 'No description.';
+        this.usage = options.usage || ((prefix) => `${prefix}${options.name}`);
+        this.example = options.example || ((prefix) => `${prefix}${options.name}`);
+        this.botGuildPermissions = options.botGuildPermissions || [];
+        this.botChannelPermissions = options.botChannelPermissions || [];
+        this.memberGuildPermissions = options.memberGuildPermissions || [];
+        this.memberChannelPermissions = options.memberChannelPermissions || [];
+        this.cooldown = options.cooldown || 2;
+        this.enabled = options.enabled || true;
+        this.guildOnly = options.guildOnly || true;
+        this.nsfwOnly = options.nsfwOnly || false;
+        this.devsOnly = options.devsOnly || false;
+        this.cooldowns = new Discord.Collection();
     }
 
     prepare({ serverPrefix }) {
@@ -27,14 +27,14 @@ module.exports = class BaseCommand {
 
     async canRun(msg) {
         if (msg.guild && !msg.channel.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return false;
-        if (this.checkCooldowns(msg)) return !msg.channel.send(`You have to wait **${Number((this.cooldowns.get(msg.author.id) - Date.now()) / 1000).toFixed(2)}s** to execute this command.`)
-				const blacklist = await this.client.db.blacklist.findOne({ userID: msg.author.id });      	
-				if(blacklist) return !this.sendEmbed(msg,`You are on the blacklist. Here you have more information:
+        if (this.checkCooldowns(msg)) return !msg.channel.send(`You have to wait **${Number((this.cooldowns.get(msg.author.id) - Date.now()) / 1000).toFixed(2)}s** to execute this command.`);
+        const blacklist = await this.client.db.blacklist.findOne({ userID: msg.author.id });
+        if (blacklist) return !this.sendEmbed(msg, `You are on the blacklist. Here you have more information:
 > **Reason:** \`${blacklist.reason}\`
 > **Date:** \`${blacklist.date.toLocaleString()}\`
 You can appeal by going to my support server.
-> [Support Server](https://discord.gg/K63NqEDm86)`)
-      	if (!this.enabled && !devs.includes(msg.author.id)) return !msg.reply('This command is under maintenance.', { allowedMentions: { users: [] } });
+> [Support Server](https://discord.gg/K63NqEDm86)`);
+        if (!this.enabled && !devs.includes(msg.author.id)) return !msg.reply('This command is under maintenance.', { allowedMentions: { users: [] } });
         if (this.guildOnly && !msg.guild) return !!msg.reply('This command is only available for servers.', { allowedMentions: { users: [] } });
         if (this.devsOnly && !devs.includes(msg.author.id)) return !msg.reply('This command can only be used by developers only.', { allowedMentions: { users: [] } });
         if (msg.guild && !msg.channel.nsfw && this.nsfwOnly) return !msg.reply('This command can only be used on NSFW channels.', { allowedMentions: { users: [] } });
@@ -51,9 +51,9 @@ You can appeal by going to my support server.
 
     checkCooldowns(msg) {
         if (this.cooldowns.has(msg.author.id)) return true;
-        this.cooldowns.set(msg.author.id, Date.now() + (this.cooldown * 1000))
+        this.cooldowns.set(msg.author.id, Date.now() + (this.cooldown * 1000));
         setTimeout(() => {
-            this.cooldowns.delete(msg.author.id)
+            this.cooldowns.delete(msg.author.id);
         }, this.cooldown * 1000);
         return false;
     }
@@ -63,10 +63,11 @@ You can appeal by going to my support server.
             .replace(/_/g, ' ')
             .replace(/(?:^|\s)\S/g, (c) => c.toUpperCase());
     }
-		sendEmbed(msg, text, hexColor) {
-			let embedRespuesta = new Discord.MessageEmbed()
-				.setDescription(text)
-				.setColor(hexColor || this.client.color)
-			return msg.channel.send(embedRespuesta)
+
+    sendEmbed(msg, text, hexColor) {
+        let embedRespuesta = new Discord.MessageEmbed()
+            .setDescription(text)
+            .setColor(hexColor || this.client.color);
+        return msg.channel.send(embedRespuesta);
     }
-}
+};

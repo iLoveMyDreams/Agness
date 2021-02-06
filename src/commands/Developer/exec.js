@@ -1,4 +1,4 @@
-const BaseCommand = require('../../Utils/BaseCommand.js')
+const BaseCommand = require('../../Utils/BaseCommand.js');
 const util = require('util');
 const ch = require('child_process');
 const exec = util.promisify(ch.exec);
@@ -9,8 +9,9 @@ module.exports = class ExecCommand extends BaseCommand {
             name: 'exec',
             category: 'Devs',
             devsOnly: true
-        })
+        });
     }
+
     async run(msg, args) {
         if (!args[0]) return msg.channel.send('Qué pondré en la consola?');
         try {
@@ -24,4 +25,4 @@ module.exports = class ExecCommand extends BaseCommand {
             msg.channel.send(error.toString().slice(0, 1950), { code: 'sh' });
         }
     }
-}
+};

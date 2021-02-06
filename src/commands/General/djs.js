@@ -1,4 +1,4 @@
-const BaseCommand = require('../../Utils/BaseCommand.js')
+const BaseCommand = require('../../Utils/BaseCommand.js');
 const fetch = require('node-fetch');
 
 module.exports = class DJSCommand extends BaseCommand {
@@ -6,7 +6,7 @@ module.exports = class DJSCommand extends BaseCommand {
         super(client, {
             name: 'djs',
             botChannelPermissions: ['EMBED_LINKS'],
-        })
+        });
     }
 
     async run(msg, args) {
@@ -14,7 +14,7 @@ module.exports = class DJSCommand extends BaseCommand {
         let response = await fetch(`https://djsdocs.sorta.moe/v2/embed?src=stable&q=${encodeURIComponent(args.join(' '))}`).catch(() => { });
         if (!response) return msg.channel.send('I didn\'t find results');
         let embed = await response.json().catch(() => { });
-        if (!embed) return msg.channel.send('I didn\'t find anything in the documentation.')
-        msg.channel.send({ embed }).catch(() => { });
+        if (!embed) return msg.channel.send('I didn\'t find anything in the documentation.');
+        msg.channel.send({ embed });
     }
-}
+};

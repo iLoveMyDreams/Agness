@@ -1,11 +1,11 @@
-const BaseCommand = require('../../Utils/BaseCommand.js')
+const BaseCommand = require('../../Utils/BaseCommand.js');
 
 module.exports = class VariablesCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'variables',
             botChannelPermissions: ['EMBED_LINKS'],
-        })
+        });
     }
 
     async run(msg) {
@@ -50,7 +50,7 @@ module.exports = class VariablesCommand extends BaseCommand {
 \`{channel.createdate}\` - Channel creation date`)
             .setFooter(`${this.client.user.username} Variables`)
             .setColor(this.client.color)
-            .setTimestamp()
-        msg.channel.send(embed)
+            .setTimestamp();
+        msg.channel.send(embed);
     }
-}
+};

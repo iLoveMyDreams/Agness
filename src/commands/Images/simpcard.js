@@ -1,4 +1,4 @@
-const BaseCommand = require('../../Utils/BaseCommand.js')
+const BaseCommand = require('../../Utils/BaseCommand.js');
 const { createCanvas, loadImage } = require('canvas');
 
 module.exports = class CatCommand extends BaseCommand {
@@ -6,11 +6,11 @@ module.exports = class CatCommand extends BaseCommand {
 		super(client, {
 			name: 'simpcard',
 			category: 'Images',
-		})
+		});
 	}
 
 	async run(msg, args) {
-		let user = msg.mentions.users.first() || (args[0] ? await this.client.users.fetch(args[0]).catch(() => { }) : msg.author) || msg.author
+		let user = msg.mentions.users.first() || (args[0] ? await this.client.users.fetch(args[0]).catch(() => { }) : msg.author) || msg.author;
 		let avatar = user.displayAvatarURL({ dynamic: false, format: 'png', size: 256 });
 		const canvas = createCanvas(318, 192);
 		const ctx = canvas.getContext('2d');
@@ -27,6 +27,6 @@ module.exports = class CatCommand extends BaseCommand {
 		ctx.closePath();
 		ctx.clip();
 		ctx.drawImage(img, 20, 23.5, 100, 100);
-		msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'AsunaSimpCard.png'))
+		msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'AsunaSimpCard.png'));
 	}
-}
+};

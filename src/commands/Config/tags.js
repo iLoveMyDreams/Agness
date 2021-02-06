@@ -1,5 +1,5 @@
-const BaseCommand = require('../../Utils/BaseCommand.js')
-const isImageURL = require('image-url-validator')
+const BaseCommand = require('../../Utils/BaseCommand.js');
+const isImageURL = require('image-url-validator');
 
 module.exports = class TagsCommand extends BaseCommand {
     constructor(client) {
@@ -12,55 +12,55 @@ module.exports = class TagsCommand extends BaseCommand {
             memberGuildPermissions: ['ADMINISTRATOR'],
             botChannelPermissions: ['EMBED_LINKS'],
             category: 'Config'
-        })
+        });
     }
 
     async run(msg, args) {
         if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
             .setColor(this.client.color)
             .addField('Correct use', `> ${this.prefix}tags [add/edit/delete] [tag_name] <properties>`)
-            .setFooter(`To see the properties, use: ${this.prefix}tags properties`))
+            .setFooter(`To see the properties, use: ${this.prefix}tags properties`));
         switch (args[0].toLowerCase()) {
             case 'add': {
-                const lista = await this.client.db.tags.find({ guildID: msg.guild.id }).exec()
-                if (lista.length >= 10) return msg.channel.send('For now, you can only have 10 tags per server.')
-                if (!args[1]) return msg.channel.send('You must put a valid name.')
+                const lista = await this.client.db.tags.find({ guildID: msg.guild.id }).exec();
+                if (lista.length >= 10) return msg.channel.send('For now, you can only have 10 tags per server.');
+                if (!args[1]) return msg.channel.send('You must put a valid name.');
                 if (this.client.commands.find(c => c.name === args[1].toLowerCase() || c.alias.includes(args[1].toLowerCase())))
-                    return msg.channel.send('You can\'t create a tag with the name of a command.')
-                let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec()
-                if (tag) return msg.channel.send('There\'s already a tag with that name.')
-                let variables = args.slice(2).join(' ').split('{').map((s) => s.split('}')[0])
-                let variableMessage = args.slice(2).join(' ').split('(').map((s) => s.split(')')[0])
+                    return msg.channel.send('You can\'t create a tag with the name of a command.');
+                let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec();
+                if (tag) return msg.channel.send('There\'s already a tag with that name.');
+                let variables = args.slice(2).join(' ').split('{').map((s) => s.split('}')[0]);
+                let variableMessage = args.slice(2).join(' ').split('(').map((s) => s.split(')')[0]);
                 let options = {
                     embed: '',
                     addrole: [],
                     removerole: []
-                }
+                };
                 variables.forEach((variable) => {
-                    let [name, ...values] = variable.split(':')
+                    let [name, ...values] = variable.split(':');
                     if (!Object.keys(options).concat('addRole', 'removeRole').includes(name)) return;
-                    if (name === 'addRole') name = 'addrole'
-                    if (name === 'removeRole') name = 'removerole'
+                    if (name === 'addRole') name = 'addrole';
+                    if (name === 'removeRole') name = 'removerole';
                     if (['addrole', 'removerole'].includes(name)) options[name] = values.map((r) => msg.guild.roles.resolve(r));
-                    else options[name] = !values[1] && values[0] ? values[0] : values
-                })
-                options.image = ''
-                options.message = ''
+                    else options[name] = !values[1] && values[0] ? values[0] : values;
+                });
+                options.image = '';
+                options.message = '';
                 variableMessage.forEach((variable) => {
-                    let [name, ...value] = variable.split(':')
-                    if (name === 'image') options.image = value.join(':')
-                    else if (name === 'message') options.message = value.join(':')
-                })
-                if (!options.message && !options.embed && !options.image) return msg.channel.send('You must put a message, embed or image to send or all three')
+                    let [name, ...value] = variable.split(':');
+                    if (name === 'image') options.image = value.join(':');
+                    else if (name === 'message') options.message = value.join(':');
+                });
+                if (!options.message && !options.embed && !options.image) return msg.channel.send('You must put a message, embed or image to send or all three');
                 if (options.image)
-                    if (!(await isImageURL(options.image))) return message.channel.send('You must put a valid image.');
+                    if (!(await isImageURL(options.image))) return msg.channel.send('You must put a valid image.');
                 if (options.embed) {
-                    let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: options.embed }).exec()
-                    if (!checkear) return msg.channel.send('There\'s no an embed with that name.')
+                    let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: options.embed }).exec();
+                    if (!checkear) return msg.channel.send('There\'s no an embed with that name.');
                 }
-                if ((options.addrole.length > 0 || options.removerole.length > 0) && !msg.guild.me.permissions.has('MANAGE_ROLES')) return msg.channel.send('I don\'t have enough permissions to add or remove roles.')
-                if (options.addrole.some(r => !r || !r.editable)) return msg.channel.send('The specified role doesn\'t exists or I can\'t add it.')
-                if (options.removerole.some(r => !r || !r.editable)) return msg.channel.send('The specified role doesn\'t exists or I can\'t remove it.')
+                if ((options.addrole.length > 0 || options.removerole.length > 0) && !msg.guild.me.permissions.has('MANAGE_ROLES')) return msg.channel.send('I don\'t have enough permissions to add or remove roles.');
+                if (options.addrole.some(r => !r || !r.editable)) return msg.channel.send('The specified role doesn\'t exists or I can\'t add it.');
+                if (options.removerole.some(r => !r || !r.editable)) return msg.channel.send('The specified role doesn\'t exists or I can\'t remove it.');
                 tag = new this.client.db.tags({
                     guildID: msg.guild.id,
                     name: args[1].toLowerCase(),
@@ -69,67 +69,67 @@ module.exports = class TagsCommand extends BaseCommand {
                     embed_name: options.embed,
                     message: options.message,
                     image: options.image
-                })
-                tag.save()
-                msg.channel.send(`Tag with the name **${args[1].toLowerCase()}** created successfully.`)
+                });
+                tag.save();
+                msg.channel.send(`Tag with the name **${args[1].toLowerCase()}** created successfully.`);
                 break;
             }
             case 'edit': {
-                if (!args[1]) return msg.channel.send('You must put a valid name.')
-                let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec()
-                if (!tag) return msg.channel.send('There\'s no a tag with that name.')
-                let variables = args.slice(2).join(' ').split('{').map((s) => s.split('}')[0])
-                let variableMessage = args.slice(2).join(' ').split('(').map((s) => s.split(')')[0])
+                if (!args[1]) return msg.channel.send('You must put a valid name.');
+                let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec();
+                if (!tag) return msg.channel.send('There\'s no a tag with that name.');
+                let variables = args.slice(2).join(' ').split('{').map((s) => s.split('}')[0]);
+                let variableMessage = args.slice(2).join(' ').split('(').map((s) => s.split(')')[0]);
                 let options = {
                     embed: '',
                     addrole: [],
                     removerole: []
-                }
+                };
                 variables.forEach((variable) => {
-                    let [name, ...values] = variable.split(':')
+                    let [name, ...values] = variable.split(':');
                     if (!Object.keys(options).concat('addRole', 'removeRole').includes(name)) return;
-                    if (name === 'addRole') name = 'addrole'
-                    if (name === 'removeRole') name = 'removerole'
+                    if (name === 'addRole') name = 'addrole';
+                    if (name === 'removeRole') name = 'removerole';
                     if (['addrole', 'removerole'].includes(name)) options[name] = values.map((r) => msg.guild.roles.resolve(r));
-                    else options[name] = !values[1] && values[0] ? values[0] : values
-                })
-                options.image = ''
-                options.message = ''
+                    else options[name] = !values[1] && values[0] ? values[0] : values;
+                });
+                options.image = '';
+                options.message = '';
                 variableMessage.forEach((variable) => {
-                    let [name, ...value] = variable.split(':')
-                    if (name === 'image') options.image = value.join(':')
-                    else if (name === 'message') options.message = value.join(':')
-                })
-                if (!options.message && !options.embed && !options.image) return msg.channel.send('You must put a message, embed or image to send or all three.')
+                    let [name, ...value] = variable.split(':');
+                    if (name === 'image') options.image = value.join(':');
+                    else if (name === 'message') options.message = value.join(':');
+                });
+                if (!options.message && !options.embed && !options.image) return msg.channel.send('You must put a message, embed or image to send or all three.');
                 if (options.image)
-                    if (!(await isImageURL(options.image))) return message.channel.send('You must put a valid image.');
+                    if (!(await isImageURL(options.image))) return msg.channel.send('You must put a valid image.');
                 if (options.embed) {
-                    let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: options.embed }).exec()
-                    if (!checkear) return msg.channel.send('There\'s no a embed with that name.')
+                    let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: options.embed }).exec();
+                    if (!checkear) return msg.channel.send('There\'s no a embed with that name.');
                 }
-                if ((options.addrole.length > 0 || options.removerole.length > 0) && !msg.guild.me.permissions.has('MANAGE_ROLES')) return msg.channel.send('I don\'t have enough permissions to add or remove roles.')
-                if (options.addrole.some(r => !r || !r.editable)) return msg.channel.send('The role doesn\'t exists or I can\'t add it.')
-                if (options.removerole.some(r => !r || !r.editable)) return msg.channel.send('The role doesn\'t exists or I can\'t remove it')
-                tag.deleteRoleID = options.removerole.map((r) => r.id)
-                tag.addRoleID = options.addrole.map((r) => r.id)
-                tag.embed_name = options.embed
-                tag.message = options.message
-                tag.image = options.image
-                tag.save()
+                if ((options.addrole.length > 0 || options.removerole.length > 0) && !msg.guild.me.permissions.has('MANAGE_ROLES')) return msg.channel.send('I don\'t have enough permissions to add or remove roles.');
+                if (options.addrole.some(r => !r || !r.editable)) return msg.channel.send('The role doesn\'t exists or I can\'t add it.');
+                if (options.removerole.some(r => !r || !r.editable)) return msg.channel.send('The role doesn\'t exists or I can\'t remove it');
+                tag.deleteRoleID = options.removerole.map((r) => r.id);
+                tag.addRoleID = options.addrole.map((r) => r.id);
+                tag.embed_name = options.embed;
+                tag.message = options.message;
+                tag.image = options.image;
+                tag.save();
                 return msg.channel.send(`Tag with the name **${args[1].toLowerCase()}** edited successfully.`);
             }
             case 'delete': {
-                if (!args[1]) return msg.channel.send('You must put an valid name.')
-                let tag = await this.client.db.tags.findOneAndDelete({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec()
-                if (!tag) return msg.channel.send('There\'s no a tag with that name.')
+                if (!args[1]) return msg.channel.send('You must put an valid name.');
+                let tag = await this.client.db.tags.findOneAndDelete({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec();
+                if (!tag) return msg.channel.send('There\'s no a tag with that name.');
                 return msg.channel.send(`Tag with the name **${args[1].toLowerCase()}** deleted successfully.`);
             }
             case 'list': {
-                const lista = await this.client.db.tags.find({ guildID: msg.guild.id }).exec()
+                const lista = await this.client.db.tags.find({ guildID: msg.guild.id }).exec();
                 const embed = new Discord.MessageEmbed()
-                    .setColor(this.client.color)
+                    .setColor(this.client.color);
                 if (!lista.length)
-                    return msg.channel.send(embed.setDescription('> The server doesn\'t has any tag (custom command).'))
+                    return msg.channel.send(embed.setDescription('> The server doesn\'t has any tag (custom command).'));
                 return msg.channel.send(embed.setAuthor('Server tag list', msg.guild.icon ? msg.guild.iconURL({ dynamic: true }) : null)
                     .setDescription(lista.map((t, i) => `**${i + 1}**. ${t.name}`).join('\n')));
             }
@@ -147,4 +147,4 @@ module.exports = class TagsCommand extends BaseCommand {
                     .setFooter(`To see the properties, use: ${this.prefix}tags properties`));
         }
     }
-}
+};

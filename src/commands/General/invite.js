@@ -1,14 +1,14 @@
-const BaseCommand = require('../../Utils/BaseCommand.js')
+const BaseCommand = require('../../Utils/BaseCommand.js');
 
 module.exports = class InviteCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'invite',
             botChannelPermissions: ['EMBED_LINKS'],
-        })
+        });
     }
 
-    async run(msg, args) {
+    async run(msg) {
         const embed = new Discord.MessageEmbed()
         .setColor(this.client.color)
         .setDescription(`Thank you for inviting me to your server! You will not regret.
@@ -16,7 +16,7 @@ module.exports = class InviteCommand extends BaseCommand {
 In case you have any doubts, here is the invitation link from my support server.
 > [Support Server](https://discord.gg/K63NqEDm86)`)
         .setFooter('With love ❤️')
-        .setTimestamp()
-        msg.channel.send(embed)
+        .setTimestamp();
+        msg.channel.send(embed);
     }
-}
+};

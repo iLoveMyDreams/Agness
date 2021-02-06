@@ -1,4 +1,4 @@
-const BaseCommand = require('../../Utils/BaseCommand.js')
+const BaseCommand = require('../../Utils/BaseCommand.js');
 module.exports = class AvatarCommand extends BaseCommand {
     constructor(client) {
         super(client, {
@@ -26,4 +26,4 @@ module.exports = class AvatarCommand extends BaseCommand {
             .setImage(`attachment://avatar.${extension}`);
         msg.channel.send(embed);
     }
-}
+};

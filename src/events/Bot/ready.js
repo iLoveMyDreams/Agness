@@ -5,6 +5,6 @@ module.exports = class ReadyEvent {
     }
 
     async run() {
-        console.log(`DJS >> Inicié sesión como: ${this.client.user.tag}`)
+        console.log(`DJS >> Inicié sesión como: ${this.client.user.tag}`);
     }
-}
+};

@@ -1,4 +1,4 @@
-const BaseCommand = require('../../Utils/BaseCommand.js')
+const BaseCommand = require('../../Utils/BaseCommand.js');
 
 module.exports = class TestCommand extends BaseCommand {
     constructor(client) {
@@ -10,21 +10,21 @@ module.exports = class TestCommand extends BaseCommand {
             usage: (prefix) => `${prefix}test [event: welcome/leave]`,
             example: (prefix) => `${prefix}test welcome`,
             memberGuildPermissions: ['ADMINISTRATOR']
-        })
+        });
     }
 
     async run(msg, args) {
         switch (args[0]) {
             case 'leave': {
-                this.client.emit('guildMemberRemove', msg.member)
+                this.client.emit('guildMemberRemove', msg.member);
                 break;
             }
             case 'welcome': {
-                this.client.emit('guildMemberAdd', msg.member)
+                this.client.emit('guildMemberAdd', msg.member);
                 break;
             }
             default:
                 return msg.channel.send(`> Correct use: ${this.prefix}test [welcome/leave]`);
         }
     }
-}
+};
