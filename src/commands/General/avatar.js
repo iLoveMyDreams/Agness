@@ -1,10 +1,11 @@
 const BaseCommand = require('../../Utils/BaseCommand.js');
+
 module.exports = class AvatarCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'avatar',
-            alias: ['av', 'pfp', 'foto'],
-            botChannelPermissions: ['EMBED_LINKS'],
+            aliases: ['av', 'pfp', 'foto'],
+            botChannelPermissions: ['EMBED_LINKS']
         });
     }
 

@@ -4,7 +4,7 @@ module.exports = class TestCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'test',
-            alias: ['emit'],
+            aliases: ['emit'],
             category: 'Config',
             description: 'Do a simulation of events in the bot',
             usage: (prefix) => `${prefix}test [event: welcome/leave]`,

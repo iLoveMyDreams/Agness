@@ -4,7 +4,7 @@ module.exports = class VariablesCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'variables',
-            botChannelPermissions: ['EMBED_LINKS'],
+            botChannelPermissions: ['EMBED_LINKS']
         });
     }
 

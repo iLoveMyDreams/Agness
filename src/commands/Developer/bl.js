@@ -1,9 +1,10 @@
 const BaseCommand = require('../../Utils/BaseCommand.js');
+
 module.exports = class EvalCommand extends BaseCommand {
 	constructor(client) {
 		super(client, {
 			name: 'bl',
-			alias: ['blacklist'],
+			aliases: ['blacklist'],
 			category: 'Devs',
 			devsOnly: true
 		});

@@ -5,7 +5,7 @@ module.exports = class EvalCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'eval',
-            alias: ['e'],
+            aliases: ['e'],
             category: 'Devs',
             devsOnly: true
         });

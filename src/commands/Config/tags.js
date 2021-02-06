@@ -5,7 +5,7 @@ module.exports = class TagsCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'tag',
-            alias: ['tags'],
+            aliases: ['tags'],
             description: 'Create custom commands for your server.',
             usage: (prefix) => `${prefix}tag [option: add/edit/delete/list] [tag_name] <properties>`,
             example: (prefix) => `${prefix}tag add cool (message:Yes, you're so cool!)`,

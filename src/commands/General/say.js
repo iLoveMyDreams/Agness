@@ -4,7 +4,8 @@ module.exports = class SayCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'say',
-            alias: ['decir']
+            aliases: ['decir'],
+            usage: (prefix) => `${prefix}say [Content]`
         });
     }
 

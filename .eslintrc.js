@@ -15,8 +15,9 @@ module.exports = {
         'no-empty': 'off',
         'no-unused-vars': 'warn',
         'eol-last': ['warn', 'never'],
+        'comma-dangle': ['error', 'never'],
         'lines-between-class-members': 'warn',
         quotes: ['warn', 'single'],
-        semi: ['warn', 'always', { omitLastInOneLineBlock: true }],
+        semi: ['warn', 'always', { omitLastInOneLineBlock: true }]
     }
 };

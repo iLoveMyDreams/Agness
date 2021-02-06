@@ -6,7 +6,7 @@ module.exports = class PrefixCommand extends BaseCommand {
             name: 'prefix',
             category: 'Config',
             description: 'Set my prefix to whatever you want',
-            usage: (prefix) => `${prefix}prefix [new prefix]`,
+            usage: (prefix) => `${prefix}prefix [New Prefix]`,
             example: (prefix) => `${prefix}prefix a!`,
             memberGuildPermissions: ['ADMINISTRATOR']
         });

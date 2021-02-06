@@ -4,9 +4,9 @@ module.exports = class WelcomeCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'welcome',
-            alias: ['setwelcome'],
+            aliases: ['setwelcome'],
             description: 'Set the channel and messages that you prefer the most when someone joins to your server c:',
-            usage: (prefix) => `${prefix}welcome [option: channel/message] <properties>`,
+            usage: (prefix) => `${prefix}welcome [option: channel/message] <Properties>`,
             example: (prefix) => `${prefix}welcome channel #welcome`,
             category: 'Config',
             memberGuildPermissions: ['ADMINISTRATOR']

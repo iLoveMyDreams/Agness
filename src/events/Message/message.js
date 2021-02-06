@@ -19,8 +19,8 @@ module.exports = class MessageEvent {
         const command = args.shift().toLowerCase();
         if (await this.isTag(msg, this.prefix, command)) return;
         const cmd = this.client.commands.find(c => c.name === command || c.alias.includes(command));
-        if (!cmd) return;
         try {
+            if (!cmd) return;
             cmd.prepare({ serverPrefix: prefix });
             if (!(await cmd.canRun(msg))) return;
             cmd.run(msg, args);

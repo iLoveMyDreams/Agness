@@ -12,7 +12,7 @@ const embed = Schema({
     footer_text: String,
     footer_image: String,
     timestamp: Boolean,
-    color: String,
+    color: String
 });
 
 module.exports = model('embed', embed);
