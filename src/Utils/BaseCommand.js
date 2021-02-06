@@ -25,7 +25,7 @@ module.exports = class BaseCommand {
         this.prefix = serverPrefix;
     }
 
-    canRun(msg) {
+    async canRun(msg) {
         if (msg.guild && !msg.channel.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return false;
         if (this.checkCooldowns(msg)) return !!msg.channel.send(`You have to wait **${Number((this.cooldowns.get(msg.author.id) - Date.now()) / 1000).toFixed(2)}s** to execute this command.`)
 				const blacklist = await this.client.db.blacklist.findOne({ userID: msg.author.id });      	
