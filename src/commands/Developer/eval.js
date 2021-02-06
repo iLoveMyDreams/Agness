@@ -18,12 +18,12 @@ module.exports = class EvalCommand extends BaseCommand {
             if (typeof evaluated !== 'string') evaluated = util.inspect(evaluated, { depth: 0 })
             const message = await msg.channel.send(evaluated.substring(0, 1990), { code: 'js' })
 					  message.react('🔨')
-						message.awaitReactions(filter, { time: 15000 })
+						await message.awaitReactions(filter, { time: 15000, max: 1 })
 							.then(c => message.delete().catch(() => { }))
         } catch (e) { 
             const message = await msg.channel.send(e.toString(), { code: 'js' })
 					  message.react('🔨')
-						message.awaitReactions(filter, { time: 15000 })
+						await message.awaitReactions(filter, { time: 15000, max: 1 })
 							.then(c => message.delete().catch(() => { }))
         }
     }
