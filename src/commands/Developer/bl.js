@@ -12,7 +12,7 @@ module.exports = class EvalCommand extends BaseCommand {
 			if(!args[0]) return this.sendEmbed(msg, `You must give me a username.
 **Correct Use:**
 > ${this.prefix}bl [@mention] <reason>`)
-			const matchUser = args[0].match(/^<@!?(\d+)>$/));
+			const matchUser = args[0].match(/^<@!?(\d+)>$/);
 			let user = matchUser ? await this.client.users.fetch(matchUser[1]).catch(() => { }) : await this.client.users.fetch(args[0]).catch(() => { })
 			if(!user) return this.sendEmbed(msg, `You have provided an invalid user.
 **Correct Use:**
