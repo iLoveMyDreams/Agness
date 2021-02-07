@@ -19,7 +19,7 @@ module.exports = class GuildsCommand extends BaseCommand {
         const users = (await this.client.shard.fetchClientValues('users.cache.size')).reduce((acc, userCount) => acc + userCount, 0);
         msg.channel.send(new Discord.MessageEmbed()
             .setDescription(`At this moment, I'm in **${servers}** servers and with **${users}** cached users.`)
-		        .setFooter(`This server is on the shard ${this.client.shard.ids.map((i) => `**${i}**`).join(', ')}`) 
+		        .setFooter(`This server is on the shard ${this.client.shard.ids.map((i) => `${i}`).join(', ')}`) 
 					  .setColor(this.client.color));
     }
 };
