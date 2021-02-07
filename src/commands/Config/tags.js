@@ -25,7 +25,7 @@ module.exports = class TagsCommand extends BaseCommand {
                 const lista = await this.client.db.tags.find({ guildID: msg.guild.id }).exec();
                 if (lista.length >= 10) return msg.channel.send('For now, you can only have 10 tags per server.');
                 if (!args[1]) return msg.channel.send('You must put a valid name.');
-                if (this.client.commands.find(c => c.name === args[1].toLowerCase() || c.alias.includes(args[1].toLowerCase())))
+                if (this.client.commands.find(c => c.name === args[1].toLowerCase() || c.aliases.includes(args[1].toLowerCase())))
                     return msg.channel.send('You can\'t create a tag with the name of a command.');
                 let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name: args[1].toLowerCase() }).exec();
                 if (tag) return msg.channel.send('There\'s already a tag with that name.');

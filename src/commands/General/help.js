@@ -23,7 +23,7 @@ If you need more detailed information about each command, you can use:
             .addField('Links', '**[Bot Invite](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Support Server](https://discord.gg/K63NqEDm86)**'));
 
         const category = this.client.commands.filter((x) => x.category.toLowerCase() == args[0].toLowerCase()).array();
-        const cmd = this.client.commands.get(args[0].toLowerCase()) || this.client.commands.find((x) => x.alias && x.alias.includes(args[0].toLowerCase()));
+        const cmd = this.client.commands.get(args[0].toLowerCase()) || this.client.commands.find((x) => x.alias && x.aliases.includes(args[0].toLowerCase()));
 
         if (category.length) {
             const lines = Array(Math.ceil(category.length / 4)).fill([])
@@ -50,7 +50,7 @@ If you need more detailed information about each command, you can use:
                 .setTitle(`${cmd.name.replace(/^[a-z]/gi, (c) => c.toUpperCase())} Command Help`)
                 .setDescription(cmd.description)
                 .addField('Category', cmd.category, true)
-                .addField('Aliases', cmd.alias.length ? cmd.alias.join(' | ') : 'No aliases', true)
+                .addField('Aliases', cmd.aliases.length ? cmd.aliases.join(' | ') : 'No aliases', true)
                 .addField('Cooldown', cmd.cooldown, true)
                 .addField('Use', cmd.usage(this.prefix), true)
                 .addField('Example', cmd.example(this.prefix), true)
