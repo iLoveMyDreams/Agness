@@ -21,7 +21,7 @@ module.exports = class DJSCommand extends BaseCommand {
             if (!response) return msg.channel.send('I didn\'t find anything in the documentation.');
             return msg.channel.send({ embed: response.body });
         } catch {
-            return msg.channel.send('https://djsdocs.sorta.moe/v2/embed?src=stable&q=');
+            return msg.channel.send('An error has occurred.');
         }
     }
 };
