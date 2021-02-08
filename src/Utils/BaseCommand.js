@@ -35,7 +35,7 @@ module.exports = class BaseCommand {
 You can appeal by going to my support server.
 > [Support Server](https://discord.gg/K63NqEDm86)`);
         if (!this.enabled && !devs.includes(msg.author.id)) return !msg.reply('This command is under maintenance.', { allowedMentions: { users: [] } });
-        if (this.guildOnly && !msg.guild) return !!msg.reply('This command is only available for servers.', { allowedMentions: { users: [] } });
+        if (this.guildOnly && !msg.guild) return !msg.reply('This command is only available for servers.', { allowedMentions: { users: [] } });
         if (this.devsOnly && !devs.includes(msg.author.id)) return !msg.reply('This command can only be used by developers only.', { allowedMentions: { users: [] } });
         if (msg.guild && !msg.channel.nsfw && this.nsfwOnly) return !msg.reply('This command can only be used on NSFW channels.', { allowedMentions: { users: [] } });
         if (msg.guild && this.memberGuildPermissions[0] && !this.memberGuildPermissions.some((x) => msg.member.permissions.has(x)) && !devs.includes(msg.author.id))
