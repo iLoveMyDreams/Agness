@@ -32,7 +32,7 @@ To insert messages into a leave, there are three options:
         switch (args[0].toLowerCase()) {
             case 'channel': {
                 if (!args[1]) return msg.channel.send('> Give me the ID or mention of the channel.');
-              							 if(args[1].toLoweCase() === 'null'){
+              							 if(args[1].toLowerCase() === 'null'){
 							 let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                 if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, channelID: '' });
                 server.channelID = '';
@@ -52,7 +52,7 @@ To insert messages into a leave, there are three options:
             }
             case 'message': {
                 if (!args[1]) return msg.channel.send('> You must put a leave message.');
-              							 if(args[1].toLoweCase() === 'null'){
+              							 if(args[1].toLowerCase() === 'null'){
 							 		let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                 	 if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, embed_name: '', message: '' });
                     server.embed_name = '';

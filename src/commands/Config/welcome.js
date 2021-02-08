@@ -33,7 +33,7 @@ To insert messages into a welcome, there are three options:
         switch (args[0].toLowerCase()) {
             case 'channel': {
                 if (!args[1]) return msg.channel.send('> Give me the ID or mention of the channel.');
-							 if(args[1].toLoweCase() === 'null'){
+							 if(args[1].toLowerCase() === 'null'){
 							 let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, channelID: '' });
                 server.channelID = '';
@@ -53,7 +53,7 @@ To insert messages into a welcome, there are three options:
             }
             case 'message': {
                 if (!args[1]) return msg.channel.send('> You must put a welcome message.');
-							 if(args[1].toLoweCase() === 'null'){
+							 if(args[1].toLowerCase() === 'null'){
 							 		let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                 	 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, embed_name: '', message: '' });
                     server.embed_name = '';
@@ -100,7 +100,7 @@ If you need to see how the messages and roles it gives would be, you can use:
                 switch (args[1]) {
                     case 'user': {
                       	if(!args[2]) return msg.channel.send(`> Give me the ID or mention of the role.`)
-                      	if(args[1].toLoweCase() === 'null'){
+                      	if(args[1].toLowerCase() === 'null'){
 							 					let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                      			if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, userRoleID: '' });
                     			server.userRoleID = '';
@@ -120,7 +120,7 @@ If you need to see how the messages and roles it gives would be, you can use:
                     }
                     case 'bot': {
                       	if(!args[2]) return msg.channel.send(`> Give me the ID or mention of the role.`)
-                      	if(args[1].toLoweCase() === 'null'){
+                      	if(args[1].toLowerCase() === 'null'){
 							 					let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                      			if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, botRoleID: '' });
                     			server.userRoleID = '';
