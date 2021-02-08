@@ -56,8 +56,7 @@ To insert it in a welcome or leave, there are three options:
 - Message only:
 > \`${this.prefix}welcome message Welcome user!
 - Or just the embed:
-> \`${this.prefix}welcome message {embed:example}
-`
+> \`${this.prefix}welcome message {embed:example}`)
                 .addField('**VARIABLES**', `First of all, what are variables? Well, for that I am, the variables will allow us to do "automated" things so that they can be replaced by names, channels, links and others, they can be used in embeds as well as in text, for welcomes, leaves and custom commands. Here are some:
 \`{user}\` - @Mention (e.j. @Aviii.#0721 *she's so beautiful <3*)
 \`{server}\` - Server name (e.j. ${this.client.user.username}'s Support)
