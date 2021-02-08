@@ -17,8 +17,8 @@ module.exports = class LeaveCommand extends BaseCommand {
         if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
         .setColor(this.client.color)
         .setDescription(`You must put a valid property.
-> leave channel [#channel]
-> leave message [ <text> | {embed[embed name]} ]
+> ${this.prefix}leave channel [#channel]
+> ${this.prefix}leave message [ <text> | {embed[embed name]} ]
 To insert messages into a welcome, there are three options:
 - Message and embed:
 > \`${this.prefix}leave message Welcome user! | {embed:[embed name]}\`
@@ -75,8 +75,8 @@ To insert messages into a welcome, there are three options:
                 msg.channel.send(new Discord.MessageEmbed()
                 .setColor(this.client.color)
                 .setDescription(`You must put a valid property.
-> leave channel [#channel]
-> leave message message [ <text> | {embed[embed name]} ]
+> ${this.prefix}leave channel [#channel]
+> ${this.prefix}leave message message [ <text> | {embed[embed name]} ]
 To insert messages into a welcome, there are three options:
 - Message and embed:
 > \`${this.prefix}leave message Welcome user! | {embed:[embed name]}\`

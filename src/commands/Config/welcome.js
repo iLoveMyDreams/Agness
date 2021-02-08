@@ -17,9 +17,9 @@ module.exports = class WelcomeCommand extends BaseCommand {
         if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
                     .setColor(this.client.color)
                     .setDescription(`You must put a valid property.
-> welcome channel [#channel]
-> welcome message [ <text> | {embed[embed name]} ]
-> welcome autorole [user|bot] [@role]
+> ${this.prefix}welcome channel [#channel]
+> ${this.prefix}welcome message [ <text> | {embed[embed name]} ]
+> ${this.prefix}welcome autorole [user|bot] [@role]
 To insert messages into a welcome, there are three options:
 - Message and embed:
 > \`${this.prefix}welcome message Welcome user! | {embed:[embed name]}\`
@@ -105,9 +105,9 @@ To insert messages into a welcome, there are three options:
                 return msg.channel.send(new Discord.MessageEmbed()
                     .setColor(this.client.color)
                     .setDescription(`You must put a valid property.
-> welcome channel [#channel]
-> welcome message [ <text> | {embed[embed name]} ]
-> welcome autorole [user|bot] [@role]
+> ${this.prefix}welcome channel [#channel]
+> ${this.prefix}welcome message [ <text> | {embed[embed name]} ]
+> ${this.prefix}welcome autorole [user|bot] [@role]
 To insert messages into a welcome, there are three options:
 - Message and embed:
 > \`${this.prefix}welcome message Welcome user! | {embed:[embed name]}\`
