@@ -21,7 +21,8 @@ module.exports = class EmbedCommand extends BaseCommand {
             const embed = new Discord.MessageEmbed()
                 .setTitle('Why do I need an embed?')
                 .setDescription('You may need it to make your server look much better aesthetically, since it will allow you to create rich text, which you can put in your welcomes, leaves and custom commands. Creativity is up to you!')
-                .addField('1. Create and name your embed.', `The name will allow us to identify your embed so that everything looks more orderly when it comes to putting it in welcomes, leaves and custom commands. How? Well, adding \`{embed:[embed_name]}\` and Replacing \`embed_name\` with the name of your embed. For this, you can create it and give it the name you like, just like this:
+                .addField('1. Create and name your embed.', `__First of all you should not include [] or <> in the command__
+The name will allow us to identify your embed so that everything looks more orderly when it comes to putting it in welcomes, leaves and custom commands. How? Well, adding \`{embed:[embed_name]}\` and Replacing \`embed_name\` with the name of your embed. For this, you can create it and give it the name you like, just like this:
 > \`${this.prefix} embed create [embed_name]\``)
                 .addField('2. Editing our embed', `Well, it's time to edit it the way you like, your creativity matters! Here I show you the properties of an embed:
 > \`author\` - [text | <Image link>]
@@ -46,7 +47,17 @@ Let's put an image on it and we will have a simple embed, be careful and put lin
 Finally, let's put a color which has to be in hexadecimal code without the #, if you don't know them, you can see the colors [here](https://htmlcolorcodes.com/es/).
 > \`${this.prefix}embed edit example color e658ff\`
 Ready, this is a simple embed that if you want you can test yourself with:
-> \`${this.prefix}embed preview example\``)
+> \`${this.prefix}embed preview example
+Remember that in any case you would use: {embed:[embed name]}
+> In this case: \`{embed:example}\`
+To insert it in a welcome or leave, there are three options:
+- Message and embed:
+> \`${this.prefix}welcome message Welcome user! | {embed:example}
+- Message only:
+> \`${this.prefix}welcome message Welcome user!
+- Or just the embed:
+> \`${this.prefix}welcome message {embed:example}
+`
                 .addField('**VARIABLES**', `First of all, what are variables? Well, for that I am, the variables will allow us to do "automated" things so that they can be replaced by names, channels, links and others, they can be used in embeds as well as in text, for welcomes, leaves and custom commands. Here are some:
 \`{user}\` - @Mention (e.j. @Aviii.#0721 *she's so beautiful <3*)
 \`{server}\` - Server name (e.j. ${this.client.user.username}'s Support)
@@ -54,7 +65,7 @@ You can find the full list with \`${this.prefix}variables\``)
                 .setColor(this.client.color)
                 .setTimestamp()
                 .setFooter('<> Optional | [] Required')
-                .setImage('https://i.imgur.com/2lpwIJg.png');
+                .setImage('https://i.imgur.com/82VeGB9.png');
             return msg.channel.send(embed);
         }
         const replaceText = (text) => this.client.replaceText(text, { channel: msg.channel, member: msg.member, prefix: this.prefix });
