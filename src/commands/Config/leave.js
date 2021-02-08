@@ -17,11 +17,19 @@ module.exports = class LeaveCommand extends BaseCommand {
         if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
         .setColor(this.client.color)
         .setDescription(`You must put a valid property.
-> leave channel [#mention]
-> leave message [ <text> | {embed[embed name]} ]`));
+> leave channel [#channel]
+> leave message [ <text> | {embed[embed name]} ]
+To insert messages into a welcome, there are three options:
+- Message and embed:
+> \`${this.prefix}leave message Welcome user! | {embed:[embed name]}\`
+- Message only:
+> \`${this.prefix}leave message Welcome user!\`
+- Or just the embed:
+> \`${this.prefix}leave message {embed:[embed name]}\``)
+.setFooter('<> Optional | [] Required'));
         switch (args[0].toLowerCase()) {
             case 'channel': {
-                if (!args[1]) return msg.channel.send('> Give me the ID or mention of the role.');
+                if (!args[1]) return msg.channel.send('> Give me the ID or mention of the channel.');
                 const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false;
                 let canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1]);
                 if (!canal || canal.type !== 'text') return msg.channel.send('> I didn\'t find a channel of the mentioned channel is not of text.');
@@ -67,8 +75,16 @@ module.exports = class LeaveCommand extends BaseCommand {
                 msg.channel.send(new Discord.MessageEmbed()
                 .setColor(this.client.color)
                 .setDescription(`You must put a valid property.
-> leave channel [#mention]
-> leave message message [ <text> | {embed[embed name]} ]`));
+> leave channel [#channel]
+> leave message message [ <text> | {embed[embed name]} ]
+To insert messages into a welcome, there are three options:
+- Message and embed:
+> \`${this.prefix}leave message Welcome user! | {embed:[embed name]}\`
+- Message only:
+> \`${this.prefix}leave message Welcome user!\`
+- Or just the embed:
+> \`${this.prefix}leave message {embed:[embed name]}\``)
+.setFooter('<> Optional | [] Required'));
                 break;
         }
     }
