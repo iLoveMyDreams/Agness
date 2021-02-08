@@ -14,10 +14,10 @@ module.exports = class BaseCommand {
         this.memberGuildPermissions = options.memberGuildPermissions || [];
         this.memberChannelPermissions = options.memberChannelPermissions || [];
         this.cooldown = options.cooldown || 2;
-        this.enabled = options.enabled || true;
-        this.guildOnly = options.guildOnly || true;
-        this.nsfwOnly = options.nsfwOnly || false;
-        this.devsOnly = options.devsOnly || false;
+        this.enabled = typeof options.enabled === 'boolean' ? options.enabled : true;
+        this.guildOnly = typeof options.guildOnly === 'boolean' ? options.guildOnly : true;
+        this.nsfwOnly = typeof options.nsfwOnly === 'boolean' ? options.nsfwOnly : false;
+        this.devsOnly = typeof options.devsOnly === 'boolean' ? options.devsOnly : false;
         this.cooldowns = new Discord.Collection();
     }
 
