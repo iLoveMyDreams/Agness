@@ -15,18 +15,19 @@ module.exports = class LeaveCommand extends BaseCommand {
 
     async run(msg, args) {
         if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
-        .setColor(this.client.color)
-        .setDescription(`You must put a valid property.
-> ${this.prefix}leave channel [#channel]
-> ${this.prefix}leave message [ <text> | {embed[embed name]} ]
-To insert messages into a welcome, there are three options:
+            .setColor(this.client.color)
+            .setDescription(`You must put a valid property.
+> \`${this.prefix}leave channel [#channel]\`
+> \`${this.prefix}leave message [ <text> | {embed[embed name]} ]\`
+
+To insert messages into a leave, there are three options:
 - Message and embed:
-> \`${this.prefix}leave message Welcome user! | {embed:[embed name]}\`
+> \`${this.prefix}leave message {user.tag} left the server! | {embed:[embed name]}\`
 - Message only:
-> \`${this.prefix}leave message Welcome user!\`
+> \`${this.prefix}leave message {user.tag} left the server!\`
 - Or just the embed:
 > \`${this.prefix}leave message {embed:[embed name]}\``)
-.setFooter('<> Optional | [] Required'));
+            .setFooter('<> Optional | [] Required'));
         switch (args[0].toLowerCase()) {
             case 'channel': {
                 if (!args[1]) return msg.channel.send('> Give me the ID or mention of the channel.');
@@ -73,8 +74,8 @@ To insert messages into a welcome, there are three options:
             }
             default:
                 msg.channel.send(new Discord.MessageEmbed()
-                .setColor(this.client.color)
-                .setDescription(`You must put a valid property.
+                    .setColor(this.client.color)
+                    .setDescription(`You must put a valid property.
 > ${this.prefix}leave channel [#channel]
 > ${this.prefix}leave message message [ <text> | {embed[embed name]} ]
 To insert messages into a welcome, there are three options:
@@ -84,7 +85,7 @@ To insert messages into a welcome, there are three options:
 > \`${this.prefix}leave message Welcome user!\`
 - Or just the embed:
 > \`${this.prefix}leave message {embed:[embed name]}\``)
-.setFooter('<> Optional | [] Required'));
+                    .setFooter('<> Optional | [] Required'));
                 break;
         }
     }

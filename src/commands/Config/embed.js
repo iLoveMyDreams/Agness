@@ -48,7 +48,7 @@ Finally, let's put a color which has to be in hexadecimal code without the #, if
 > \`${this.prefix}embed edit example color e658ff\`
 Ready, this is a simple embed that if you want you can test yourself with:
 > \`${this.prefix}embed preview example`)
-.addField(`Send it for welcomes / leaves`,`Remember that in any case you would use: {embed:[embed name]}
+.addField('Send it for welcomes/leaves',`Remember that in any case you would use: {embed:[embed name]}
 > In this case: \`{embed:example}\`
 To insert it in a welcome or leave, there are three options:
 - Message and embed:

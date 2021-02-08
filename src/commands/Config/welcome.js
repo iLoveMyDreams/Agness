@@ -6,8 +6,8 @@ module.exports = class WelcomeCommand extends BaseCommand {
             name: 'welcome',
             aliases: ['setwelcome'],
             description: 'Set the channel and messages that you prefer the most when someone joins to your server c:',
-            usage: (prefix) => `${prefix}welcome [option: channel/message] <Properties>`,
-            example: (prefix) => `${prefix}welcome channel #welcome`,
+            usage: (prefix) => `${prefix}welcome [option: channel/message] <Value>`,
+            example: (prefix) => `${prefix}welcome channel #welcomes`,
             category: 'Config',
             memberGuildPermissions: ['ADMINISTRATOR']
         });
@@ -15,19 +15,20 @@ module.exports = class WelcomeCommand extends BaseCommand {
 
     async run(msg, args) {
         if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
-                    .setColor(this.client.color)
-                    .setDescription(`You must put a valid property.
-> ${this.prefix}welcome channel [#channel]
-> ${this.prefix}welcome message [ <text> | {embed[embed name]} ]
-> ${this.prefix}welcome autorole [user|bot] [@role]
+            .setColor(this.client.color)
+            .setDescription(`You must put a valid property.
+> \`${this.prefix}welcome channel [#channel]\`
+> \`${this.prefix}welcome message [ <text> | {embed[embed name]} ]\`
+> \`${this.prefix}welcome autorole [user|bot] [@role]\`
+
 To insert messages into a welcome, there are three options:
 - Message and embed:
-> \`${this.prefix}welcome message Welcome user! | {embed:[embed name]}\`
+> \`${this.prefix}welcome message Welcome {user}! | {embed:[embed name]}\`
 - Message only:
-> \`${this.prefix}welcome message Welcome user!\`
+> \`${this.prefix}welcome message Welcome {user}!\`
 - Or just the embed:
 > \`${this.prefix}welcome message {embed:[embed name]}\``)
-.setFooter('<> Optional | [] Required'));
+            .setFooter('<> Optional | [] Required'));
         switch (args[0].toLowerCase()) {
             case 'channel': {
                 if (!args[1]) return msg.channel.send('> Give me the ID or mention of the channel.');
@@ -115,7 +116,7 @@ To insert messages into a welcome, there are three options:
 > \`${this.prefix}welcome message Welcome user!\`
 - Or just the embed:
 > \`${this.prefix}welcome message {embed:[embed name]}\``)
-.setFooter('<> Optional | [] Required'));
+                    .setFooter('<> Optional | [] Required'));
         }
     }
 };
