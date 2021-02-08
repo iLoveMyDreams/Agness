@@ -96,7 +96,7 @@ If you need to see how the messages and roles it gives would be, you can use:
                 break;
             }
                       case 'config': {
-					  let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+					  let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec();
              if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id});
 						server.save();
             const configEmbed = new Discord.MessageEmbed()
