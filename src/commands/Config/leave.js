@@ -37,7 +37,7 @@ To insert messages into a leave, there are three options:
                 if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, channelID: '' });
                 server.channelID = '';
                 server.save();
-                msg.channel.send(`The channel was successfully removed.`);
+                return msg.channel.send(`The channel was successfully removed.`);
                }
                 const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false;
                 const canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1]);
@@ -58,7 +58,7 @@ To insert messages into a leave, there are three options:
                     server.embed_name = '';
                     server.message = '';
                 	 server.save();
-                   msg.channel.send(`The message was successfully deleted.`);
+                 return msg.channel.send(`The message was successfully deleted.`);
                }
                 if (/{embed:.+}/gi.test(args[1])) {
                     const embed = args[1].match(/{embed:.+}/gi)[0].split(':')[1].slice(0, -1);

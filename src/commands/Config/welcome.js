@@ -38,7 +38,7 @@ To insert messages into a welcome, there are three options:
                 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, channelID: '' });
                 server.channelID = '';
                 server.save();
-                msg.channel.send(`The channel was successfully removed.`);
+                return msg.channel.send(`The channel was successfully removed.`);
                }
               const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false;
                 const canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1]);
@@ -59,7 +59,7 @@ To insert messages into a welcome, there are three options:
                     server.embed_name = '';
                     server.message = '';
                 	 server.save();
-                   msg.channel.send(`The message was successfully deleted.`);
+                   return msg.channel.send(`The message was successfully deleted.`);
                }
                 if (/{embed:.+}/gi.test(args[1])) {
                     const embed = args[1].match(/{embed:.+}/gi)[0].split(':')[1].slice(0, -1);
@@ -105,7 +105,7 @@ If you need to see how the messages and roles it gives would be, you can use:
                      			if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, userRoleID: '' });
                     			server.userRoleID = '';
                 	 				server.save();
-                   				msg.channel.send(`Users will no longer be given a role.`);
+                   			return 	msg.channel.send(`Users will no longer be given a role.`);
               				 }
                         const rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2]);
                         if (!rol) return msg.channel.send('> Give me the ID or mention of the role.');
@@ -125,7 +125,7 @@ If you need to see how the messages and roles it gives would be, you can use:
                      			if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, botRoleID: '' });
                     			server.userRoleID = '';
                 	 				server.save();
-                   				msg.channel.send(`Users will no longer be given a role.`);
+                   			return 	msg.channel.send(`Users will no longer be given a role.`);
               				 }
                         const rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2]);
                         if (!rol) return msg.channel.send('> Give me the ID or mention of the role.');
