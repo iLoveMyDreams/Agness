@@ -32,6 +32,13 @@ To insert messages into a leave, there are three options:
         switch (args[0].toLowerCase()) {
             case 'channel': {
                 if (!args[1]) return msg.channel.send('> Give me the ID or mention of the channel.');
+              							 if(args[1].toLoweCase() === 'null'){
+							 let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+                if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, channelID: '' });
+                server.channelID = '';
+                server.save();
+                msg.channel.send(`The channel was successfully removed.`);
+               }
                 const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false;
                 const canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1]);
                 if (!canal || canal.type !== 'text') return msg.channel.send('> I didn\'t find a channel of the mentioned channel is not of text.');
@@ -45,6 +52,14 @@ To insert messages into a leave, there are three options:
             }
             case 'message': {
                 if (!args[1]) return msg.channel.send('> You must put a leave message.');
+              							 if(args[1].toLoweCase() === 'null'){
+							 		let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+                	 if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, embed_name: '', message: '' });
+                    server.embed_name = '';
+                    server.message = '';
+                	 server.save();
+                   msg.channel.send(`The message was successfully deleted.`);
+               }
                 if (/{embed:.+}/gi.test(args[1])) {
                     const embed = args[1].match(/{embed:.+}/gi)[0].split(':')[1].slice(0, -1);
                     if (embed) {
@@ -79,6 +94,18 @@ If you need to see how the messages and roles it gives would be, you can use:
 > \`${this.prefix}test welcome\``);
                 }
                 break;
+            }
+                      case 'config': {
+					  let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+             if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id});
+						server.save();
+            const configEmbed = new Discord.MessageEmbed()
+            .setTitle(`${msg.guild.name} leave configuration`)
+            .setDescription(`**Channel:** ${server.channelID ? `<#${server.channelID}>` : `Does not have.`}
+**Embed Name:** ${server.embed_name ? server.embed_name : `Does not have.`)
+						.addField(`Message:`, `${server.message ? server.message.length > 1024 ? `${server.message.substring(0, 1000)}. And more..` : server.message : `Does not have.`}`)
+          	msg.channel.send(configEmbed)
+            break;
             }
             default:
                 msg.channel.send(new Discord.MessageEmbed()
