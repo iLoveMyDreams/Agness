@@ -5,15 +5,15 @@ module.exports = class GuildMemberRemoveEvent {
     }
 
     async run(member) {
-        let server = await this.client.db.leave.findOne({ guildID: member.guild.id }).exec();
+        const server = await this.client.db.leave.findOne({ guildID: member.guild.id }).exec();
         if (!server) return;
-        let channel = member.guild.channels.resolve(server.channelID);
+        const channel = member.guild.channels.resolve(server.channelID);
         if (!channel) return;
 
         let embed;
-        let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name }).exec();
+        const embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name }).exec();
         let prefix = 'a?';
-        let modelo = await this.client.db.prefix.findOne({ _id: member.guild.id }).exec();
+        const modelo = await this.client.db.prefix.findOne({ _id: member.guild.id }).exec();
         prefix = modelo ? modelo.prefix : 'a?';
         const replaceText = (text) => this.client.replaceText(text, { channel, member, prefix });
         if (embed_DB)

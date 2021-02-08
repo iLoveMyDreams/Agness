@@ -32,7 +32,7 @@ To insert messages into a leave, there are three options:
             case 'channel': {
                 if (!args[1]) return msg.channel.send('> Give me the ID or mention of the channel.');
                 const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false;
-                let canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1]);
+                const canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1]);
                 if (!canal || canal.type !== 'text') return msg.channel.send('> I didn\'t find a channel of the mentioned channel is not of text.');
                 if (!['SEND_MESSAGES', 'EMBED_LINKS'].some((p) => canal.permissionsFor(msg.guild.me).has(p))) return msg.channel.send('> I can\'t send messages or embeds in that channel.');
                 let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec();
@@ -45,9 +45,9 @@ To insert messages into a leave, there are three options:
             case 'message': {
                 if (!args[1]) return msg.channel.send('> You must put a leave message.');
                 if (/{embed:.+}/gi.test(args[1])) {
-                    let embed = args[1].match(/{embed:.+}/gi)[0].split(':')[1].slice(0, -1);
+                    const embed = args[1].match(/{embed:.+}/gi)[0].split(':')[1].slice(0, -1);
                     if (embed) {
-                        let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec();
+                        const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec();
                         if (!checkear) return msg.channel.send('> There\'s no embed with that name.');
                     }
                     let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec();
@@ -57,10 +57,11 @@ To insert messages into a leave, there are three options:
                     server.save();
                     msg.channel.send(`> The new embed to use in the leaves is now ${embed}.`);
                 } else {
+                    // eslint-disable-next-line prefer-const
                     let [message, embed] = args.slice(1).join(' ').split(' | ').map((m) => m.trim());
                     if (embed) {
                         embed = embed.split(':')[1].slice(0, -1);
-                        let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec();
+                        const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec();
                         if (!checkear) return msg.channel.send('> There\'s no embed with that name.');
                     }
                     let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec();

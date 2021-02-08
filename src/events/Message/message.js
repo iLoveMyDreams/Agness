@@ -10,14 +10,14 @@ module.exports = class MessageEvent {
             const modelo = await this.client.db.prefix.findOne({ _id: msg.guild.id }).exec();
             prefix = modelo ? modelo.prefix : 'a?';
         }
-        let prefixes = [prefix, `<@${this.client.user.id}>`, `<@!${this.client.user.id}>`];
-        let usedPrefix = prefixes.find((p) => msg.content.startsWith(p));
+        const prefixes = [prefix, `<@${this.client.user.id}>`, `<@!${this.client.user.id}>`];
+        const usedPrefix = prefixes.find((p) => msg.content.startsWith(p));
         if (!usedPrefix || msg.author.bot) return;
         if (usedPrefix !== prefix)
             msg.mentions.users.delete(msg.mentions.users.first().id);
         const args = msg.content.slice(usedPrefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
-        if (await this.isTag(msg, this.prefix, command)) return;
+        if (msg.guild && (await this.isTag(msg, this.prefix, command))) return;
         const cmd = this.client.commands.find(c => c.name === command || c.aliases.includes(command));
         try {
             if (!cmd) return;
@@ -31,22 +31,22 @@ module.exports = class MessageEvent {
     }
 
     async isTag(msg, prefix, name) {
-        let tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name }).exec();
+        const tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name }).exec();
         if (!tag) return false;
-        let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: tag.embed_name }).exec();
+        const embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: tag.embed_name }).exec();
         const replaceText = (text) => this.client.replaceText(text, { channel: msg.channel, member: msg.member, prefix });
-        let files = tag.image ? [new Discord.MessageAttachment(tag.image, 'image.png')] : null;
+        const files = tag.image ? [new Discord.MessageAttachment(tag.image, 'image.png')] : null;
         let embed;
         if (embed_DB)
             embed = await this.client.generateEmbed(embed_DB, replaceText);
         tag.addRoleID.forEach((rId) => {
-            let role = msg.guild.roles.resolve(rId);
+            const role = msg.guild.roles.resolve(rId);
             if (!role) return;
             if (!role.editable) return;
             msg.member.roles.add(role.id);
         });
         tag.deleteRoleID.forEach((rId) => {
-            let role = msg.guild.roles.resolve(rId);
+            const role = msg.guild.roles.resolve(rId);
             if (!role) return;
             if (!role.editable) return;
             msg.member.roles.remove(role.id);

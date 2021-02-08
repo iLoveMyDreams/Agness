@@ -13,6 +13,7 @@ module.exports = {
     },
     rules: {
         'no-empty': 'off',
+        'prefer-const': 'warn',
         'no-unused-vars': 'warn',
         'eol-last': ['warn', 'never'],
         'comma-dangle': ['error', 'never'],

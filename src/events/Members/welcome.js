@@ -5,28 +5,28 @@ module.exports = class GuildMemberAddEvent {
     }
 
     async run(member) {
-        let server = await this.client.db.welcome.findOne({ guildID: member.guild.id }).exec();
+        const server = await this.client.db.welcome.findOne({ guildID: member.guild.id }).exec();
         if (!server) return;
-        let channel = member.guild.channels.resolve(server.channelID);
+        const channel = member.guild.channels.resolve(server.channelID);
         if (!channel) return;
 
         if (!member.user.bot && server.userRoleID)
             try {
-                let rol = member.guild.roles.resolve(server.userRoleID);
+                const rol = member.guild.roles.resolve(server.userRoleID);
                 if (rol && rol.editable)
                     member.roles.add(rol.id);
             } catch { }
         if (member.user.bot && server.botRoleID)
             try {
-                let rol = member.guild.roles.resolve(server.botRoleID);
+                const rol = member.guild.roles.resolve(server.botRoleID);
                 if (rol && rol.editable)
                     member.roles.add(rol.id);
             } catch { }
 
         let embed;
-        let embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name }).exec();
+        const embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name }).exec();
         let prefix = 'a?';
-        let modelo = await this.client.db.prefix.findOne({ _id: member.guild.id }).exec();
+        const modelo = await this.client.db.prefix.findOne({ _id: member.guild.id }).exec();
         prefix = modelo ? modelo.prefix : 'a?';
         const replaceText = (text) => this.client.replaceText(text, { channel, member, prefix });
         if (embed_DB)

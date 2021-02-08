@@ -5,18 +5,18 @@ module.exports = class ReactionRemoveEvent {
     }
 
     async run(msgReaction, user) {
-        let guild = msgReaction.message.guild;
-        let mensaje = msgReaction.message;
-        let emoji = msgReaction.emoji.id || msgReaction.emoji.name;
+        const guild = msgReaction.message.guild;
+        const mensaje = msgReaction.message;
+        const emoji = msgReaction.emoji.id || msgReaction.emoji.name;
 
         if (!guild || user.bot) return;
         try {
-            let miembro = await guild.members.fetch(user.id);
+            const miembro = await guild.members.fetch(user.id);
 
-            let emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emoji }).exec();
+            const emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emoji }).exec();
             if (!emojiCheck) return;
 
-            let rol = guild.roles.cache.get(emojiCheck.roleID);
+            const rol = guild.roles.cache.get(emojiCheck.roleID);
             if (!rol || !rol.editable) return;
 
             switch (emojiCheck.type) {

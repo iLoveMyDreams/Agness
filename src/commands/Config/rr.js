@@ -35,8 +35,8 @@ Only => Only one role reaction of the same type can be obtained in the message.`
                     return msg.channel.send(embed.setDescription(`> Correct use: ${this.prefix}rrole delete [emoji] [messageID]`));
                 if (!this.emojiUnicode.test(args[1]) && !this.emojiDiscord.test(args[1]))
                     return msg.channel.send(embed.setDescription('> You must put an emoji.'));
-                let emojiID = args[1].includes(':') ? args[1].split(':')[2].slice(0, -1) : args[1];
-                let emojiCheck = await this.client.db.reaction.findOneAndDelete({ guildID: msg.guild.id, messageID: args[2], reaction: emojiID }).exec();
+                const emojiID = args[1].includes(':') ? args[1].split(':')[2].slice(0, -1) : args[1];
+                const emojiCheck = await this.client.db.reaction.findOneAndDelete({ guildID: msg.guild.id, messageID: args[2], reaction: emojiID }).exec();
                 if (!emojiCheck)
                     return msg.channel.send(embed.setDescription('> The reaction role couldn\'t be removed, check if there\'s one with that message ID and emoji in the server.'));
                 return msg.channel.send(embed.setDescription('> Reaction role removed successfully.'));
@@ -46,7 +46,7 @@ Only => Only one role reaction of the same type can be obtained in the message.`
             return msg.channel.send(embed.setDescription(`> Correct use: ${this.prefix}rrole [@role] [type] [messageID] <#channel>`));
 
         const matchRole = args[0].match(/^<@&(\d+)>$/);
-        let rol = matchRole ? msg.guild.roles.resolve(matchRole[1]) : msg.guild.roles.resolve(args[0]);
+        const rol = matchRole ? msg.guild.roles.resolve(matchRole[1]) : msg.guild.roles.resolve(args[0]);
         if (!rol)
             return msg.channel.send(embed.setDescription('> I couldn\'t find that role or it\'s invalid.'));
         if (!rol.editable)
@@ -60,7 +60,7 @@ Only => Only one role reaction of the same type can be obtained in the message.`
 
         const msgID = args[2];
         const matchChannel = args[3] ? args[3].match(/^<#(\d+)>$/) : false;
-        let canal = args[3] ? matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[3]) : msg.channel;
+        const canal = args[3] ? matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[3]) : msg.channel;
 
         if (!canal || canal.type !== 'text')
             return msg.channel.send(embed.setDescription('> I couldn\'t find the channel or it\'s invalid.'));
@@ -76,20 +76,20 @@ Only => Only one role reaction of the same type can be obtained in the message.`
             return msg.channel.send(embed.setDescription('> There was an error finding the message, try again.'));
         }
 
-        let enviado = await msg.channel.send(embed.setDescription(`I'm preparing the reaction role for ${rol}.
+        const enviado = await msg.channel.send(embed.setDescription(`I'm preparing the reaction role for ${rol}.
 You just need to react with the emoji with which you want the role to be given.`));
         try {
             const filter = (r, u) => u.id === msg.author.id;
-            let colector = await enviado.awaitReactions(filter, { max: 1, time: 30e3, error: ['time'] });
-            let emoji = colector.first().emoji;
+            const colector = await enviado.awaitReactions(filter, { max: 1, time: 30e3, error: ['time'] });
+            const emoji = colector.first().emoji;
             enviado.delete();
             if (emoji.id && !this.client.emojis.resolve(emoji.id))
                 return msg.channel.send(embed.setDescription('> I couldn\'t find that emoji in my cache, try adding the emoji on the server.'));
-            let emojiID = emoji.id || emoji.name;
-            let emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emojiID }).exec();
+            const emojiID = emoji.id || emoji.name;
+            const emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emojiID }).exec();
             if (emojiCheck)
                 return msg.channel.send(embed.setDescription('> There\'s already a role reaction with that emoji.'));
-            let nuevaDB = new this.client.db.reaction({ guildID: msg.guild.id, messageID: mensaje.id, roleID: rol.id, reaction: emojiID, type: args[1].toLowerCase() });
+            const nuevaDB = new this.client.db.reaction({ guildID: msg.guild.id, messageID: mensaje.id, roleID: rol.id, reaction: emojiID, type: args[1].toLowerCase() });
             await nuevaDB.save();
             mensaje.react(emoji);
             msg.channel.send(embed.setDescription(`Now, the role ${rol} will be given when they react to the emoji: ${emoji}`));

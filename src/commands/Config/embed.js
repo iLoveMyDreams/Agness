@@ -13,10 +13,11 @@ module.exports = class EmbedCommand extends BaseCommand {
             memberGuildPermissions: ['ADMINISTRATOR'],
             botChannelPermissions: ['EMBED_LINKS']
         });
+
+        this.exceptions = ['{user.avatar}', '{server.icon}', '{server.owner.avatar}'];
     }
 
     async run(msg, args) {
-        let exceptions = ['{user.avatar}', '{server.icon}', '{server.owner.avatar}'];
         if (!args[0]) {
             const embed = new Discord.MessageEmbed()
                 .setTitle('Why do I need an embed?')
@@ -74,9 +75,9 @@ You can find the full list with \`${this.prefix}variables\``)
                 if (lista.length >= 10) return msg.channel.send('For now, you can only have 10 embeds per server.');
                 if (!args[1]) return msg.channel.send(`You didn't put the name of the embed to create.
 > ${this.prefix}embed create [embed_name]`);
-                let checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec();
+                const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec();
                 if (checkear) return msg.channel.send('There\'s already an embed with that name. Try another.');
-                let nuevo = new this.client.db.embed({ guildID: msg.guild.id, embed_name: args[1] });
+                const nuevo = new this.client.db.embed({ guildID: msg.guild.id, embed_name: args[1] });
                 await nuevo.save();
                 msg.channel.send(`Embed created successfully. Now you can edit it with:
 > ${this.prefix}embed edit [name] [property] [value]`);
@@ -85,7 +86,7 @@ You can find the full list with \`${this.prefix}variables\``)
             case 'delete': {
                 if (!args[1]) return msg.channel.send(`You didn't put the name of the embed that I should delete.
 > ${this.prefix}embed delete [embed_name]`);
-                let checkear = await this.client.db.embed.findOneAndDelete({ guildID: msg.guild.id, embed_name: args[1] }).exec();
+                const checkear = await this.client.db.embed.findOneAndDelete({ guildID: msg.guild.id, embed_name: args[1] }).exec();
                 if (!checkear) return msg.channel.send('There\'s no embed with that name.');
                 msg.channel.send('Embed removed successfully.');
                 break;
@@ -103,7 +104,7 @@ You can find the full list with \`${this.prefix}variables\``)
             case 'edit': {
                 if (!args[1]) return msg.channel.send(`You didn't tell me the embed to edit. Or maybe you are executing the command wrong, right way:
 > ${this.prefix}embed edit [embed_name] [property] [value]`);
-                let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec();
+                const embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec();
                 if (!embed_DB) return msg.channel.send(`I can't find an embed with that name. Or maybe you are executing the command wrong, right way:
 > ${this.prefix}embed edit [embed_name] [property] [value]`);
                 if (!args[2]) return msg.channel.send(`You didn't tell me the property to edit. Or maybe you are executing the command wrong, right way:
@@ -124,7 +125,7 @@ You can find the full list with \`${this.prefix}variables\``)
                                 embed_DB[`${edit}_text`] = parts[0];
                                 embed_DB[`${edit}_image`] = '';
                             } else if (parts.length === 2) {
-                                if (!exceptions.includes(parts[1]))
+                                if (!this.exceptions.includes(parts[1]))
                                     if (!(await isImageURL(parts[1]))) return msg.channel.send(`You must give me the URL of a valid image or gif. Or maybe you are executing the command the wrong way, right way:
 >  ${this.prefix}embed edit [embed_name] ${edit} [text | <Image link>]`);
                                 embed_DB[`${edit}_text`] = parts[0];
@@ -154,7 +155,7 @@ You can find the full list with \`${this.prefix}variables\``)
                         if (!args[3]) return msg.channel.send(`You must give me the value you want to put. Or maybe you are executing the command the wrong way, right way:
 >  ${this.prefix}embed edit [embed_name] ${edit} [Image link]`);
                         if (args[3].toLowerCase() !== 'null') {
-                            if (!exceptions.includes(args[3]))
+                            if (!this.exceptions.includes(args[3]))
                                 if (!(await isImageURL(args[3]))) return msg.channel.send(`You must give me the URL of a valid image. Or maybe you are executing the command the wrong way, right way:
 >  ${this.prefix}embed edit [embed_name] ${edit} [Image link]`);
                             embed_DB[edit] = args[3];
@@ -200,7 +201,7 @@ Here's a preview of the embed:`, await this.client.generateEmbed(embed_DB, repla
             case 'preview': {
                 if (!args[1]) return msg.channel.send(`You didn't tell me the embed to edit. Or maybe you are executing this command wrong, right way:
 > ${this.prefix}embed preview [embed_name]`);
-                let embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec();
+                const embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec();
                 if (!embed_DB) return msg.channel.send(`I can't find an embed with that name. Or maybe you are executing the command wrong, right way:
 > ${this.prefix}embed preview [embed_name]`);
                 msg.channel.send(await this.client.generateEmbed(embed_DB, replaceText));

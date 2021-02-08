@@ -11,7 +11,7 @@ module.exports = class CatCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        let user = msg.mentions.users.first() || (args[0] ? await this.client.users.fetch(args[0]).catch(() => { }) : msg.author) || msg.author;
+        const user = msg.mentions.users.first() || (args[0] ? await this.client.users.fetch(args[0]).catch(() => { }) : msg.author) || msg.author;
         const canvas = createCanvas(596, 514);
         const ctx = canvas.getContext('2d');
         const [avatar, bg] = await Promise.all([

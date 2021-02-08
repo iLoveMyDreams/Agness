@@ -65,9 +65,8 @@ You can appeal by going to my support server.
     }
 
     sendEmbed(msg, text, hexColor) {
-        let embedRespuesta = new Discord.MessageEmbed()
+        return msg.channel.send(new Discord.MessageEmbed()
             .setDescription(text)
-            .setColor(hexColor || this.client.color);
-        return msg.channel.send(embedRespuesta);
+            .setColor(hexColor || this.client.color));
     }
 };

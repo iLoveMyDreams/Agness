@@ -14,7 +14,7 @@ module.exports = class DJSCommand extends BaseCommand {
     async run(msg, args) {
         if (!args[0]) return msg.channel.send('What do you want to search?');
         try {
-            let response = await phin({
+            const response = await phin({
                 url: `https://djsdocs.sorta.moe/v2/embed?src=stable&q=${encodeURIComponent(args.join(' '))}`,
                 parse: 'json'
             });
