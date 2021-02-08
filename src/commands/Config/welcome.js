@@ -154,7 +154,7 @@ If you need to see how the messages and roles it gives would be, you can use:
             .setDescription(`**Channel:** ${server.channelID ? `<#${server.channelID}>` : `Does not have.`}
 **User AutoRole:** ${server.userRoleID ? `<@&${server.userRoleID}>` : `Does not have.}
 **Bot AutoRole:** ${server.botRoleID ? `<@&${server.botRoleID}>` : `Does not have.}
-**Embed Name:** ${server.embed_name ? server.embed_name : `Does not have.}`)
+**Embed Name:** ${server.embed_name ? server.embed_name : `Does not have.`}`)
 						.addField(`Message:`, `${server.message ? server.message.length > 1024 ? `${server.message.substring(0, 1000)}. And more..` : server.message : `Does not have.`}`)
           	msg.channel.send(configEmbed)
             break;
