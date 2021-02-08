@@ -4,7 +4,8 @@ module.exports = class InviteCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'vote',
-            botChannelPermissions: ['EMBED_LINKS']
+            botChannelPermissions: ['EMBED_LINKS'],
+          	guildOnly: false
         });
     }
 

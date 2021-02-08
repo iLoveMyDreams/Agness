@@ -6,7 +6,8 @@ module.exports = class HelpCommand extends BaseCommand {
             name: 'help',
             aliases: ['ayuda'],
             usage: (prefix) => `${prefix}help <Command or category>`,
-            botChannelPermissions: ['EMBED_LINKS']
+            botChannelPermissions: ['EMBED_LINKS'],
+          	guildOnly: false
         });
     }
 

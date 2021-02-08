@@ -9,7 +9,8 @@ module.exports = class LeaveCommand extends BaseCommand {
             usage: (prefix) => `${prefix}leave [property: channel/message] <Value>`,
             example: (prefix) => `${prefix}leave channel #goodbye`,
             category: 'Config',
-            memberGuildPermissions: ['ADMINISTRATOR']
+            memberGuildPermissions: ['ADMINISTRATOR'],
+          	botChannelPermissions: ['EMBED_LINKS']
         });
     }
 
@@ -48,14 +49,18 @@ To insert messages into a leave, there are three options:
                     const embed = args[1].match(/{embed:.+}/gi)[0].split(':')[1].slice(0, -1);
                     if (embed) {
                         const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec();
-                        if (!checkear) return msg.channel.send('> There\'s no embed with that name.');
+                        if (!checkear) return msg.channel.send(`> There's no embed with that name.
+You can see the list of embeds with:
+> \`${this.prefix}embed list\``);
                     }
                     let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec();
                     if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, embed_name: embed });
                     server.embed_name = embed;
                     server.message = '';
                     server.save();
-                    msg.channel.send(`> The new embed to use in the leaves is now ${embed}.`);
+                    this.sendEmbed(msg, `The new embed to use in the leaves is now ${embed}.
+If you need to see how the messages and roles it gives would be, you can use:
+> \`${this.prefix}test welcome\``);
                 } else {
                     // eslint-disable-next-line prefer-const
                     let [message, embed] = args.slice(1).join(' ').split(' | ').map((m) => m.trim());
@@ -69,7 +74,9 @@ To insert messages into a leave, there are three options:
                     server.embed_name = embed ? embed : '';
                     server.message = message;
                     server.save();
-                    msg.channel.send(`> The message ${embed ? 'and embed ' : ''}of leaves has been updated.`);
+                    this.sendEmbed(msg,`The message ${embed ? 'and embed ' : ''}of leaves has been updated correctly.
+If you need to see how the messages and roles it gives would be, you can use:
+> \`${this.prefix}test welcome\``);
                 }
                 break;
             }
