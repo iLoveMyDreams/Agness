@@ -14,7 +14,7 @@ module.exports = class HelpCommand extends BaseCommand {
         if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
             .setColor(this.client.color)
             .setTitle(`${this.client.user.username} Help Panel`)
-            .setDescription(`Hi! At the moment I have 3 categories and ${this.client.commands.size - 1} commands.
+            .setDescription(`Hi! At the moment I have 3 categories and ${this.client.commands.size - 3} commands.
 If you need more detailed information about each command, you can use:
 > ${this.prefix}help <Command>`)
             .addField('Categories', `> ${this.prefix}help Config • Configuration Commands

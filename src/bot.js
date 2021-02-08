@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 new (
-    class Asuna extends Discord.Client {
+    class Agness extends Discord.Client {
         constructor() {
             super({ partials: ['MESSAGE', 'REACTION'], ws: { intents: 13827 } });
             mongoose.connect(process.env.MONGO_URL, {
