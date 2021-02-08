@@ -47,8 +47,8 @@ Let's put an image on it and we will have a simple embed, be careful and put lin
 Finally, let's put a color which has to be in hexadecimal code without the #, if you don't know them, you can see the colors [here](https://htmlcolorcodes.com/es/).
 > \`${this.prefix}embed edit example color e658ff\`
 Ready, this is a simple embed that if you want you can test yourself with:
-> \`${this.prefix}embed preview example
-Remember that in any case you would use: {embed:[embed name]}
+> \`${this.prefix}embed preview example`)
+.addField(`Send it for welcomes / leaves`,`Remember that in any case you would use: {embed:[embed name]}
 > In this case: \`{embed:example}\`
 To insert it in a welcome or leave, there are three options:
 - Message and embed:
