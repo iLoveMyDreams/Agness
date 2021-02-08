@@ -10,10 +10,10 @@ module.exports = class ReactionAddEvent {
         let emoji = msgReaction.emoji.id || msgReaction.emoji.name; // el emoji
 
         if (!guild || user.bot) return;
-
+      
         let miembro = await guild.members.fetch(user.id);
-
-        let emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emoji }).exec();
+        
+      let emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emoji }).exec();
         if (!emojiCheck) return;
 
         let rol = guild.roles.cache.get(emojiCheck.roleID);

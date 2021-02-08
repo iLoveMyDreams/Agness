@@ -10,7 +10,7 @@ module.exports = class ReactionRemoveEvent {
         let emoji = msgReaction.emoji.id || msgReaction.emoji.name; 
       
         if (!guild || user.bot) return;
-      
+      	try {
         let miembro = await guild.members.fetch(user.id); 
 
         let emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emoji }).exec();
@@ -26,5 +26,6 @@ module.exports = class ReactionRemoveEvent {
             default:
                 break;
         }
+      } catch {}
     }
 };
