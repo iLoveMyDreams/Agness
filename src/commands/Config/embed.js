@@ -75,6 +75,7 @@ You can find the full list with \`${this.prefix}variables\``)
                 if (lista.length >= 10) return msg.channel.send('For now, you can only have 10 embeds per server.');
                 if (!args[1]) return msg.channel.send(`You didn't put the name of the embed to create.
 > ${this.prefix}embed create [embed_name]`);
+                if(args[1] > 10) return msg.channel.send(`Try a shorter name, the maximum is 10 characters.`)
                 const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec();
                 if (checkear) return msg.channel.send('There\'s already an embed with that name. Try another.');
                 const nuevo = new this.client.db.embed({ guildID: msg.guild.id, embed_name: args[1] });
@@ -195,6 +196,8 @@ Or maybe you are executing the command the wrong way, right way:
 
                 msg.channel.send(`The ${edit} property of the ${args[1]} embed was edited correctly.
 You can add the embed to welcome, goodbye or custom commands with {embed:${args[1]}}.
+If you need to delete any property use:
+> ${this.prefix}embed edit [embed_name] [property] null
 Here's a preview of the embed:`, await this.client.generateEmbed(embed_DB, replaceText));
                 break;
             }
