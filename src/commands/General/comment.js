@@ -35,7 +35,7 @@ module.exports = class CommentCommand extends BaseCommand {
                     let name = 'suggest.png'
                     if (msg.attachments.first().url.toLowerCase().endsWith('.gif')) name = 'suggest.gif'
                     const att = new Discord.MessageAttachment(msg.attachments.first().url, name)
-                    embedSuggest.attachFiles([att])
+                    embedSuggest.attachFiles([att, avatarAtt])
                         .setImage(`attachment://${name}`)
                         .setThumbnail(`attachment://avatar.${extension}`)
                 } else {
