@@ -31,7 +31,7 @@ To insert messages into a welcome, there are three options:
 > \`${this.prefix}welcome message {embed:[embed name]}\`
 
 If you need to delete any property use:
-> ${this.prefix}welcome [property] null`)
+> \`${this.prefix}welcome [property] null\``)
             .setFooter('<> Optional | [] Required'));
         switch (args[0].toLowerCase()) {
             case 'channel': {
@@ -153,7 +153,7 @@ If you need to see how the messages and roles it gives would be, you can use:
                 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id });
                 server.save();
                 const configEmbed = new Discord.MessageEmbed()
-                    .setTitle(`${msg.guild.name} welcome configuration`)
+                    .setTitle(`Server Welcome Configuration`)
                     .setDescription(`**Channel:** ${server.channelID ? `<#${server.channelID}>` : `Does not have.`}
 **User AutoRole:** ${server.userRoleID ? `<@&${server.userRoleID}>` : `Does not have.`}
 **Bot AutoRole:** ${server.botRoleID ? `<@&${server.botRoleID}>` : `Does not have.`}
@@ -181,7 +181,7 @@ To insert messages into a welcome, there are three options:
 > \`${this.prefix}welcome message {embed:[embed name]}\`
 
 If you need to delete any property use:
-> ${this.prefix}welcome [property] null`)
+> \`${this.prefix}welcome [property] null\``)
                     .setFooter('<> Optional | [] Required'));
         }
     }

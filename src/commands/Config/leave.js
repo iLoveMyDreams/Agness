@@ -30,7 +30,7 @@ To insert messages into a leave, there are three options:
 > \`${this.prefix}leave message {embed:[embed name]}\`
 
 If you need to delete any property use:
-> ${this.prefix}welcome [property] null`)
+> \`${this.prefix}welcome [property] null\``)
             .setFooter('<> Optional | [] Required'));
         switch (args[0].toLowerCase()) {
             case 'channel': {
@@ -103,7 +103,7 @@ If you need to see how the messages and roles it gives would be, you can use:
                 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id });
                 server.save();
                 const configEmbed = new Discord.MessageEmbed()
-                    .setTitle(`${msg.guild.name} leave configuration`)
+                    .setTitle(`Server Leave Configuration`)
                     .setDescription(`**Channel:** ${server.channelID ? `<#${server.channelID}>` : `Does not have.`}
 **Embed Name:** ${server.embed_name ? server.embed_name : `Does not have.`}`)
                     .setColor(this.client.color)
@@ -128,7 +128,7 @@ To insert messages into a welcome, there are three options:
 > \`${this.prefix}leave message {embed:[embed name]}\`
 
 If you need to delete any property use:
-> ${this.prefix}welcome [property] null`)
+> \`${this.prefix}welcome [property] null\``)
                     .setFooter('<> Optional | [] Required'));
                 break;
         }
