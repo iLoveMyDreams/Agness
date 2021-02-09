@@ -108,7 +108,7 @@ If you need to see how the messages and roles it gives would be, you can use:
 **Embed Name:** ${server.embed_name ? server.embed_name : `Does not have.`}`)
                     .setColor(this.client.color)
                     .addField(`Message:`, `${server.message ? server.message.length > 1024 ? `${server.message.substring(0, 1000)}. And more..` : server.message : `Does not have.`}`)
-                if (server.embed_name) configEmbed.setFooter(`If you want to see the embed use: ${this.prefix}embed preview ${server.embed_nameF}`)
+                if (server.embed_name) configEmbed.setFooter(`If you want to see the embed use: ${this.prefix}embed preview ${server.embed_name}`)
                 msg.channel.send(configEmbed)
                 break;
             }
