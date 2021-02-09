@@ -10,7 +10,7 @@ module.exports = class GuildDeleteEvent {
         const owner = await this.client.users.fetch(guild.ownerID)
         if (canal)
             canal.send(new Discord.MessageEmbed()
-                .setAuthor('New server', this.client.user.displayAvatarURL())
+                .setAuthor('Server Remove', this.client.user.displayAvatarURL())
                 .setDescription(`**Name**: ${guild.name}\n**Members**: ${guild.memberCount}\n**Owner**: ${owner.tag} | ${owner.id}`)
                 .setThumbnail(guild.iconURL())
                 .setColor('RED')
