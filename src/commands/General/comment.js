@@ -34,7 +34,7 @@ module.exports = class CommentCommand extends BaseCommand {
                         .setImage(`attachment://${name}`);
                 }
                 embedSuggest.setAuthor(`New Suggest`)
-                    .setDescription(`**Author:** ${msg.user.tag} | ${msg.user.id}
+                    .setDescription(`**Author:** ${msg.author.tag} | ${msg.author.id}
 **Guild:** ${msg.guild.name} | ${msg.guild.id}
 **Message:** ${args.slice(1).join(' ')}`)
                     .setTimestamp()
@@ -54,7 +54,7 @@ module.exports = class CommentCommand extends BaseCommand {
                         .setImage(`attachment://${name}`);
                 }
                 embedReport.setAuthor(`New Bug Report`)
-                    .setDescription(`**Author:** ${msg.user.tag} | ${msg.user.id}
+                    .setDescription(`**Author:** ${msg.author.tag} | ${msg.author.id}
 **Guild:** ${msg.guild.name} | ${msg.guild.id}
 **Command or event:** ${args[1]}
 **Message:** ${args.slice(2).join(' ')}`)
