@@ -13,6 +13,11 @@ module.exports = class CommentCommand extends BaseCommand {
     async run(msg, args) {
         const canalSuggest = await this.client.channels.fetch(process.env.SUGGEST_CHANNEL);
         const canalReport = await this.client.channels.fetch(process.env.REPORT_CHANNEL);
+
+        const extension = (msg.author.avatar || '').startsWith('a_') ? 'gif' : 'png';
+        const avatar = msg.author.displayAvatarURL({ format: extension, size: 4096 });
+        const avatarAtt = new Discord.MessageAttachment(avatar, `avatar.${extension}`)
+
         const embed = new Discord.MessageEmbed()
             .setDescription(`You must put a valid property.
 > \`${this.prefix}comment suggest [new suggest]\`
@@ -32,9 +37,13 @@ module.exports = class CommentCommand extends BaseCommand {
                     if (msg.attachments.first().url.toLowerCase().endsWith('.gif')) name = 'suggest.gif'
                     const att = new Discord.MessageAttachment(msg.attachments.first().url, name)
                     embedSuggest.attachFiles([att])
-                        .setImage(`attachment://${name}`);
+                        .setImage(`attachment://${name}`)
+                        .setThumbnail(`attachment://avatar.${extension}`)
+                } else {
+                    embedSuggest.attachFiles([avatarAtt])
+                        .setThumbnail(`attachment://avatar.${extension}`)
                 }
-                embedSuggest.setAuthor(`New Suggest`)
+                embedSuggest.setAuthor(`New Suggest`, this.client.user.displayAvatarURL())
                     .setDescription(`**Author:** ${msg.author.tag} | ${msg.author.id}
 **Guild:** ${msg.guild.name} | ${msg.guild.id}
 **Message:** ${args.slice(1).join(' ')}`)
@@ -54,10 +63,14 @@ module.exports = class CommentCommand extends BaseCommand {
                     const name = 'suggest.png'
                     if (msg.attachments.first().url.toLowerCase().endsWith('.gif')) name = 'suggest.gif'
                     const att = new Discord.MessageAttachment(msg.attachments.first().url, name)
-                    embedReport.attachFiles([att])
-                        .setImage(`attachment://${name}`);
+                    embedReport.attachFiles([att, avatarAtt])
+                        .setImage(`attachment://${name}`)
+                        .setThumbnail(`attachment://avatar.${extension}`)
+                } else {
+                    embedReport.attachFiles([avatarAtt])
+                        .setThumbnail(`attachment://avatar.${extension}`)
                 }
-                embedReport.setAuthor(`New Bug Report`)
+                embedReport.setAuthor(`New Bug Report`, this.client.user.displayAvatarURL())
                     .setDescription(`**Author:** ${msg.author.tag} | ${msg.author.id}
 **Guild:** ${msg.guild.name} | ${msg.guild.id}
 **Command or event:** ${args[1]}
