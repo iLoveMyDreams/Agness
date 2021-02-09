@@ -4,8 +4,8 @@ const BaseCommand = require('../../Utils/BaseCommand.js');
 module.exports = class CommentCommand extends BaseCommand {
     constructor(client) {
         super(client, {
-            name: 'ping',
-            guildOnly: false
+            name: 'comment',
+            aliases: ['cm'],
         });
         this.types = ['.png', '.jpg', '.jpeg', '.gif'];
     }
