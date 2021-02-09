@@ -24,7 +24,7 @@ If you need more detailed information about each command, you can use:
             .addField('Links', '**[Bot Invite](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot) | [Support Server](https://discord.gg/K63NqEDm86) | [Top.gg](https://top.gg/bot/798573830645874718)**')
             .setFooter('<> Optional | [] Required'));
         const category = this.client.commands.filter((x) => x.category.toLowerCase() == args[0].toLowerCase()).array();
-        const cmd = this.client.commands.get(args[0].toLowerCase()) || this.client.commands.find((x) => x.alias && x.aliases.includes(args[0].toLowerCase()));
+        const cmd = this.client.commands.get(args[0].toLowerCase()) || this.client.commands.find((x) => x.aliases && x.aliases.includes(args[0].toLowerCase()));
 
         if (category.length) {
             const lines = Array(Math.ceil(category.length / 4)).fill([])
