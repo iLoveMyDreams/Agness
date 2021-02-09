@@ -1,4 +1,3 @@
-const { DiscordAPIError } = require('discord.js');
 const BaseCommand = require('../../Utils/BaseCommand.js');
 
 module.exports = class CommentCommand extends BaseCommand {
@@ -33,7 +32,7 @@ module.exports = class CommentCommand extends BaseCommand {
                 if (args.slice(1).join(' ').length < 30) return msg.channel.send(`Your suggestion must be a minimum of 30 characters.`)
                 if (args.slice(1).join(' ').length > 500) return msg.channel.send(`The suggestion must not exceed 500 characters`)
                 if (msg.attachments.first() && this.types.some(x => msg.attachments.first().url.toLowerCase().endsWith(x))) {
-                    const name = 'suggest.png'
+                    let name = 'suggest.png'
                     if (msg.attachments.first().url.toLowerCase().endsWith('.gif')) name = 'suggest.gif'
                     const att = new Discord.MessageAttachment(msg.attachments.first().url, name)
                     embedSuggest.attachFiles([att])
@@ -60,7 +59,7 @@ module.exports = class CommentCommand extends BaseCommand {
                 if (args.slice(1).join(' ').length < 30) return msg.channel.send(`Your bug report must be a minimum of 30 characters.`)
                 if (args.slice(2).join(' ').length > 500) return msg.channel.send(`The bug report must not exceed 500 characters.`)
                 if (msg.attachments.first() && this.types.some(x => msg.attachments.first().url.toLowerCase().endsWith(x))) {
-                    const name = 'suggest.png'
+                    let name = 'suggest.png'
                     if (msg.attachments.first().url.toLowerCase().endsWith('.gif')) name = 'suggest.gif'
                     const att = new Discord.MessageAttachment(msg.attachments.first().url, name)
                     embedReport.attachFiles([att, avatarAtt])
