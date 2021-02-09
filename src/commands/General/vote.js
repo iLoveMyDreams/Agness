@@ -1,6 +1,6 @@
 const BaseCommand = require('../../Utils/BaseCommand.js');
 
-module.exports = class InviteCommand extends BaseCommand {
+module.exports = class VoteCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'vote',

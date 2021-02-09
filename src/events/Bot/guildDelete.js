@@ -1,7 +1,7 @@
-module.exports = class GuildCreateEvent {
+module.exports = class GuildDeleteEvent {
     constructor(client) {
         this.client = client;
-        this.name = 'guildCreate';
+        this.name = 'guildDelete';
     }
 
     async run(guild) {
