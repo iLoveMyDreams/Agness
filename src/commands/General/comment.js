@@ -25,6 +25,7 @@ module.exports = class CommentCommand extends BaseCommand {
                 const embedSuggest = new Discord.MessageEmbed()
                 if (!args[1]) return msg.channel.send(`Tell me your suggestion.
 > \`${this.prefix}comment suggest [new suggest]\``)
+                if (args.slice(1).join(' ').length < 30) return msg.channel.send(`Your suggestion must be a minimum of 30 characters.`)
                 if (args.slice(1).join(' ').length > 500) return msg.channel.send(`The suggestion must not exceed 500 characters`)
                 if (msg.attachments.first() && this.types.some(x => msg.attachments.first().url.toLowerCase().endsWith(x))) {
                     const name = 'suggest.png'
@@ -38,13 +39,16 @@ module.exports = class CommentCommand extends BaseCommand {
 **Guild:** ${msg.guild.name} | ${msg.guild.id}
 **Message:** ${args.slice(1).join(' ')}`)
                     .setTimestamp()
-                canalSuggest.send(embedSuggest)
+                    .setColor(this.client.color)
+                await canalSuggest.send(embedSuggest)
+                msg.channel.send(`Your suggestion has been sent successfully.`)
                 break;
             }
             case 'bug': {
                 const embedReport = new Discord.MessageEmbed()
                 if (!args[1]) return msg.channel.send(`Tell me the bug to report.
 > \`${this.prefix}comment bug [command/event] [description]\``)
+                if (args.slice(1).join(' ').length < 30) return msg.channel.send(`Your bug report must be a minimum of 30 characters.`)
                 if (args.slice(2).join(' ').length > 500) return msg.channel.send(`The bug report must not exceed 500 characters.`)
                 if (msg.attachments.first() && this.types.some(x => msg.attachments.first().url.toLowerCase().endsWith(x))) {
                     const name = 'suggest.png'
@@ -59,10 +63,13 @@ module.exports = class CommentCommand extends BaseCommand {
 **Command or event:** ${args[1]}
 **Message:** ${args.slice(2).join(' ')}`)
                     .setTimestamp()
-                canalReport.send(embedReport)
+                    .setColor(this.client.color)
+                await canalReport.send(embedReport)
+                msg.channel.send(`Your bug report has been sent successfully.`)
                 break;
             }
             default:
+                msg.channel.send(embed)
                 break;
         }
     }
