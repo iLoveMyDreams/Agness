@@ -45,7 +45,7 @@ If you need to delete any property use:
                 }
                 const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false;
                 const canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1]);
-                if (!canal || canal.type !== 'text') return msg.channel.send('> I didn\'t find a channel of the mentioned channel is not of text.');
+                if (!canal || canal.type !== 'text') return msg.channel.send('> I didn\'t find a channel or the mentioned channel is not of text.');
                 if (!canal.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return msg.channel.send('> I can\'t send messages in that channel.');
                 let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, channelID: canal.id });
