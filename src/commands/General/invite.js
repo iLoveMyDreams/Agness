@@ -4,9 +4,8 @@ module.exports = class InviteCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'invite',
-		        aliases: ['inv'],
-            botChannelPermissions: ['EMBED_LINKS'],
-          	guildOnly: false
+            aliases: ['inv'],
+            botChannelPermissions: ['EMBED_LINKS']
         });
     }
 

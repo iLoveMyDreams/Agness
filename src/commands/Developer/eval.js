@@ -7,6 +7,7 @@ module.exports = class EvalCommand extends BaseCommand {
             name: 'eval',
             aliases: ['e'],
             category: 'Devs',
+			guildOnly: false,
             devsOnly: true
         });
     }

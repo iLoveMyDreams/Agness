@@ -5,8 +5,7 @@ module.exports = class AvatarCommand extends BaseCommand {
         super(client, {
             name: 'avatar',
             aliases: ['av', 'pfp', 'foto'],
-            botChannelPermissions: ['EMBED_LINKS'],
-          	guildOnly: false
+            botChannelPermissions: ['EMBED_LINKS']
         });
     }
 

@@ -4,8 +4,7 @@ module.exports = class VoteCommand extends BaseCommand {
     constructor(client) {
         super(client, {
             name: 'vote',
-            botChannelPermissions: ['EMBED_LINKS'],
-          	guildOnly: false
+            botChannelPermissions: ['EMBED_LINKS']
         });
     }
 

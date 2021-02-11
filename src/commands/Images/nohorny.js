@@ -7,7 +7,7 @@ module.exports = class CatCommand extends BaseCommand {
             name: 'nohorny',
             aliases: ['noh', 'cheems'],
             category: 'Images',
-          	guildOnly: false
+            guildOnly: false
         });
     }
 

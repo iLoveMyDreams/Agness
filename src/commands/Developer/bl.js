@@ -6,6 +6,7 @@ module.exports = class EvalCommand extends BaseCommand {
 			name: 'bl',
 			aliases: ['blacklist'],
 			category: 'Devs',
+			guildOnly: false,
 			devsOnly: true
 		});
 	}

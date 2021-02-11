@@ -41,7 +41,7 @@ If you need to delete any property use:
                     if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, channelID: '' });
                     server.channelID = '';
                     server.save();
-                    return msg.channel.send(`The channel was successfully removed.`);
+                    return msg.channel.send('The channel was successfully removed.');
                 }
                 const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false;
                 const canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1]);
@@ -62,7 +62,7 @@ If you need to delete any property use:
                     server.embed_name = '';
                     server.message = '';
                     server.save();
-                    return msg.channel.send(`The message was successfully deleted.`);
+                    return msg.channel.send('The message was successfully deleted.');
                 }
                 if (/{embed:.+}/gi.test(args[1])) {
                     const embed = args[1].match(/{embed:.+}/gi)[0].split(':')[1].slice(0, -1);
@@ -112,13 +112,13 @@ If you need to see how the messages and roles it gives would be, you can use:
             case 'autorole': {
                 switch (args[1]) {
                     case 'user': {
-                        if (!args[2]) return msg.channel.send(`> Give me the ID or mention of the role.`)
+                        if (!args[2]) return msg.channel.send('> Give me the ID or mention of the role.');
                         if (args[1].toLowerCase() === 'null') {
                             let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                             if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, userRoleID: '' });
                             server.userRoleID = '';
                             server.save();
-                            return msg.channel.send(`Users will no longer be given a role.`);
+                            return msg.channel.send('Users will no longer be given a role.');
                         }
                         const rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2]);
                         if (!rol) return msg.channel.send('> Give me the ID or mention of the role.');
@@ -132,13 +132,13 @@ If you need to see how the messages and roles it gives would be, you can use:
                         break;
                     }
                     case 'bot': {
-                        if (!args[2]) return msg.channel.send(`> Give me the ID or mention of the role.`)
+                        if (!args[2]) return msg.channel.send('> Give me the ID or mention of the role.');
                         if (args[1].toLowerCase() === 'null') {
                             let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                             if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, botRoleID: '' });
                             server.userRoleID = '';
                             server.save();
-                            return msg.channel.send(`Users will no longer be given a role.`);
+                            return msg.channel.send('Users will no longer be given a role.');
                         }
                         const rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2]);
                         if (!rol) return msg.channel.send('> Give me the ID or mention of the role.');
@@ -163,15 +163,15 @@ If you need to see how the messages and roles it gives would be, you can use:
                 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id });
                 server.save();
                 const configEmbed = new Discord.MessageEmbed()
-                    .setTitle(`Server Welcome Configuration`)
-                    .setDescription(`**Channel:** ${server.channelID ? `<#${server.channelID}>` : `Does not have.`}
-**User AutoRole:** ${server.userRoleID ? `<@&${server.userRoleID}>` : `Does not have.`}
-**Bot AutoRole:** ${server.botRoleID ? `<@&${server.botRoleID}>` : `Does not have.`}
-**Embed Name:** ${server.embed_name ? server.embed_name : `Does not have.`}`)
-                    .addField(`Message:`, `${server.message ? server.message.length > 1024 ? `${server.message.substring(0, 1000)}. And more..` : server.message : `Does not have.`}`)
-                    .setColor(this.client.color)
-                    if(server.embed_name) configEmbed.setFooter(`If you want to see the embed use: ${this.prefix}embed preview ${server.embed_name}`)
-                msg.channel.send(configEmbed)
+                    .setTitle('Server Welcome Configuration')
+                    .setDescription(`**Channel:** ${server.channelID ? `<#${server.channelID}>` : 'Does not have.'}
+**User AutoRole:** ${server.userRoleID ? `<@&${server.userRoleID}>` : 'Does not have.'}
+**Bot AutoRole:** ${server.botRoleID ? `<@&${server.botRoleID}>` : 'Does not have.'}
+**Embed Name:** ${server.embed_name ? server.embed_name : 'Does not have.'}`)
+                    .addField('Message:', `${server.message ? server.message.length > 1024 ? `${server.message.substring(0, 1000)}. And more..` : server.message : 'Does not have.'}`)
+                    .setColor(this.client.color);
+                    if(server.embed_name) configEmbed.setFooter(`If you want to see the embed use: ${this.prefix}embed preview ${server.embed_name}`);
+                msg.channel.send(configEmbed);
                 break;
             }
             default:
