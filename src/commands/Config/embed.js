@@ -75,7 +75,7 @@ You can find the full list with \`${this.prefix}variables\``)
                 if (lista.length >= 10) return msg.channel.send('For now, you can only have 10 embeds per server.');
                 if (!args[1]) return msg.channel.send(`You didn't put the name of the embed to create.
 > ${this.prefix}embed create [embed_name]`);
-                if(args[1] > 10) return msg.channel.send(`Try a shorter name, the maximum is 10 characters.`)
+                if(args[1] > 10) return msg.channel.send('Try a shorter name, the maximum is 10 characters.');
                 const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec();
                 if (checkear) return msg.channel.send('There\'s already an embed with that name. Try another.');
                 const nuevo = new this.client.db.embed({ guildID: msg.guild.id, embed_name: args[1] });

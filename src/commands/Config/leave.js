@@ -40,7 +40,7 @@ If you need to delete any property use:
                     if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, channelID: '' });
                     server.channelID = '';
                     server.save();
-                    return msg.channel.send(`The channel was successfully removed.`);
+                    return msg.channel.send('The channel was successfully removed.');
                 }
                 const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false;
                 const canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1]);
@@ -61,7 +61,7 @@ If you need to delete any property use:
                     server.embed_name = '';
                     server.message = '';
                     server.save();
-                    return msg.channel.send(`The message was successfully deleted.`);
+                    return msg.channel.send('The message was successfully deleted.');
                 }
                 if (/{embed:.+}/gi.test(args[1])) {
                     const embed = args[1].match(/{embed:.+}/gi)[0].split(':')[1].slice(0, -1);
@@ -103,13 +103,13 @@ If you need to see how the messages and roles it gives would be, you can use:
                 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id });
                 server.save();
                 const configEmbed = new Discord.MessageEmbed()
-                    .setTitle(`Server Leave Configuration`)
-                    .setDescription(`**Channel:** ${server.channelID ? `<#${server.channelID}>` : `Does not have.`}
-**Embed Name:** ${server.embed_name ? server.embed_name : `Does not have.`}`)
+                    .setTitle('Server Leave Configuration')
+                    .setDescription(`**Channel:** ${server.channelID ? `<#${server.channelID}>` : 'Does not have.'}
+**Embed Name:** ${server.embed_name ? server.embed_name : 'Does not have.'}`)
                     .setColor(this.client.color)
-                    .addField(`Message:`, `${server.message ? server.message.length > 1024 ? `${server.message.substring(0, 1000)}. And more..` : server.message : `Does not have.`}`)
-                if (server.embed_name) configEmbed.setFooter(`If you want to see the embed use: ${this.prefix}embed preview ${server.embed_name}`)
-                msg.channel.send(configEmbed)
+                    .addField('Message:', `${server.message ? server.message.length > 1024 ? `${server.message.substring(0, 1000)}. And more..` : server.message : 'Does not have.'}`);
+                if (server.embed_name) configEmbed.setFooter(`If you want to see the embed use: ${this.prefix}embed preview ${server.embed_name}`);
+                msg.channel.send(configEmbed);
                 break;
             }
             default:

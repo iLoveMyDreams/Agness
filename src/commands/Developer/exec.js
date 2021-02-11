@@ -8,6 +8,7 @@ module.exports = class ExecCommand extends BaseCommand {
         super(client, {
             name: 'exec',
             category: 'Devs',
+            guildOnly: false,
             devsOnly: true
         });
     }
