@@ -84,9 +84,19 @@ If you need to see how the messages and roles it gives would be, you can use:
                     // eslint-disable-next-line prefer-const
                     let [message, embed] = args.slice(1).join(' ').split(' | ').map((m) => m.trim());
                     if (embed) {
+                        try{
                         embed = embed.split(':')[1].slice(0, -1);
                         const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec();
                         if (!checkear) return msg.channel.send('> There\'s no embed with that name.');
+                        } catch (e){
+                            return msg.channel.send(`The correct way to use is:
+- Message and embed:
+> \`${this.prefix}welcome message Welcome {user}! | {embed:[embed name]}\`
+- Message only:
+> \`${this.prefix}welcome message Welcome {user}!\`
+- Or just the embed:
+> \`${this.prefix}welcome message {embed:[embed name]}\``)
+                        }
                     }
                     let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                     if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, embed_name: embed ? embed : '', message });
