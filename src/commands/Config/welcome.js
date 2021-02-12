@@ -120,9 +120,13 @@ If you need to see how the messages and roles it gives would be, you can use:
                             server.save();
                             return msg.channel.send('Users will no longer be given a role.');
                         }
-                        const rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2]);
-                        if (!rol) return msg.channel.send('> Give me the ID or mention of the role.');
-                        if(!rol.editable) return msg.channel.send('> I can\'t give that role, it may be because I don\'t have the necessary permissions.')
+                        const matchRole = args[2].match(/^<@&(\d+)>$/);
+                        const rol = matchRole ? msg.guild.roles.resolve(matchRole[1]) : msg.guild.roles.resolve(args[2]);
+                        if (!rol)
+                            return msg.channel.send('> I couldn\'t find that role or it\'s invalid.');
+                        if (!rol.editable)
+                            return msg.channel.send('> I don\'t have enough permissions to give that role.');
+                            
                         let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                         if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, userRoleID: rol.id });
                         server.userRoleID = rol.id;
@@ -141,9 +145,14 @@ If you need to see how the messages and roles it gives would be, you can use:
                             server.save();
                             return msg.channel.send('Users will no longer be given a role.');
                         }
-                        const rol = msg.mentions.roles.first() || msg.guild.roles.resolve(args[2]);
-                        if (!rol) return msg.channel.send('> Give me the ID or mention of the role.');
-                        if(!rol.editable) return msg.channel.send('> I can\'t give that role, it may be because I don\'t have the necessary permissions.')
+
+                        const matchRole = args[2].match(/^<@&(\d+)>$/);
+                        const rol = matchRole ? msg.guild.roles.resolve(matchRole[1]) : msg.guild.roles.resolve(args[2]);
+                        if (!rol)
+                            return msg.channel.send('> I couldn\'t find that role or it\'s invalid.');
+                        if (!rol.editable)
+                            return msg.channel.send('> I don\'t have enough permissions to give that role.');
+
                         let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                         if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, botRoleID: rol.id });
                         server.botRoleID = rol.id;
