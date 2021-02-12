@@ -7,9 +7,6 @@ module.exports = class GuildMemberAddEvent {
     async run(member) {
         const server = await this.client.db.welcome.findOne({ guildID: member.guild.id }).exec();
         if (!server) return;
-        const channel = member.guild.channels.resolve(server.channelID);
-        if (!channel) return;
-
         if (!member.user.bot && server.userRoleID)
             try {
                 const rol = member.guild.roles.resolve(server.userRoleID);
@@ -22,7 +19,8 @@ module.exports = class GuildMemberAddEvent {
                 if (rol && rol.editable)
                     member.roles.add(rol.id);
             } catch { }
-
+        const channel = member.guild.channels.resolve(server.channelID);
+        if (!channel) return;
         let embed;
         const embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name }).exec();
         let prefix = 'a?';
