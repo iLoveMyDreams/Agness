@@ -73,6 +73,6 @@ You can appeal by going to my support server.
     sendOrReply(msg, ...args) {
         if (msg.guild && !msg.channel.permissionsFor(msg.guild.me).has('READ_MESSAGE_HISTORY'))
             return msg.channel.send(...args);
-        return this.sendOrReply(msg, ...args);
+        return msg.reply(msg, ...args);
     }
 };
