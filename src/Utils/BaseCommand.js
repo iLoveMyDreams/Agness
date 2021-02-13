@@ -34,18 +34,18 @@ module.exports = class BaseCommand {
 > **Date:** \`${blacklist.date.toLocaleString()}\`
 You can appeal by going to my support server.
 > [Support Server](https://discord.gg/K63NqEDm86)`);
-        if (!this.enabled && !devs.includes(msg.author.id)) return !msg.reply('This command is under maintenance.', { allowedMentions: { users: [] } });
-        if (this.guildOnly && !msg.guild) return !msg.reply('This command is only available for servers.', { allowedMentions: { users: [] } });
-        if (this.devsOnly && !devs.includes(msg.author.id)) return !msg.reply('This command can only be used by developers only.', { allowedMentions: { users: [] } });
-        if (msg.guild && !msg.channel.nsfw && this.nsfwOnly) return !msg.reply('This command can only be used on NSFW channels.', { allowedMentions: { users: [] } });
+        if (!this.enabled && !devs.includes(msg.author.id)) return !this.sendOrReply(msg, 'This command is under maintenance.', { allowedMentions: { users: [] } });
+        if (this.guildOnly && !msg.guild) return !this.sendOrReply(msg, 'This command is only available for servers.', { allowedMentions: { users: [] } });
+        if (this.devsOnly && !devs.includes(msg.author.id)) return !this.sendOrReply(msg, 'This command can only be used by developers only.', { allowedMentions: { users: [] } });
+        if (msg.guild && !msg.channel.nsfw && this.nsfwOnly) return !this.sendOrReply(msg, 'This command can only be used on NSFW channels.', { allowedMentions: { users: [] } });
         if (msg.guild && this.memberGuildPermissions[0] && !this.memberGuildPermissions.some((x) => msg.member.permissions.has(x)) && !devs.includes(msg.author.id))
-            return !msg.reply(`You need the following permissions: \`${this.memberGuildPermissions.map(this.parsePermission).join(', ')}\``, { allowedMentions: { users: [] } });
+            return !this.sendOrReply(msg, `You need the following permissions: \`${this.memberGuildPermissions.map(this.parsePermission).join(', ')}\``, { allowedMentions: { users: [] } });
         if (msg.guild && this.memberChannelPermissions[0] && !this.memberChannelPermissions.some((x) => msg.channel.permissionsFor(msg.member).has(x)) && !devs.includes(msg.author.id))
-            return !msg.reply(`You need the following permissions on this channel: \`${this.memberChannelPermissions.map(this.parsePermission).join(', ')}\``, { allowedMentions: { users: [] } });
+            return !this.sendOrReply(msg, `You need the following permissions on this channel: \`${this.memberChannelPermissions.map(this.parsePermission).join(', ')}\``, { allowedMentions: { users: [] } });
         if (msg.guild && this.botGuildPermissions[0] && !this.botGuildPermissions.some((x) => msg.guild.me.permissions.has(x)))
-            return !msg.reply(`I need the following permissions: \`${this.botGuildPermissions.map(this.parsePermission).join(', ')}\``, { allowedMentions: { users: [] } });
+            return !this.sendOrReply(msg, `I need the following permissions: \`${this.botGuildPermissions.map(this.parsePermission).join(', ')}\``, { allowedMentions: { users: [] } });
         if (msg.guild && this.botChannelPermissions[0] && !this.botChannelPermissions.some((x) => msg.channel.permissionsFor(msg.guild.me).has(x)))
-            return !msg.reply(`I need the following permissions on this channel: \`${this.botChannelPermissions.map(this.parsePermission).join(', ')}\``, { allowedMentions: { users: [] } });
+            return !this.sendOrReply(msg, `I need the following permissions on this channel: \`${this.botChannelPermissions.map(this.parsePermission).join(', ')}\``, { allowedMentions: { users: [] } });
         return true;
     }
 
@@ -68,5 +68,11 @@ You can appeal by going to my support server.
         return msg.channel.send(new Discord.MessageEmbed()
             .setDescription(text)
             .setColor(hexColor || this.client.color));
+    }
+
+    sendOrReply(msg, ...args) {
+        if (msg.guild && !msg.channel.permissionsFor(msg.guild.me).has('READ_MESSAGE_HISTORY'))
+            return msg.channel.send(...args);
+        return this.sendOrReply(msg, ...args);
     }
 };
