@@ -84,18 +84,18 @@ If you need to see how the messages and roles it gives would be, you can use:
                     // eslint-disable-next-line prefer-const
                     let [message, embed] = args.slice(1).join(' ').split(' | ').map((m) => m.trim());
                     if (embed) {
-                        try{
-                        embed = embed.split(':')[1].slice(0, -1);
-                        const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec();
-                        if (!checkear) return msg.channel.send('> There\'s no embed with that name.');
-                        } catch (e){
+                        try {
+                            embed = embed.split(':')[1].slice(0, -1);
+                            const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec();
+                            if (!checkear) return msg.channel.send('> There\'s no embed with that name.');
+                        } catch (e) {
                             return msg.channel.send(`The correct way to use is:
 - Message and embed:
 > \`${this.prefix}welcome message Welcome {user}! | {embed:[embed name]}\`
 - Message only:
 > \`${this.prefix}welcome message Welcome {user}!\`
 - Or just the embed:
-> \`${this.prefix}welcome message {embed:[embed name]}\``)
+> \`${this.prefix}welcome message {embed:[embed name]}\``);
                         }
                     }
                     let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
@@ -126,7 +126,7 @@ If you need to see how the messages and roles it gives would be, you can use:
                             return msg.channel.send('> I couldn\'t find that role or it\'s invalid.');
                         if (!rol.editable)
                             return msg.channel.send('> I don\'t have enough permissions to give that role.');
-                            
+
                         let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                         if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, userRoleID: rol.id });
                         server.userRoleID = rol.id;
@@ -169,6 +169,8 @@ If you need to see how the messages and roles it gives would be, you can use:
                 }
                 break;
             }
+            case 'configuration':
+            case 'settings':
             case 'config': {
                 let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
                 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id });
@@ -181,7 +183,7 @@ If you need to see how the messages and roles it gives would be, you can use:
 **Embed Name:** ${server.embed_name ? server.embed_name : 'Does not have.'}`)
                     .addField('Message:', `${server.message ? server.message.length > 1024 ? `${server.message.substring(0, 1000)}. And more..` : server.message : 'Does not have.'}`)
                     .setColor(this.client.color);
-                    if(server.embed_name) configEmbed.setFooter(`If you want to see the embed use: ${this.prefix}embed preview ${server.embed_name}`);
+                if (server.embed_name) configEmbed.setFooter(`If you want to see the embed use: ${this.prefix}embed preview ${server.embed_name}`);
                 msg.channel.send(configEmbed);
                 break;
             }
@@ -200,6 +202,9 @@ To insert messages into a welcome, there are three options:
 > \`${this.prefix}welcome message Welcome user!\`
 - Or just the embed:
 > \`${this.prefix}welcome message {embed:[embed name]}\`
+
+To see the current settings use:
+> \`${this.prefix}welcome config\`
 
 If you need to delete any property use:
 > \`${this.prefix}welcome [property] null\``)

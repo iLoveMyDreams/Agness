@@ -49,7 +49,7 @@ Finally, let's put a color which has to be in hexadecimal code without the #, if
 > \`${this.prefix}embed edit example color e658ff\`
 Ready, this is a simple embed that if you want you can test yourself with:
 > \`${this.prefix}embed preview example`)
-.addField('Send it for welcomes/leaves',`Remember that in any case you would use: {embed:[embed name]}
+                .addField('Send it for welcomes/leaves', `Remember that in any case you would use: {embed:[embed name]}
 > In this case: \`{embed:example}\`
 To insert it in a welcome or leave, there are three options:
 - Message and embed:
@@ -75,7 +75,7 @@ You can find the full list with \`${this.prefix}variables\``)
                 if (lista.length >= 10) return msg.channel.send('For now, you can only have 10 embeds per server.');
                 if (!args[1]) return msg.channel.send(`You didn't put the name of the embed to create.
 > ${this.prefix}embed create [embed_name]`);
-                if(args[1] > 10) return msg.channel.send('Try a shorter name, the maximum is 10 characters.');
+                if (args[1] > 10) return msg.channel.send('Try a shorter name, the maximum is 10 characters.');
                 const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: args[1] }).exec();
                 if (checkear) return msg.channel.send('There\'s already an embed with that name. Try another.');
                 const nuevo = new this.client.db.embed({ guildID: msg.guild.id, embed_name: args[1] });
@@ -212,8 +212,8 @@ Here's a preview of the embed:`, await this.client.generateEmbed(embed_DB, repla
             }
             case 'propiedades':
             case 'properties': {
-							const embed = new Discord.MessageEmbed()
-                .setDescription(`**Properties of an embed**
+                const embed = new Discord.MessageEmbed()
+                    .setDescription(`**Properties of an embed**
 > \`author\` - [text | <Image link>]
 > \`thumbnail\` - [Image link]
 > \`title\` - [text]
@@ -222,10 +222,10 @@ Here's a preview of the embed:`, await this.client.generateEmbed(embed_DB, repla
 > \`image\` - [Image link]
 > \`color\` - [Hex Code]
 > \`timestamp\` - [enabled: yes/no]`)
-							.setFooter('<> Optional | [] Required')
-							.setColor(this.client.color)
-							.setTimestamp();
-							msg.channel.send(embed);
+                    .setFooter('<> Optional | [] Required')
+                    .setColor(this.client.color)
+                    .setTimestamp();
+                msg.channel.send(embed);
                 break;
             }
             default:
