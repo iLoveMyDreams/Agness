@@ -19,7 +19,9 @@ module.exports = class DJSCommand extends BaseCommand {
                 parse: 'json'
             });
             if (!response) return msg.channel.send('I didn\'t find anything in the documentation.');
-            return msg.channel.send({ embed: response.body });
+            return msg.channel.send({ embed: response.body }).catch(() => {
+                return msg.channel.send('An error has occurred.');
+            });
         } catch {
             return msg.channel.send('An error has occurred.');
         }
