@@ -15,10 +15,10 @@ new (
             });
             this.db = require(path.join(__dirname, 'Database', 'index.js'));
             this.commands = new Discord.Collection();
+            this.color = '#637cf6';
             this.loadCommands();
             this.loadEvents();
             this.login(process.env.TOKEN);
-            this.color = '#637cf6';
         }
 
         loadEvents() {
