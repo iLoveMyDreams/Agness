@@ -8,7 +8,7 @@ module.exports = class GuildDeleteEvent {
         await this.client.db.prefix.findOneAndDelete({ _id: guild.id })
         await this.client.db.welcome.findOneAndDelete({ guildID: guild.id })
         await this.client.db.leave.findOneAndDelete({ guildID: guild.id })
-        await this.client.db.reactions.deleteMany({ guildID: guild.id })
+        await this.client.db.reaction.deleteMany({ guildID: guild.id })
         await this.client.db.embed.deleteMany({ guildID: guild.id })
         await this.client.db.tags.deleteMany({ guildID: guild.id })
         
