@@ -26,7 +26,7 @@ module.exports = class MessageEvent {
             if (!(await cmd.canRun(msg))) return;
             cmd.run(msg, args);
         } catch (e) {
-            console.log(e.message || e);
+            console.log(e.stack || e);
             msg.channel.send(`An unexpected error has occurred, here is a small reference: ${e.message || e}`);
         }
     }

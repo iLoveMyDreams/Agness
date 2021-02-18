@@ -5,17 +5,18 @@ module.exports = class GuildDeleteEvent {
     }
 
     async run(guild) {
-        try{
-        await this.client.db.prefix.findOneAndDelete({ _id: guild.id }).catch(() => { })
-        await this.client.db.welcome.findOneAndDelete({ guildID: guild.id }).catch(() => { })
-        await this.client.db.leave.findOneAndDelete({ guildID: guild.id }).catch(() => { })
-        await this.client.db.reaction.deleteMany({ guildID: guild.id }).catch(() => { })
-        await this.client.db.embed.deleteMany({ guildID: guild.id }).catch(() => { })
-        await this.client.db.tags.deleteMany({ guildID: guild.id }).catch(() => { })
-        
+        try {
+            await this.client.db.prefix.findOneAndDelete({ _id: guild.id });
+            await this.client.db.welcome.findOneAndDelete({ guildID: guild.id });
+            await this.client.db.leave.findOneAndDelete({ guildID: guild.id });
+            await this.client.db.reaction.deleteMany({ guildID: guild.id });
+            await this.client.db.embed.deleteMany({ guildID: guild.id });
+            await this.client.db.tags.deleteMany({ guildID: guild.id });
+        } catch { }
+
         const guilds = (await this.client.shard.fetchClientValues('guilds.cache.size')).reduce((acc, guildCount) => acc + guildCount, 0);
         const canal = await this.client.channels.fetch(process.env.SERVERS_CHANNEL);
-        const owner = await this.client.users.fetch(guild.ownerID);
+        const owner = await this.client.users.fetch(guild.ownerID).catch(() => null);
         if (canal)
             canal.send(new Discord.MessageEmbed()
                 .setAuthor('Server Remove', this.client.user.displayAvatarURL({ dynamic: true }))
@@ -24,8 +25,5 @@ module.exports = class GuildDeleteEvent {
                 .setColor('RED')
                 .setFooter(`Servers count: ${guilds}`)
                 .setTimestamp());
-        }catch (e){
-            console.log(e.message || e)
-        }
     }
 };

@@ -6,7 +6,7 @@ module.exports = class CatCommand extends BaseCommand {
 		super(client, {
 			name: 'simpcard',
 			category: 'Images',
-      guildOnly: false
+			guildOnly: false
 		});
 	}
 
@@ -22,10 +22,6 @@ module.exports = class CatCommand extends BaseCommand {
 		ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 		ctx.beginPath();
 		ctx.arc(70, 75, 50, 0, Math.PI * 2);
-		ctx.fillStyle = '#ffffff';
-		ctx.fill();
-		ctx.stroke();
-		ctx.closePath();
 		ctx.clip();
 		ctx.drawImage(img, 20, 23.5, 100, 100);
 		msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'AsunaSimpCard.png'));

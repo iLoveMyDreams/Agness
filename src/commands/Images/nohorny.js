@@ -20,8 +20,8 @@ module.exports = class CatCommand extends BaseCommand {
             loadImage('https://i.imgur.com/052Gnwz.png')
         ]);
         ctx.fillStyle = '#fff';
-        ctx.drawImage(avatar, 10, 140);
-        ctx.drawImage(bg, 0, 0);
+        ctx.drawImage(avatar, 10, 140, 245, 245);
+        ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
         msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'AsunaNohorny.png'));
     }
 };

@@ -19,7 +19,7 @@
     "discord.js": "github:discordjs/discord.js",
     "dotenv": "^8.2.0",
     "image-url-validator": "^0.2.4",
-    "mongoose": "^5.11.9",
+    "mongoose": "^5.11.15",
     "phin": "^3.5.1"
   },
   "devDependencies": {

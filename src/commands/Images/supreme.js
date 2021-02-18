@@ -19,8 +19,8 @@ module.exports = class CatCommand extends BaseCommand {
             loadImage(user.displayAvatarURL({ dynamic: false, format: 'png', size: 256 })),
             loadImage('https://i.imgur.com/RXkUdK2.png')
         ]);
-        ctx.drawImage(img, 260, 200);
-        ctx.drawImage(bg, 0, 0);
+        ctx.drawImage(img, 260, 200, 250, 250);
+        ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
         msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'AsunaSupreme.png'));
     }
 };
