@@ -15,7 +15,7 @@ module.exports = class BaseCommand {
         this.memberChannelPermissions = options.memberChannelPermissions || [];
         this.cooldown = options.cooldown || 2;
         this.enabled = typeof options.enabled === 'boolean' ? options.enabled : true;
-        this.guildOnly = typeof options.guildOnly === 'boolean' ? options.guildOnly : true;
+        this.guildOnly = typeof options.guildOnly === 'boolean' ? options.guildOnly : this.category !== 'General';
         this.nsfwOnly = typeof options.nsfwOnly === 'boolean' ? options.nsfwOnly : false;
         this.devsOnly = typeof options.devsOnly === 'boolean' ? options.devsOnly : false;
         this.cooldowns = new Discord.Collection();
