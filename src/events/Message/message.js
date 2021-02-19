@@ -5,6 +5,7 @@ module.exports = class MessageEvent {
     }
 
     async run(msg) {
+        if (!msg.author) return;
         let prefix = 'a?';
         if (msg.guild) {
             const modelo = await this.client.db.prefix.findOne({ _id: msg.guild.id }).exec();
@@ -12,7 +13,6 @@ module.exports = class MessageEvent {
         }
         const prefixes = [prefix, `<@${this.client.user.id}>`, `<@!${this.client.user.id}>`];
         const usedPrefix = prefixes.find((p) => msg.content.startsWith(p));
-        if(!msg.author) return;
         if (!usedPrefix || msg.author.bot) return;
         if (usedPrefix !== prefix)
             msg.mentions.users.delete(msg.mentions.users.first().id);
