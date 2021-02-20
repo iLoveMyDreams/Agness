@@ -6,7 +6,7 @@ const path = require('path');
 new (
     class Agness extends Discord.Client {
         constructor() {
-            super({ partials: ['MESSAGE', 'REACTION'], intents: 13827 });
+            super({ partials: ['MESSAGE', 'REACTION', 'CHANNEL'], intents: 5635 });
             mongoose.connect(process.env.MONGO_URL, {
                 useNewUrlParser: true, useUnifiedTopology: true
             }, (err) => {
