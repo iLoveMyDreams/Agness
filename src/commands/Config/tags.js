@@ -13,8 +13,10 @@ module.exports = class TagsCommand extends BaseCommand {
             botChannelPermissions: ['EMBED_LINKS'],
             category: 'Config'
         });
+    }
 
-        this.helpEmbed = new Discord.MessageEmbed()
+    async run(msg, args) {
+        const helpEmbed = new Discord.MessageEmbed()
             .setColor(this.client.color)
             .setDescription(`You must put a valid option.
 > \`${this.prefix}tags add [name] [properties]\`
@@ -29,10 +31,7 @@ To see the properties use:
 
 To use a tag, use:
 > \`${this.prefix}[tag name]\``);
-    }
-
-    async run(msg, args) {
-        if (!args[0]) return msg.channel.send(this.helpEmbed);
+        if (!args[0]) return msg.channel.send(helpEmbed);
         switch (args[0].toLowerCase()) {
             case 'add': {
                 const tags = await this.client.db.tags.find({ guildID: msg.guild.id });
@@ -156,7 +155,7 @@ To use a tag, use:
 > \`{addRole:[roleID]}\` - Adds a role (put another *:roleID* to add one more role).
 > \`{removeRole:[roleID]}\` - Removes a role (put another *:roleID* to remove one more role).`);
             default:
-                return msg.channel.send(this.helpEmbed);
+                return msg.channel.send(helpEmbed);
         }
     }
 };

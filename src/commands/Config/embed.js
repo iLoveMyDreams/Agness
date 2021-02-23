@@ -15,7 +15,10 @@ module.exports = class EmbedCommand extends BaseCommand {
         });
 
         this.exceptions = ['{user.avatar}', '{server.icon}', '{server.owner.avatar}'];
-        this.helpEmbed = new Discord.MessageEmbed()
+    }
+
+    async run(msg, args) {
+        const helpEmbed = new Discord.MessageEmbed()
             .setTitle('Why do I need an embed?')
             .setDescription('You may need it to make your server look much better aesthetically, since it will allow you to create rich text, which you can put in your welcomes, leaves and custom commands. Creativity is up to you!')
             .addField('1. Create and name your embed.', `__First of all you should not include [] or <> in the command__
@@ -62,10 +65,7 @@ You can find the full list with \`${this.prefix}variables\``)
             .setTimestamp()
             .setFooter('<> Optional | [] Required')
             .setImage('https://i.ibb.co/9YBv4tQ/image.png');
-    }
-
-    async run(msg, args) {
-        if (!args[0]) return msg.channel.send(this.helpEmbed);
+        if (!args[0]) return msg.channel.send(helpEmbed);
         const replaceText = (text) => this.client.replaceText(text, { channel: msg.channel, member: msg.member, prefix: this.prefix });
         switch (args[0].toLowerCase()) {
             case 'create': {
@@ -195,7 +195,7 @@ Here's a preview of the embed:`, await this.client.generateEmbed(embed, replaceT
                     .setColor(this.client.color)
                     .setTimestamp());
             default:
-                return msg.channel.send(this.helpEmbed);
+                return msg.channel.send(helpEmbed);
         }
     }
 };

@@ -12,12 +12,14 @@ module.exports = class LeaveCommand extends BaseCommand {
             memberGuildPermissions: ['ADMINISTRATOR'],
             botChannelPermissions: ['EMBED_LINKS']
         });
+    }
 
-        this.helpEmbed = new Discord.MessageEmbed()
+    async run(msg, args) {
+        const helpEmbed = new Discord.MessageEmbed()
             .setColor(this.client.color)
             .setDescription(`You must put a valid property.
 > \`${this.prefix}leave channel [#channel]\`
-> \`${this.prefix}leave message [ <text> | {embed[embed name]} ]\`
+> \`${this.prefix}leave message [<text>| {embed[embed name]}]\`
 
 To insert messages into a leave, there are three options:
 - Message and embed:
@@ -33,10 +35,7 @@ To see the current settings use:
 If you need to delete any property use:
 > \`${this.prefix}leave [property] null\``)
             .setFooter('<> Optional | [] Required');
-    }
-
-    async run(msg, args) {
-        if (!args[0]) return msg.channel.send(this.helpEmbed);
+        if (!args[0]) return msg.channel.send(helpEmbed);
         switch (args[0].toLowerCase()) {
             case 'channel': {
                 if (!args[1]) return msg.channel.send('You must put the ID of a channel or mention it.');
@@ -112,7 +111,7 @@ If you need to delete any property use:
                 return msg.channel.send(configEmbed);
             }
             default:
-                return msg.channel.send(this.helpEmbed);
+                return msg.channel.send(helpEmbed);
         }
     }
 };

@@ -8,15 +8,15 @@ module.exports = class CommentCommand extends BaseCommand {
         });
 
         this.types = ['.png', '.jpg', '.jpeg', '.gif'];
-        this.helpEmbed = new Discord.MessageEmbed()
+    }
+
+    async run(msg, args) {
+        const helpEmbed = new Discord.MessageEmbed()
             .setDescription(`You must put a valid property.
 > \`${this.prefix}comment suggest [new suggest]\`
 > \`${this.prefix}comment bug [command/event] [description]\``)
             .setColor(this.client.color)
             .setFooter('Remember that you can also insert images or gifs.');
-    }
-
-    async run(msg, args) {
         const canalSuggest = await this.client.channels.fetch(process.env.SUGGEST_CHANNEL);
         const canalReport = await this.client.channels.fetch(process.env.REPORT_CHANNEL);
 
@@ -24,7 +24,7 @@ module.exports = class CommentCommand extends BaseCommand {
         const avatar = msg.author.displayAvatarURL({ format: extension, size: 4096 });
         const avatarAtt = new Discord.MessageAttachment(avatar, `avatar.${extension}`);
 
-        if (!args[0]) return msg.channel.send(this.helpEmbed);
+        if (!args[0]) return msg.channel.send(helpEmbed);
         switch (args[0]) {
             case 'suggest': {
                 const embedSuggest = new Discord.MessageEmbed();
@@ -80,7 +80,7 @@ module.exports = class CommentCommand extends BaseCommand {
                 return msg.channel.send('Your bug report has been sent successfully.');
             }
             default:
-                return msg.channel.send(this.helpEmbed);
+                return msg.channel.send(helpEmbed);
         }
     }
 };
