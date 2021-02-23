@@ -22,6 +22,6 @@ module.exports = class CatCommand extends BaseCommand {
         ctx.fillStyle = '#fff';
         ctx.drawImage(avatar, 10, 140, 245, 245);
         ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
-        msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'AsunaNohorny.png'));
+        return msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'Nohorny.png'));
     }
 };

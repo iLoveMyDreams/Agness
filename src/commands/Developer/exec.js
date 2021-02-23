@@ -14,10 +14,10 @@ module.exports = class ExecCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        if (!args[0]) return msg.channel.send('Qué pondré en la consola?');
+        if (!args[0]) return msg.channel.send('What should I put in the terminal?');
         try {
             const { stdout, stderr } = await exec(args.join(' '));
-            if (!stdout && !stderr) return msg.channel.send('Lo ejecuté, pero no hay nada que mostrar');
+            if (!stdout && !stderr) return msg.channel.send('I executed that but there\'s no nothing to show.');
             if (stdout)
                 msg.channel.send(stdout.slice(0, 1950), { code: 'sh' });
             if (stderr)

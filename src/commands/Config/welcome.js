@@ -37,7 +37,7 @@ If you need to delete any property use:
             case 'channel': {
                 if (!args[1]) return msg.channel.send('> Give me the ID or mention of the channel.');
                 if (args[1].toLowerCase() === 'null') {
-                    let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+                    let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
                     if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, channelID: '' });
                     server.channelID = '';
                     server.save();
@@ -47,7 +47,7 @@ If you need to delete any property use:
                 const canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1]);
                 if (!canal || canal.type !== 'text') return msg.channel.send('> I didn\'t find a channel or the mentioned channel is not of text.');
                 if (!canal.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return msg.channel.send('> I can\'t send messages in that channel.');
-                let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+                let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
                 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, channelID: canal.id });
                 server.channelID = canal.id;
                 server.save();
@@ -57,7 +57,7 @@ If you need to delete any property use:
             case 'message': {
                 if (!args[1]) return msg.channel.send('> You must put a welcome message.');
                 if (args[1].toLowerCase() === 'null') {
-                    let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+                    let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
                     if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, embed_name: '', message: '' });
                     server.embed_name = '';
                     server.message = '';
@@ -67,12 +67,12 @@ If you need to delete any property use:
                 if (/{embed:.+}/gi.test(args[1])) {
                     const embed = args[1].match(/{embed:.+}/gi)[0].split(':')[1].slice(0, -1);
                     if (embed) {
-                        const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec();
+                        const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed });
                         if (!checkear) return msg.channel.send(`> There's no embed with that name.
 You can see the list of embeds with:
 > \`${this.prefix}embed list\``);
                     }
-                    let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+                    let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
                     if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, embed_name: embed });
                     server.embed_name = embed;
                     server.message = '';
@@ -86,7 +86,7 @@ If you need to see how the messages and roles it gives would be, you can use:
                     if (embed) {
                         try {
                             embed = embed.split(':')[1].slice(0, -1);
-                            const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec();
+                            const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed });
                             if (!checkear) return msg.channel.send('> There\'s no embed with that name.');
                         } catch (e) {
                             return msg.channel.send(`The correct way to use is:
@@ -98,7 +98,7 @@ If you need to see how the messages and roles it gives would be, you can use:
 > \`${this.prefix}welcome message {embed:[embed name]}\``);
                         }
                     }
-                    let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+                    let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
                     if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, embed_name: embed ? embed : '', message });
                     server.embed_name = embed ? embed : '';
                     server.message = message;
@@ -114,7 +114,7 @@ If you need to see how the messages and roles it gives would be, you can use:
                     case 'user': {
                         if (!args[2]) return msg.channel.send('> Give me the ID or mention of the role.');
                         if (args[2].toLowerCase() === 'null') {
-                            let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+                            let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
                             if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, userRoleID: '' });
                             server.userRoleID = '';
                             server.save();
@@ -127,7 +127,7 @@ If you need to see how the messages and roles it gives would be, you can use:
                         if (!rol.editable)
                             return msg.channel.send('> I don\'t have enough permissions to give that role.');
 
-                        let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+                        let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
                         if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, userRoleID: rol.id });
                         server.userRoleID = rol.id;
                         server.save();
@@ -139,7 +139,7 @@ If you need to see how the messages and roles it gives would be, you can use:
                     case 'bot': {
                         if (!args[2]) return msg.channel.send('> Give me the ID or mention of the role.');
                         if (args[2].toLowerCase() === 'null') {
-                            let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+                            let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
                             if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, botRoleID: '' });
                             server.userRoleID = '';
                             server.save();
@@ -153,7 +153,7 @@ If you need to see how the messages and roles it gives would be, you can use:
                         if (!rol.editable)
                             return msg.channel.send('> I don\'t have enough permissions to give that role.');
 
-                        let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+                        let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
                         if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, botRoleID: rol.id });
                         server.botRoleID = rol.id;
                         server.save();
@@ -172,7 +172,7 @@ If you need to see how the messages and roles it gives would be, you can use:
             case 'configuration':
             case 'settings':
             case 'config': {
-                let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id }).exec();
+                let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
                 if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id });
                 server.save();
                 const configEmbed = new Discord.MessageEmbed()

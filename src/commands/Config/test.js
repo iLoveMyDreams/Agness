@@ -14,17 +14,18 @@ module.exports = class TestCommand extends BaseCommand {
     }
 
     async run(msg, args) {
-        switch (args[0]) {
+        if (!args[0]) return msg.channel.send('You must specify the event to test (emit - leave/welcome).');
+        switch (args[0].toLowerCase()) {
             case 'leave': {
                 this.client.emit('guildMemberRemove', msg.member);
-                break;
+                return msg.channel.send('Emitted **leave** event successfully.');
             }
             case 'welcome': {
                 this.client.emit('guildMemberAdd', msg.member);
-                break;
+                return msg.channel.send('Emitted **welcome** event successfully.');
             }
             default:
-                return msg.channel.send(`> Correct use: ${this.prefix}test [welcome/leave]`);
+                return msg.channel.send('You must specify the event to test (emit - leave/welcome).');
         }
     }
 };

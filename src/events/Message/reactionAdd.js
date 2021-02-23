@@ -14,7 +14,7 @@ module.exports = class ReactionAddEvent {
         try {
             const miembro = await guild.members.fetch(user.id);
 
-            const emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emoji }).exec();
+            const emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emoji });
             if (!emojiCheck) return;
 
             const rol = guild.roles.cache.get(emojiCheck.roleID);
@@ -22,7 +22,7 @@ module.exports = class ReactionAddEvent {
 
             switch (emojiCheck.type) {
                 case 'only': {
-                    const emojis = await this.client.db.reaction.find({ messageID: mensaje.id, type: 'only' }).exec();
+                    const emojis = await this.client.db.reaction.find({ messageID: mensaje.id, type: 'only' });
                     emojis.forEach(async (reactionRol) => {
                         if (reactionRol.reaction === emojiCheck.reaction) {
                             miembro.roles.add(rol.id);

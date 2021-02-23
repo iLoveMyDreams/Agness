@@ -21,6 +21,6 @@ module.exports = class CatCommand extends BaseCommand {
         ]);
         ctx.drawImage(img, 260, 200, 250, 250);
         ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
-        msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'AsunaSupreme.png'));
+        return msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'Supreme.png'));
     }
 };

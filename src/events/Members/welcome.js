@@ -5,7 +5,7 @@ module.exports = class GuildMemberAddEvent {
     }
 
     async run(member) {
-        const server = await this.client.db.welcome.findOne({ guildID: member.guild.id }).exec();
+        const server = await this.client.db.welcome.findOne({ guildID: member.guild.id });
         if (!server) return;
         if (!member.user.bot && server.userRoleID)
             try {
@@ -22,9 +22,9 @@ module.exports = class GuildMemberAddEvent {
         const channel = member.guild.channels.resolve(server.channelID);
         if (!channel) return;
         let embed;
-        const embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name }).exec();
+        const embed_DB = await this.client.db.embed.findOne({ guildID: member.guild.id, embed_name: server.embed_name });
         let prefix = 'a?';
-        const modelo = await this.client.db.prefix.findOne({ _id: member.guild.id }).exec();
+        const modelo = await this.client.db.prefix.findOne({ _id: member.guild.id });
         prefix = modelo ? modelo.prefix : 'a?';
         const replaceText = (text) => this.client.replaceText(text, { channel, member, prefix });
         if (embed_DB)

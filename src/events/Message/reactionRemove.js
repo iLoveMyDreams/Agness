@@ -13,7 +13,7 @@ module.exports = class ReactionRemoveEvent {
         try {
             const miembro = await guild.members.fetch(user.id);
 
-            const emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emoji }).exec();
+            const emojiCheck = await this.client.db.reaction.findOne({ messageID: mensaje.id, reaction: emoji });
             if (!emojiCheck) return;
 
             const rol = guild.roles.cache.get(emojiCheck.roleID);

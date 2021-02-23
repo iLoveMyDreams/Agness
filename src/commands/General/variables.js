@@ -9,7 +9,7 @@ module.exports = class VariablesCommand extends BaseCommand {
     }
 
     async run(msg) {
-        const embed = new Discord.MessageEmbed()
+        return msg.channel.send(new Discord.MessageEmbed()
             .setTitle(`${this.client.user.username} Variables`)
             .setDescription('These variables can be used when editing embeds and in welcome/leave messages.')
             .addField('User Information',
@@ -50,7 +50,6 @@ module.exports = class VariablesCommand extends BaseCommand {
 \`{channel.createdate}\` - Channel creation date`)
             .setFooter(`${this.client.user.username} Variables`)
             .setColor(this.client.color)
-            .setTimestamp();
-        msg.channel.send(embed);
+            .setTimestamp());
     }
 };

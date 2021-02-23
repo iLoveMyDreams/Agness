@@ -10,7 +10,7 @@ module.exports = class InviteCommand extends BaseCommand {
     }
 
     async run(msg) {
-        msg.channel.send(new Discord.MessageEmbed()
+        return msg.channel.send(new Discord.MessageEmbed()
             .setColor(this.client.color)
             .setDescription(`Thank you for inviting me to your server! You will not regret.
 > [This is my invite link.](https://discord.com/api/oauth2/authorize?client_id=798573830645874718&permissions=8&scope=bot)

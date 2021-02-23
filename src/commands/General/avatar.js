@@ -19,12 +19,11 @@ module.exports = class AvatarCommand extends BaseCommand {
             user = user.user;
         const extension = (user.avatar || '').startsWith('a_') ? 'gif' : 'png';
         const avatar = user.displayAvatarURL({ format: extension, size: 4096 });
-        const embed = new Discord.MessageEmbed()
+        return msg.channel.send(new Discord.MessageEmbed()
             .setColor(this.client.color)
             .setDescription(`**${user.username}**'s avatar
 > [Avatar link](${avatar})`)
             .attachFiles([new Discord.MessageAttachment(avatar, `avatar.${extension}`)])
-            .setImage(`attachment://avatar.${extension}`);
-        msg.channel.send(embed);
+            .setImage(`attachment://avatar.${extension}`));
     }
 };

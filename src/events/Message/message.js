@@ -8,7 +8,7 @@ module.exports = class MessageEvent {
         if (!msg.author) return;
         let prefix = 'a?';
         if (msg.guild) {
-            const modelo = await this.client.db.prefix.findOne({ _id: msg.guild.id }).exec();
+            const modelo = await this.client.db.prefix.findOne({ _id: msg.guild.id });
             prefix = modelo ? modelo.prefix : 'a?';
         }
         const prefixes = [prefix, `<@${this.client.user.id}>`, `<@!${this.client.user.id}>`];
@@ -32,9 +32,9 @@ module.exports = class MessageEvent {
     }
 
     async isTag(msg, prefix, name) {
-        const tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name }).exec();
+        const tag = await this.client.db.tags.findOne({ guildID: msg.guild.id, name });
         if (!tag) return false;
-        const embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: tag.embed_name }).exec();
+        const embed_DB = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: tag.embed_name });
         const replaceText = (text) => this.client.replaceText(text, { channel: msg.channel, member: msg.member, prefix });
         const files = tag.image ? [new Discord.MessageAttachment(tag.image, 'image.png')] : null;
         let embed;

@@ -24,6 +24,6 @@ module.exports = class CatCommand extends BaseCommand {
 		ctx.arc(70, 75, 50, 0, Math.PI * 2);
 		ctx.clip();
 		ctx.drawImage(img, 20, 23.5, 100, 100);
-		msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'AsunaSimpCard.png'));
+		return msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'SimpCard.png'));
 	}
 };

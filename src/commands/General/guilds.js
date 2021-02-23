@@ -16,7 +16,7 @@ module.exports = class GuildsCommand extends BaseCommand {
         ]);
         const totalGuilds = results[0].reduce((acc, guildCount) => acc + guildCount, 0);
         const totalMembers = results[1].reduce((acc, memberCount) => acc + memberCount, 0);
-        msg.channel.send(new Discord.MessageEmbed()
+        return msg.channel.send(new Discord.MessageEmbed()
             .setDescription(`At this moment, I'm in **${totalGuilds}** servers and with **${totalMembers}** cached users.`)
             .setFooter(`This server is on the shard ${this.client.shard.ids.map((i) => `${i}`).join(', ')}`)
             .setColor(this.client.color));

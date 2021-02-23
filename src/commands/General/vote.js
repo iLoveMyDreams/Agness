@@ -9,7 +9,7 @@ module.exports = class VoteCommand extends BaseCommand {
     }
 
     async run(msg) {
-        msg.channel.send(new Discord.MessageEmbed()
+        return msg.channel.send(new Discord.MessageEmbed()
             .setColor(this.client.color)
             .setDescription(`I really appreciate that you want to vote for me!
 [Vote for me here!](https://top.gg/bot/798573830645874718)

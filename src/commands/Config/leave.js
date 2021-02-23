@@ -12,10 +12,8 @@ module.exports = class LeaveCommand extends BaseCommand {
             memberGuildPermissions: ['ADMINISTRATOR'],
             botChannelPermissions: ['EMBED_LINKS']
         });
-    }
 
-    async run(msg, args) {
-        if (!args[0]) return msg.channel.send(new Discord.MessageEmbed()
+        this.helpEmbed = new Discord.MessageEmbed()
             .setColor(this.client.color)
             .setDescription(`You must put a valid property.
 > \`${this.prefix}leave channel [#channel]\`
@@ -34,121 +32,87 @@ To see the current settings use:
 
 If you need to delete any property use:
 > \`${this.prefix}leave [property] null\``)
-            .setFooter('<> Optional | [] Required'));
+            .setFooter('<> Optional | [] Required');
+    }
+
+    async run(msg, args) {
+        if (!args[0]) return msg.channel.send(this.helpEmbed);
         switch (args[0].toLowerCase()) {
             case 'channel': {
-                if (!args[1]) return msg.channel.send('> Give me the ID or mention of the channel.');
+                if (!args[1]) return msg.channel.send('You must put the ID of a channel or mention it.');
                 if (args[1].toLowerCase() === 'null') {
-                    let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec();
+                    let server = await this.client.db.leave.findOne({ guildID: msg.guild.id });
                     if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, channelID: '' });
                     server.channelID = '';
-                    server.save();
-                    return msg.channel.send('The channel was successfully removed.');
+                    await server.save();
+                    return msg.channel.send('The channel was successfully removed from the leave.');
                 }
                 const matchChannel = args[1] ? args[1].match(/^<#(\d+)>$/) : false;
                 const canal = matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[1]);
-                if (!canal || canal.type !== 'text') return msg.channel.send('> I didn\'t find a channel or the mentioned channel is not of text.');
-                if (!['SEND_MESSAGES', 'EMBED_LINKS'].some((p) => canal.permissionsFor(msg.guild.me).has(p))) return msg.channel.send('> I can\'t send messages or embeds in that channel.');
-                let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec();
+                if (!canal || canal.type !== 'text') return msg.channel.send('I didn\'t find a channel or the mentioned channel isn\'t of text.');
+                if (!['SEND_MESSAGES', 'EMBED_LINKS'].some((p) => canal.permissionsFor(msg.guild.me).has(p))) return msg.channel.send('I can\'t send messages or embeds in that channel.');
+                let server = await this.client.db.leave.findOne({ guildID: msg.guild.id });
                 if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, channelID: canal.id });
                 server.channelID = canal.id;
-                server.save();
-                msg.channel.send(`> The leaves channel is now ${canal}.`);
-                break;
+                await server.save();
+                return msg.channel.send(`> The leaves channel is now ${canal}.`);
             }
             case 'message': {
-                if (!args[1]) return msg.channel.send('> You must put a leave message.');
+                if (!args[1]) return msg.channel.send('You must put a leave message.');
                 if (args[1].toLowerCase() === 'null') {
-                    let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec();
-                    if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, embed_name: '', message: '' });
+                    let server = await this.client.db.leave.findOne({ guildID: msg.guild.id });
+                    if (!server) server = new this.client.db.leave({ guildID: msg.guild.id });
                     server.embed_name = '';
                     server.message = '';
-                    server.save();
+                    await server.save();
                     return msg.channel.send('The message was successfully deleted.');
                 }
                 if (/{embed:.+}/gi.test(args[1])) {
                     const embed = args[1].match(/{embed:.+}/gi)[0].split(':')[1].slice(0, -1);
                     if (embed) {
-                        const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec();
-                        if (!checkear) return msg.channel.send(`> There's no embed with that name.
-You can see the list of embeds with:
-> \`${this.prefix}embed list\``);
+                        const createdEmbed = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed });
+                        if (!createdEmbed) return msg.channel.send('There\'s no embed with that name.');
                     }
-                    let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec();
+                    let server = await this.client.db.leave.findOne({ guildID: msg.guild.id });
                     if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, embed_name: embed });
                     server.embed_name = embed;
                     server.message = '';
-                    server.save();
-                    this.sendEmbed(msg, `The new embed to use in the leaves is now ${embed}.
-If you need to see how the messages and roles it gives would be, you can use:
-> \`${this.prefix}test leave\``);
+                    await server.save();
+                    return this.sendEmbed(msg, `The new embed to use in the leaves is now **${embed}**. To test it use: \`${this.prefix}test leave\``);
                 } else {
                     // eslint-disable-next-line prefer-const
                     let [message, embed] = args.slice(1).join(' ').split(' | ').map((m) => m.trim());
-                    if (embed) {
-                        try {
-                            embed = embed.split(':')[1].slice(0, -1);
-                            const checkear = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed }).exec();
-                            if (!checkear) return msg.channel.send('> There\'s no embed with that name.');
-                        } catch (e) {
-                            return msg.channel.send(`The correct way to use is:
-- Message and embed:
-> \`${this.prefix}leave message {user.tag} left the server! | {embed:[embed name]}\`
-- Message only:
-> \`${this.prefix}leave message {user.tag} left the server!\`
-- Or just the embed:
-> \`${this.prefix}leave message {embed:[embed name]}\``);
-                        }
+                    if (/{embed:.+}/gi.test(embed)) {
+                        embed = embed.split(':')[1].slice(0, -1);
+                        const createdEmbed = await this.client.db.embed.findOne({ guildID: msg.guild.id, embed_name: embed });
+                        if (!createdEmbed) return msg.channel.send('There\'s no embed with that name.');
                     }
-                    let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec();
+                    let server = await this.client.db.leave.findOne({ guildID: msg.guild.id });
                     if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, embed_name: embed ? embed : '', message });
                     server.embed_name = embed ? embed : '';
                     server.message = message;
-                    server.save();
-                    this.sendEmbed(msg, `The message ${embed ? 'and embed ' : ''}of leaves has been updated correctly.
-If you need to see how the messages and roles it gives would be, you can use:
-> \`${this.prefix}test leave\``);
+                    await server.save();
+                    return this.sendEmbed(msg, `The message ${embed ? 'and embed ' : ''}of leaves has been updated correctly. To test it use: \`${this.prefix}test leave\``);
                 }
-                break;
             }
             case 'configuration':
             case 'settings':
             case 'config': {
-                let server = await this.client.db.leave.findOne({ guildID: msg.guild.id }).exec();
+                let server = await this.client.db.leave.findOne({ guildID: msg.guild.id });
                 if (!server) server = new this.client.db.leave({ guildID: msg.guild.id });
-                server.save();
+                await server.save();
                 const configEmbed = new Discord.MessageEmbed()
                     .setTitle('Server Leave Configuration')
-                    .setDescription(`**Channel:** ${server.channelID ? `<#${server.channelID}>` : 'Does not have.'}
-**Embed Name:** ${server.embed_name ? server.embed_name : 'Does not have.'}`)
+                    .setDescription(`**Channel:** ${server.channelID ? `<#${server.channelID}>` : 'Doesn\'t have.'}
+**Embed Name:** ${server.embed_name ? server.embed_name : 'Doesn\'t have.'}`)
                     .setColor(this.client.color)
                     .addField('Message:', `${server.message ? server.message.length > 1024 ? `${server.message.substring(0, 1000)}. And more..` : server.message : 'Does not have.'}`);
-                if (server.embed_name) configEmbed.setFooter(`If you want to see the embed use: ${this.prefix}embed preview ${server.embed_name}`);
-                msg.channel.send(configEmbed);
-                break;
+                if (server.embed_name)
+                    configEmbed.setFooter(`If you want to preview the embed use: ${this.prefix}embed preview ${server.embed_name}`);
+                return msg.channel.send(configEmbed);
             }
             default:
-                msg.channel.send(new Discord.MessageEmbed()
-                    .setColor(this.client.color)
-                    .setDescription(`You must put a valid property.
-> ${this.prefix}leave channel [#channel]
-> ${this.prefix}leave message [ <text> | {embed[embed name]} ]
-
-To insert messages into a leave, there are three options:
-- Message and embed:
-> \`${this.prefix}leave message {user.tag} left the server! | {embed:[embed name]}\`
-- Message only:
-> \`${this.prefix}leave message {user.tag} left the server!\`
-- Or just the embed:
-> \`${this.prefix}leave message {embed:[embed name]}\`
-
-To see the current settings use:
-> \`${this.prefix}leave config\`
-
-If you need to delete any property use:
-> \`${this.prefix}leave [property] null\``)
-                    .setFooter('<> Optional | [] Required'));
-                break;
+                return msg.channel.send(this.helpEmbed);
         }
     }
 };
