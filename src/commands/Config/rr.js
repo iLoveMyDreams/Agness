@@ -49,30 +49,26 @@ Only => Only one role reaction of the same type can be obtained in the message.`
 
         if (!args[1] || !args[2]) return msg.channel.send('You must specify the role, type and message ID.');
         const matchRole = args[0].match(/^<@&(\d+)>$/);
-        const rol = matchRole ? msg.guild.roles.resolve(matchRole[1]) : msg.guild.roles.resolve(args[0]);
-        if (!rol)
-            return msg.channel.send('> I couldn\'t find that role or it\'s invalid.');
-        if (!rol.editable)
-            return msg.channel.send('> I don\'t have enough permissions to give that role.');
-
-        if (!this.types.includes(args[1].toLowerCase()))
-            return msg.channel.send(`That's not a type of reaction role. To see all types use: \`${this.prefix}rr types\``);
+        const role = matchRole ? msg.guild.roles.resolve(matchRole[1]) : msg.guild.roles.resolve(args[0]);
+        if (!role) return msg.channel.send('I couldn\'t find that role or it\'s invalid.');
+        if (!role.editable) return msg.channel.send('I don\'t have enough permissions to give that role.');
+        if (!this.types.includes(args[1].toLowerCase())) return msg.channel.send(`That's not a type of reaction role. To see all types use: \`${this.prefix}rr types\``);
 
         const msgID = args[2];
         const matchChannel = args[3] ? args[3].match(/^<#(\d+)>$/) : false;
-        const canal = args[3] ? matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[3]) : msg.channel;
+        const channel = args[3] ? matchChannel ? msg.guild.channels.resolve(matchChannel[1]) : msg.guild.channels.resolve(args[3]) : msg.channel;
+        if (!channel || channel.type !== 'text') return msg.channel.send('> I couldn\'t find the channel or it\'s invalid.');
+        if (!channel.viewable) return msg.channel.send('I don\'t have permissions to see that channel.');
+        if (!channel.permissionsFor(msg.guild.me).has('ADD_REACTIONS')) return msg.channel.send('I don\'t have permissions to add reactions in that channel.');
 
-        if (!canal || canal.type !== 'text') return msg.channel.send('> I couldn\'t find the channel or it\'s invalid.');
-        if (!canal.viewable) return msg.channel.send('I don\'t have permissions to see that channel.');
-        if (!canal.permissionsFor(msg.guild.me).has('ADD_REACTIONS')) return msg.channel.send('I don\'t have permissions to add reactions in that channel.');
         try {
-            var message = await canal.messages.fetch(msgID);
+            var message = await channel.messages.fetch(msgID);
             if (!message) return msg.channel.send('The message wasn\'t found.');
         } catch {
             return msg.channel.send('There was an error finding the message, try again.');
         }
 
-        const sent = await msg.channel.send(`I'm preparing the reaction role for ${rol}.
+        const sent = await msg.channel.send(`I'm preparing the reaction role for ${role}.
 You just need to react with the emoji with which you want the role to be given.`);
         try {
             const filter = (r, u) => u.id === msg.author.id;
@@ -83,10 +79,10 @@ You just need to react with the emoji with which you want the role to be given.`
             const emojiID = emoji.id || emoji.name;
             const emojiCheck = await this.client.db.reaction.findOne({ messageID: message.id, reaction: emojiID });
             if (emojiCheck) return msg.channel.send('There\'s already a role reaction with that emoji.');
-            const nuevaDB = new this.client.db.reaction({ guildID: msg.guild.id, messageID: message.id, roleID: rol.id, reaction: emojiID, type: args[1].toLowerCase() });
-            await nuevaDB.save();
+            const reactionRole = new this.client.db.reaction({ guildID: msg.guild.id, messageID: message.id, roleID: role.id, reaction: emojiID, type: args[1].toLowerCase() });
+            await reactionRole.save();
             await message.react(emoji);
-            return msg.channel.send(`Now, the role ${rol} will be given when they react to the emoji ${emoji} in that message`);
+            return msg.channel.send(`Now, the role **${role.name}** will be given when they react to the emoji ${emoji} in that message`);
         } catch (e) {
             await sent.delete();
             return msg.channel.send('Time is over ;(');

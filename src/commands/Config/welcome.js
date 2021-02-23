@@ -110,64 +110,23 @@ If you need to see how the messages and roles it gives would be, you can use:
                 break;
             }
             case 'autorole': {
-                switch (args[1]) {
-                    case 'user': {
-                        if (!args[2]) return msg.channel.send('> Give me the ID or mention of the role.');
-                        if (args[2].toLowerCase() === 'null') {
-                            let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
-                            if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, userRoleID: '' });
-                            server.userRoleID = '';
-                            server.save();
-                            return msg.channel.send('Users will no longer be given a role.');
-                        }
-                        const matchRole = args[2].match(/^<@&(\d+)>$/);
-                        const rol = matchRole ? msg.guild.roles.resolve(matchRole[1]) : msg.guild.roles.resolve(args[2]);
-                        if (!rol)
-                            return msg.channel.send('> I couldn\'t find that role or it\'s invalid.');
-                        if (!rol.editable)
-                            return msg.channel.send('> I don\'t have enough permissions to give that role.');
-
-                        let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
-                        if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, userRoleID: rol.id });
-                        server.userRoleID = rol.id;
-                        server.save();
-                        this.sendEmbed(msg, `Now, the role ${rol} will be given when a user joins the server.
-If you need to see how the messages and roles it gives would be, you can use:
-> \`${this.prefix}test welcome\``);
-                        break;
-                    }
-                    case 'bot': {
-                        if (!args[2]) return msg.channel.send('> Give me the ID or mention of the role.');
-                        if (args[2].toLowerCase() === 'null') {
-                            let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
-                            if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, botRoleID: '' });
-                            server.userRoleID = '';
-                            server.save();
-                            return msg.channel.send('Users will no longer be given a role.');
-                        }
-
-                        const matchRole = args[2].match(/^<@&(\d+)>$/);
-                        const rol = matchRole ? msg.guild.roles.resolve(matchRole[1]) : msg.guild.roles.resolve(args[2]);
-                        if (!rol)
-                            return msg.channel.send('> I couldn\'t find that role or it\'s invalid.');
-                        if (!rol.editable)
-                            return msg.channel.send('> I don\'t have enough permissions to give that role.');
-
-                        let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
-                        if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, botRoleID: rol.id });
-                        server.botRoleID = rol.id;
-                        server.save();
-                        this.sendEmbed(msg, `> Now, the role ${rol} will be given when a bot joins the server.
-If you need to see how the messages and roles it gives would be, you can use:
-> \`${this.prefix}test welcome\``);
-                        break;
-                    }
-                    default: {
-                        msg.channel.send(`You must choose what type of member you want to give the role to.
-> \`${this.prefix}welcome autorole [user | bot] [@role]\``);
-                    }
+                if (!args[2]) return msg.channel.send('You must specify the ID or mention a role.');
+                if (args[2].toLowerCase() === 'null') {
+                    let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
+                    if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, botRoleID: '' });
+                    server.userRoleID = '';
+                    await server.save();
+                    return msg.channel.send(`A role will not be given now when a ${args[1].toLowerCase()} joins the server.`);
                 }
-                break;
+                const matchRole = args[2].match(/^<@&(\d+)>$/);
+                const role = matchRole ? msg.guild.roles.resolve(matchRole[1]) : msg.guild.roles.resolve(args[2]);
+                if (!role) return msg.channel.send('I couldn\'t find that role or it\'s invalid.');
+                if (!role.editable) return msg.channel.send('I don\'t have enough permissions to give that role.');
+                let server = await this.client.db.welcome.findOne({ guildID: msg.guild.id });
+                if (!server) server = new this.client.db.welcome({ guildID: msg.guild.id, [`${args[1].toLowerCase()}RoleID`]: role.id });
+                server[`${args[1].toLowerCase()}RoleID`] = role.id;
+                server.save();
+                return msg.channel.send(`Now, the role **${role.name}** will be given when a ${args[1].toLowerCase()} joins the server. To test it use: \`${this.prefix}test welcome\``);
             }
             case 'configuration':
             case 'settings':
@@ -183,9 +142,9 @@ If you need to see how the messages and roles it gives would be, you can use:
 **Embed Name:** ${server.embed_name ? server.embed_name : 'Does not have.'}`)
                     .addField('Message:', `${server.message ? server.message.length > 1024 ? `${server.message.substring(0, 1000)}. And more..` : server.message : 'Does not have.'}`)
                     .setColor(this.client.color);
-                if (server.embed_name) configEmbed.setFooter(`If you want to see the embed use: ${this.prefix}embed preview ${server.embed_name}`);
-                msg.channel.send(configEmbed);
-                break;
+                if (server.embed_name)
+                    configEmbed.setFooter(`If you want to see the embed use: ${this.prefix}embed preview ${server.embed_name}`);
+                return msg.channel.send(configEmbed);
             }
             default:
                 return msg.channel.send(new Discord.MessageEmbed()

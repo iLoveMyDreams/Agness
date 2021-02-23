@@ -12,10 +12,8 @@ module.exports = class LeaveCommand extends BaseCommand {
             memberGuildPermissions: ['ADMINISTRATOR'],
             botChannelPermissions: ['EMBED_LINKS']
         });
-    }
 
-    async run(msg, args) {
-        const helpEmbed = new Discord.MessageEmbed()
+        this.helpEmbed = () => new Discord.MessageEmbed()
             .setColor(this.client.color)
             .setDescription(`You must put a valid property.
 > \`${this.prefix}leave channel [#channel]\`
@@ -35,7 +33,10 @@ To see the current settings use:
 If you need to delete any property use:
 > \`${this.prefix}leave [property] null\``)
             .setFooter('<> Optional | [] Required');
-        if (!args[0]) return msg.channel.send(helpEmbed);
+    }
+
+    async run(msg, args) {
+        if (!args[0]) return msg.channel.send(this.helpEmbed());
         switch (args[0].toLowerCase()) {
             case 'channel': {
                 if (!args[1]) return msg.channel.send('You must put the ID of a channel or mention it.');
@@ -54,7 +55,7 @@ If you need to delete any property use:
                 if (!server) server = new this.client.db.leave({ guildID: msg.guild.id, channelID: canal.id });
                 server.channelID = canal.id;
                 await server.save();
-                return msg.channel.send(`> The leaves channel is now ${canal}.`);
+                return msg.channel.send(`The leaves channel is now ${canal}.`);
             }
             case 'message': {
                 if (!args[1]) return msg.channel.send('You must put a leave message.');
@@ -77,7 +78,7 @@ If you need to delete any property use:
                     server.embed_name = embed;
                     server.message = '';
                     await server.save();
-                    return this.sendEmbed(msg, `The new embed to use in the leaves is now **${embed}**. To test it use: \`${this.prefix}test leave\``);
+                    return msg.channel.send(`The new embed to use in the leaves is now **${embed}**. To test it use: \`${this.prefix}test leave\`.`);
                 } else {
                     // eslint-disable-next-line prefer-const
                     let [message, embed] = args.slice(1).join(' ').split(' | ').map((m) => m.trim());
@@ -91,7 +92,7 @@ If you need to delete any property use:
                     server.embed_name = embed ? embed : '';
                     server.message = message;
                     await server.save();
-                    return this.sendEmbed(msg, `The message ${embed ? 'and embed ' : ''}of leaves has been updated correctly. To test it use: \`${this.prefix}test leave\``);
+                    return msg.channel.send(`The message ${embed ? 'and embed ' : ''}of leaves has been updated correctly. To test it use: \`${this.prefix}test leave\`.`);
                 }
             }
             case 'configuration':
@@ -111,7 +112,7 @@ If you need to delete any property use:
                 return msg.channel.send(configEmbed);
             }
             default:
-                return msg.channel.send(helpEmbed);
+                return msg.channel.send(this.helpEmbed());
         }
     }
 };
