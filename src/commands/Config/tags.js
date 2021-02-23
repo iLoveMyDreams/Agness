@@ -7,8 +7,8 @@ module.exports = class TagsCommand extends BaseCommand {
             name: 'tag',
             aliases: ['tags'],
             description: 'Create custom commands for your server.',
-            usage: (prefix) => `${prefix}tag [option: add/edit/delete/list] [name] <properties>`,
-            example: (prefix) => `${prefix}tag add cool (message:Yes, you're so cool!)`,
+            usage: (prefix) => `${prefix}tag [option: create/edit/delete/list] [name] <properties>`,
+            example: (prefix) => `${prefix}tag create cool (message:Yes, you're so cool!)`,
             memberGuildPermissions: ['ADMINISTRATOR'],
             botChannelPermissions: ['EMBED_LINKS'],
             category: 'Config'
@@ -17,15 +17,15 @@ module.exports = class TagsCommand extends BaseCommand {
         this.helpEmbed = () => new Discord.MessageEmbed()
             .setColor(this.client.color)
             .setDescription(`You must put a valid option.
-> \`${this.prefix}tags add [name] [properties]\`
-> \`${this.prefix}tags edit [name] [properties]\`
-> \`${this.prefix}tags delete [name]\`
+> \`${this.prefix}tag create [name] [properties]\`
+> \`${this.prefix}tag edit [name] [properties]\`
+> \`${this.prefix}tag delete [name]\`
 
 To see all tags in the server use:
-> \`${this.prefix}tags list\`
+> \`${this.prefix}tag list\`
 
 To see the properties use:
-> \`${this.prefix}tags properties\`
+> \`${this.prefix}tag properties\`
 
 To use a tag, use:
 > \`${this.prefix}[tag name]\``);
@@ -34,7 +34,8 @@ To use a tag, use:
     async run(msg, args) {
         if (!args[0]) return msg.channel.send(this.helpEmbed());
         switch (args[0].toLowerCase()) {
-            case 'add': {
+            case 'add':
+            case 'create': {
                 const tags = await this.client.db.tags.find({ guildID: msg.guild.id });
                 if (tags.length >= 10) return msg.channel.send('For now, you can only have **10** tags per server.');
                 if (!args[1]) return msg.channel.send('You must put a valid name.');

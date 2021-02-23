@@ -68,6 +68,7 @@ You can find the full list with \`${this.prefix}variables\``)
         if (!args[0]) return msg.channel.send(this.helpEmbed());
         const replaceText = (text) => this.client.replaceText(text, { channel: msg.channel, member: msg.member, prefix: this.prefix });
         switch (args[0].toLowerCase()) {
+            case 'add':
             case 'create': {
                 const lista = await this.client.db.embed.find({ guildID: msg.guild.id });
                 if (lista.length >= 10) return msg.channel.send('For now, you can only have **10** embeds per server.');
@@ -167,11 +168,9 @@ You can find the full list with \`${this.prefix}variables\``)
                 }
 
                 await embed.save();
-                return msg.channel.send(`The **${edit}** property of the embed **${args[1]}** was edited correctly. You can add the embed to welcome, goodbye or custom commands with {embed:${args[1]}}.
-If you need to delete any property use:
-> ${this.prefix}embed edit [name] [property] null
-
-Here's a preview of the embed:`, await this.client.generateEmbed(embed, replaceText));
+                return msg.channel.send(`The **${edit}** property of the embed **${args[1]}** was edited correctly.
+You can add the embed to welcome, leave or tags (custom commands) with \`{embed:${args[1]}}\`.
+**Preview of the embed**:`, await this.client.generateEmbed(embed, replaceText));
             }
             case 'preview': {
                 if (!args[1]) return msg.channel.send('You didn\'t tell me the embed to edit.');
