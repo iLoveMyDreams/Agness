@@ -104,7 +104,7 @@ You can find the full list with \`${this.prefix}variables\``)
                 switch (edit) {
                     case 'footer':
                     case 'author': {
-                        if (!args[3]) return msg.channel.send('You must give me the value you want to put.');
+                        if (!args[3]) return msg.channel.send(`You must put the text to put as ${edit}.`);
                         const parts = args.slice(3).join(' ').split(' | ');
                         if (edit === 'footer' && parts[0].length > 2048) return msg.channel.send('The footer must have 2048 characters or less.');
                         if (edit === 'author' && parts[0].length > 256) return msg.channel.send('The author must have 256 characters or less.');
