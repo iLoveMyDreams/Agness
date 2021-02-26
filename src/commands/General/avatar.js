@@ -14,7 +14,7 @@ module.exports = class AvatarCommand extends BaseCommand {
             this.client.users.cache.get(args[0]) ||
             this.client.users.cache.find(e => (e.username == args.join(' ')) || (e.tag == args.join(' '))) ||
             (msg.guild ? (msg.guild.members.cache.find(e => (e.nickname === args.join(' ')))) : undefined) ||
-            (args[0] ? await this.client.users.fetch(args[0]).catch(() => { }) : undefined) || msg.author;
+            (args[0] ? await this.client.users.fetch(args[0]).catch(() => null) : undefined) || msg.author;
         if (user instanceof Discord.GuildMember)
             user = user.user;
         const extension = (user.avatar || '').startsWith('a_') ? 'gif' : 'png';

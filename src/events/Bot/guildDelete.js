@@ -16,7 +16,7 @@ module.exports = class GuildDeleteEvent {
 
         const guilds = (await this.client.shard.fetchClientValues('guilds.cache.size')).reduce((acc, guildCount) => acc + guildCount, 0);
         const canal = await this.client.channels.fetch(process.env.SERVERS_CHANNEL);
-        const owner = await this.client.users.fetch(guild.ownerID).catch(() => null)
+        const owner = await this.client.users.fetch(guild.ownerID).catch(() => null);
         if (canal)
             canal.send(new Discord.MessageEmbed()
                 .setAuthor('Server Remove', this.client.user.displayAvatarURL({ dynamic: true }))
