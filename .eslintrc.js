@@ -15,10 +15,11 @@ module.exports = {
         'no-empty': 'off',
         'prefer-const': 'warn',
         'no-unused-vars': 'warn',
-        'eol-last': ['warn', 'never'],
-        'comma-dangle': ['error', 'never'],
-        'lines-between-class-members': 'warn',
         quotes: ['warn', 'single'],
+        'no-empty-function': 'warn',
+        'eol-last': ['warn', 'never'],
+        'comma-dangle': ['warn', 'never'],
+        'quote-props': ['warn', 'as-needed'],
         semi: ['warn', 'always', { omitLastInOneLineBlock: true }]
     }
 };
